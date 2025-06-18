@@ -176,6 +176,7 @@ export function PokemonGrid({
                     : 'Link mismatch'
               }
               withArrow
+              openDelay={1000}
             >
               <div
                 draggable
@@ -204,6 +205,7 @@ export function PokemonGrid({
                     : `Box position ${index} - Drop here to swap Pokemon`
               }
               withArrow
+              openDelay={1000}
               disabled={draggedPokemon === null && !onEmptySlotClick}
             >
               <div
