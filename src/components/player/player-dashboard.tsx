@@ -2,19 +2,9 @@
 
 import React, { useState, useCallback } from 'react';
 import { Stack, Title, Card } from '@mantine/core';
-import PlayerTeam from './PlayerTeam';
+import { PokemonGrid, type Pokemon } from '../pokemon/pokemon-grid';
 
-interface Pokemon {
-  id: string;
-  name: string;
-  image: string;
-  route: string;
-  isDead: boolean;
-  isLinked: boolean;
-  position: number;
-}
-
-interface PlayerViewProps {
+interface PlayerDashboardProps {
   team: Pokemon[];
   box: Pokemon[];
   sessionId: string;
@@ -22,13 +12,13 @@ interface PlayerViewProps {
   onAddPokemon?: (inBox: boolean, position?: number) => void;
 }
 
-const PlayerView: React.FC<PlayerViewProps> = ({
+export function PlayerDashboard({
   team,
   box,
   sessionId,
   onPokemonUpdate,
   onAddPokemon,
-}) => {
+}: PlayerDashboardProps) {
   const [isUpdating, setIsUpdating] = useState(false);
 
   const handleEmptySlotClick = (isTeam: boolean, position?: number) => {
@@ -79,7 +69,7 @@ const PlayerView: React.FC<PlayerViewProps> = ({
         <Title order={3} mb='md'>
           Your Team
         </Title>
-        <PlayerTeam
+        <PokemonGrid
           pokemons={team}
           isTeam={true}
           onPokemonMove={handlePokemonMove}
@@ -90,7 +80,7 @@ const PlayerView: React.FC<PlayerViewProps> = ({
         <Title order={3} mb='md'>
           Box
         </Title>
-        <PlayerTeam
+        <PokemonGrid
           pokemons={box}
           isTeam={false}
           onPokemonMove={handlePokemonMove}
@@ -99,6 +89,4 @@ const PlayerView: React.FC<PlayerViewProps> = ({
       </Card>
     </Stack>
   );
-};
-
-export default PlayerView;
+}

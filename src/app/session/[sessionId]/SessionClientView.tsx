@@ -1,9 +1,25 @@
 'use client';
 import { Card, Title, Text, Stack, Box, Group } from '@mantine/core';
-import PlayerView from '../../components/PlayerView';
-import AddPokemonDialog from '@/app/components/AddPokemonDialog';
+import { PlayerDashboard, AddPokemonModal } from '@/components';
 import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
+
+interface SessionData {
+  id: string;
+  name: string;
+  players: { id: string; username: string }[];
+}
+
+interface PokemonData {
+  id: string;
+  name: string;
+  image: string;
+  route: string;
+  isDead: boolean;
+  isLinked: boolean;
+  position: number;
+  inBox: boolean;
+}
 
 interface SessionClientViewProps {
   sessionId: string;
@@ -19,7 +35,7 @@ const SessionClientView: React.FC<SessionClientViewProps> = ({ sessionId }) => {
     data: session,
     isLoading: loadingSession,
     error: errorSession,
-  } = useQuery({
+  } = useQuery<SessionData>({
     queryKey: ['session', sessionId],
     queryFn: async () => {
       const res = await fetch(`/api/session/${sessionId}`);
@@ -34,7 +50,7 @@ const SessionClientView: React.FC<SessionClientViewProps> = ({ sessionId }) => {
     isLoading: loadingPokemons,
     error: errorPokemons,
     refetch: refetchPokemons,
-  } = useQuery({
+  } = useQuery<PokemonData[]>({
     queryKey: ['pokemons', sessionId],
     queryFn: async () => {
       const res = await fetch(`/api/pokemon/${sessionId}`);
@@ -48,7 +64,7 @@ const SessionClientView: React.FC<SessionClientViewProps> = ({ sessionId }) => {
     data: usedRoutes,
     isLoading: loadingRoutes,
     error: errorRoutes,
-  } = useQuery({
+  } = useQuery<string[]>({
     queryKey: ['routes', sessionId],
     queryFn: async () => {
       const res = await fetch(`/api/pokemon/${sessionId}/routes`);
@@ -68,13 +84,13 @@ const SessionClientView: React.FC<SessionClientViewProps> = ({ sessionId }) => {
   if (typeof window !== 'undefined') {
     const uuid = localStorage.getItem('playerUuid');
     if (uuid && session?.players) {
-      const player = session.players.find((p: any) => p.id === uuid);
+      const player = session.players.find((p) => p.id === uuid);
       if (player) playerId = player.id;
     }
   }
 
-  const team = pokemons.filter((p: any) => !p.inBox);
-  const box = pokemons.filter((p: any) => p.inBox);
+  const team = pokemons.filter((p) => !p.inBox);
+  const box = pokemons.filter((p) => p.inBox);
 
   const handlePokemonUpdate = () => {
     refetchPokemons();
@@ -97,7 +113,7 @@ const SessionClientView: React.FC<SessionClientViewProps> = ({ sessionId }) => {
           <Title order={2}>{session.name}</Title>
           <Text>ID: {session.id}</Text>
           <Text>
-            Players: {session.players.map((p: any) => p.username).join(', ')}
+            Players: {session.players.map((p) => p.username).join(', ')}
           </Text>
         </Card>
         <Card variant='outline' p='md'>
@@ -108,14 +124,14 @@ const SessionClientView: React.FC<SessionClientViewProps> = ({ sessionId }) => {
             Manage your Pokémon by dragging and dropping or clicking empty
             slots.
           </Text>
-          <PlayerView
+          <PlayerDashboard
             team={team}
             box={box}
             sessionId={sessionId}
             onPokemonUpdate={handlePokemonUpdate}
             onAddPokemon={handleAddPokemon}
           />{' '}
-          <AddPokemonDialog
+          <AddPokemonModal
             sessionId={sessionId}
             playerId={playerId}
             opened={dialogOpen}

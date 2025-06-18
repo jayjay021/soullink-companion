@@ -12,9 +12,10 @@ interface SessionCardProps {
   };
 }
 
-export default function SessionCard({ session }: SessionCardProps) {
+export function SessionCard({ session }: SessionCardProps) {
   const router = useRouter();
   const { username, userId, isViewer } = useUser();
+  
   const joinSessionMutation = useMutation({
     mutationFn: async (id: string) => {
       if (isViewer) {

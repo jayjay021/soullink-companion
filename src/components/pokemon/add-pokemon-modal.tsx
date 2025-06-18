@@ -2,12 +2,12 @@
 
 import React, { useState, useEffect } from 'react';
 import { Modal, Button, Autocomplete, Stack } from '@mantine/core';
-import AsyncPokemonAutocomplete from './AsyncPokemonAutocomplete';
+import { PokemonAutocomplete } from './pokemon-autocomplete';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import type { CreatePokemonRequest } from '@/types/api';
 import type { PokemonData } from '@/app/api/pokemon/route';
 
-interface AddPokemonDialogProps {
+interface AddPokemonModalProps {
   sessionId: string;
   playerId: string;
   opened: boolean;
@@ -16,14 +16,14 @@ interface AddPokemonDialogProps {
   position?: number; // Specific position to add the Pokemon to
 }
 
-const AddPokemonDialog: React.FC<AddPokemonDialogProps> = ({
+export function AddPokemonModal({
   sessionId,
   playerId,
   opened,
   onClose,
   defaultInBox = true,
   position = 0,
-}) => {
+}: AddPokemonModalProps) {
   const [name, setName] = useState('');
   const [route, setRoute] = useState('');
   const [selectedPokemon, setSelectedPokemon] = useState<PokemonData | null>(
@@ -101,7 +101,7 @@ const AddPokemonDialog: React.FC<AddPokemonDialogProps> = ({
   return (
     <Modal opened={opened} onClose={handleClose} title='Add Pokémon'>
       <Stack>
-        <AsyncPokemonAutocomplete
+        <PokemonAutocomplete
           value={name}
           onChange={setSelectedPokemon}
           onNameChange={setName}
@@ -124,6 +124,4 @@ const AddPokemonDialog: React.FC<AddPokemonDialogProps> = ({
       </Stack>
     </Modal>
   );
-};
-
-export default AddPokemonDialog;
+}

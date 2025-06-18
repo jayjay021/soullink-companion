@@ -11,7 +11,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { useState, useEffect } from 'react';
 import { useUser } from '@/app/context/UserContext';
 
-export default function UsernameDialog() {
+export function UserSetupModal() {
   const { username: contextUser, reloadUser, loading } = useUser();
   const [opened, setOpened] = useState(false);
 
@@ -49,7 +49,7 @@ export default function UsernameDialog() {
         closeOnEscape={false}
         opened={opened && !loading}
         onClose={() => setOpened(false)}
-        title='Enter Username'
+        title='Welcome! Please set up your profile'
         closeButtonProps={{ style: { display: 'none' } }} // Hide close button
         centered
       >
@@ -60,7 +60,7 @@ export default function UsernameDialog() {
           autoFocus
         />
         <Checkbox
-          label='Viewer mode'
+          label='Viewer mode (read-only access)'
           checked={isViewer}
           onChange={(e) => setIsViewer(e.currentTarget.checked)}
           mt='md'

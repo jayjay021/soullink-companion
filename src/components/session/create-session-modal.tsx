@@ -5,18 +5,19 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CreateSessionRequest } from '@/types/api';
 import { useUser } from '@/app/context/UserContext';
 
-interface AddSessionDialogProps {
+interface CreateSessionModalProps {
   opened: boolean;
   onClose: () => void;
 }
 
-export default function AddSessionDialog({
+export function CreateSessionModal({
   opened,
   onClose,
-}: AddSessionDialogProps) {
+}: CreateSessionModalProps) {
   const [sessionName, setSessionName] = useState('');
   const queryClient = useQueryClient();
   const { username, userId } = useUser();
+  
   const inputRef = useCallback(
     (node: HTMLInputElement | null) => {
       if (opened && node) {

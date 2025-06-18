@@ -1,22 +1,22 @@
 'use client';
 
-import React, { useEffect, useState, useRef } from 'react';
-import { useCombobox, Combobox, TextInput, Button, Group } from '@mantine/core';
+import React, { useEffect, useState } from 'react';
+import { useCombobox, Combobox, TextInput } from '@mantine/core';
 import { PokemonData } from '@/app/api/pokemon/route';
 import { useQuery } from '@tanstack/react-query';
 import { useDebouncedValue } from '@mantine/hooks';
 
-interface AsyncPokemonAutocompleteProps {
+interface PokemonAutocompleteProps {
   value: string;
   onChange: (pokemon: PokemonData | null) => void;
   onNameChange?: (name: string) => void;
 }
 
-const AsyncPokemonAutocomplete: React.FC<AsyncPokemonAutocompleteProps> = ({
+export function PokemonAutocomplete({
   value,
   onChange,
   onNameChange,
-}) => {
+}: PokemonAutocompleteProps) {
   const [search, setSearch] = useState(value);
   const combobox = useCombobox({
     onDropdownClose: () => combobox.resetSelectedOption(),
@@ -28,7 +28,7 @@ const AsyncPokemonAutocomplete: React.FC<AsyncPokemonAutocompleteProps> = ({
     if (value !== search) {
       setSearch(value);
     }
-  }, [value]);
+  }, [value, search]);
 
   const { data: options = [], isFetching: loading } = useQuery<PokemonData[]>({
     queryKey: ['pokemonAutocomplete', debounced],
@@ -85,6 +85,4 @@ const AsyncPokemonAutocomplete: React.FC<AsyncPokemonAutocompleteProps> = ({
       </Combobox.Dropdown>
     </Combobox>
   );
-};
-
-export default AsyncPokemonAutocomplete;
+}

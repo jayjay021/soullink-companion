@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Tooltip, Image } from '@mantine/core';
-import styles from './PlayerTeam.module.css';
+import styles from './pokemon-grid.module.css';
 
-interface Pokemon {
+export interface Pokemon {
   id: string;
   name: string;
   image: string;
@@ -12,7 +12,7 @@ interface Pokemon {
   position: number;
 }
 
-interface PlayerTeamProps {
+interface PokemonGridProps {
   pokemons: Pokemon[];
   isTeam?: boolean;
   onPokemonMove?: (
@@ -43,12 +43,12 @@ const getBoxClass = (
   return classes;
 };
 
-const PlayerTeam: React.FC<PlayerTeamProps> = ({
+export function PokemonGrid({
   pokemons,
   isTeam = false,
   onPokemonMove,
   onEmptySlotClick,
-}) => {
+}: PokemonGridProps) {
   const [draggedPokemon, setDraggedPokemon] = useState<string | null>(null);
   const [dragOverSlot, setDragOverSlot] = useState<number | null>(null);
 
@@ -231,6 +231,4 @@ const PlayerTeam: React.FC<PlayerTeamProps> = ({
       ))}
     </div>
   );
-};
-
-export default PlayerTeam;
+}
