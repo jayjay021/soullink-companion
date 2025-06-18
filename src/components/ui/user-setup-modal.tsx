@@ -14,7 +14,6 @@ import { useUser } from '@/app/context/UserContext';
 export function UserSetupModal() {
   const { username: contextUser, reloadUser, loading } = useUser();
   const [opened, setOpened] = useState(false);
-
   const [isViewer, setIsViewer] = useState<boolean>(false);
   const [username, setUsername] = useState<string>('');
 
@@ -27,12 +26,19 @@ export function UserSetupModal() {
 
   const handleSubmit = () => {
     if (username.trim()) {
+      // Save to localStorage
       localStorage.setItem('username', username);
       localStorage.setItem('isViewer', String(isViewer));
-      if (!localStorage.getItem('playerUuid')) {
-        localStorage.setItem('playerUuid', uuidv4());
+
+      let playerUuid = localStorage.getItem('playerUuid');
+      if (!playerUuid) {
+        playerUuid = uuidv4();
+        localStorage.setItem('playerUuid', playerUuid);
       }
+
+      // Only use reloadUser() to ensure consistency - don't mix manual state updates with reloadUser
       reloadUser();
+
       setOpened(false);
     }
   };

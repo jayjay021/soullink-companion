@@ -1,6 +1,7 @@
 import { Card, Group, Title, Button } from '@mantine/core';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
+import { v4 as uuidv4 } from 'uuid';
 import { JoinSessionRequest } from '@/types/api';
 import { useUser } from '@/app/context/UserContext';
 
@@ -14,7 +15,8 @@ interface SessionCardProps {
 
 export function SessionCard({ session }: SessionCardProps) {
   const router = useRouter();
-  const { username, userId, isViewer } = useUser();
+  const queryClient = useQueryClient();
+  const { username, userId, isViewer, setUserId, reloadUser } = useUser();
 
   const joinSessionMutation = useMutation({
     mutationFn: async (id: string) => {
@@ -22,11 +24,23 @@ export function SessionCard({ session }: SessionCardProps) {
         router.push(`/session/${id}`);
         return;
       }
-      if (!username || !userId) throw new Error('Missing username or userId');
+
+      // Ensure we have a userId - create one if needed
+      let actualUserId = userId;
+      if (!actualUserId) {
+        actualUserId = uuidv4();
+        localStorage.setItem('playerUuid', actualUserId);
+        setUserId(actualUserId);
+      }
+
+      if (!username) {
+        throw new Error('Missing username');
+      }
+
       const body: JoinSessionRequest = {
         sessionId: id,
         username,
-        playerUuid: userId,
+        playerUuid: actualUserId,
       };
       const res = await fetch('/api/session/join', {
         method: 'POST',
@@ -34,6 +48,13 @@ export function SessionCard({ session }: SessionCardProps) {
         body: JSON.stringify(body),
       });
       if (!res.ok) throw new Error('Failed to join session');
+
+      // Invalidate session queries to ensure fresh data
+      await queryClient.invalidateQueries({ queryKey: ['session', id] });
+
+      // Reload user context to ensure it's in sync
+      reloadUser();
+
       router.push(`/session/${id}`);
     },
   });

@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { PlayerSessionView } from './PlayerSessionView';
 import { ViewerSessionView } from './ViewerSessionView';
 import { useUserRoleInSession } from '@/components';
+import { useUser } from '@/app/context/UserContext';
 import type { SessionData } from '@/types';
 
 interface SessionViewProps {
@@ -10,6 +11,8 @@ interface SessionViewProps {
 }
 
 export const SessionView: React.FC<SessionViewProps> = ({ sessionId }) => {
+  const { userId, isViewer } = useUser();
+
   // First fetch session data to determine user role
   const {
     data: session,
@@ -28,13 +31,26 @@ export const SessionView: React.FC<SessionViewProps> = ({ sessionId }) => {
     sessionPlayers: session?.players,
   });
 
+  // Show loading while either session or user role is loading
   if (loadingSession || loadingUserRole) return <div>Loading...</div>;
   if (errorSession || !session) return <div>Session not found.</div>;
 
-  // Render appropriate view based on user role
-  if (isPlayer) {
-    return <PlayerSessionView sessionId={sessionId} />;
-  } else {
+  // If user is marked as viewer, always show viewer view
+  if (isViewer) {
     return <ViewerSessionView sessionId={sessionId} />;
   }
+
+  // If user has a userId but is not a player in this session, show viewer view
+  // This handles the case where user has a playerUuid from another session
+  if (userId && !isPlayer) {
+    return <ViewerSessionView sessionId={sessionId} />;
+  }
+
+  // If user is a player in this session, show player view
+  if (isPlayer) {
+    return <PlayerSessionView sessionId={sessionId} />;
+  }
+
+  // Default fallback - show viewer view
+  return <ViewerSessionView sessionId={sessionId} />;
 };

@@ -21,24 +21,57 @@ interface UserContextType {
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export function UserProvider({ children }: { children: ReactNode }) {
-  const [username, setUsername] = useState('');
-  const [userId, setUserId] = useState('');
-  const [isViewer, setIsViewer] = useState(false);
+  const [username, setUsernameState] = useState('');
+  const [userId, setUserIdState] = useState('');
+  const [isViewer, setIsViewerState] = useState(false);
   const [loading, setLoading] = useState(true);
+
+  // Wrapper functions that sync with localStorage
+  const setUsername = (name: string) => {
+    setUsernameState(name);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('username', name);
+    }
+  };
+
+  const setUserId = (id: string) => {
+    setUserIdState(id);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('playerUuid', id);
+    }
+  };
+
+  const setIsViewer = (viewer: boolean) => {
+    setIsViewerState(viewer);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('isViewer', String(viewer));
+    }
+  };
 
   const reloadUser = () => {
     setLoading(true);
+
+    // Ensure we're on the client side
+    if (typeof window === 'undefined') {
+      setLoading(false);
+      return;
+    }
+
     const storedUsername = localStorage.getItem('username') || '';
     const storedUserId = localStorage.getItem('playerUuid') || '';
     const storedViewer = localStorage.getItem('isViewer') === 'true';
-    setUsername(storedUsername);
-    setUserId(storedUserId);
-    setIsViewer(storedViewer);
+
+    setUsernameState(storedUsername);
+    setUserIdState(storedUserId);
+    setIsViewerState(storedViewer);
     setLoading(false);
   };
 
   useEffect(() => {
-    reloadUser();
+    // Ensure we're on the client side before accessing localStorage
+    if (typeof window !== 'undefined') {
+      reloadUser();
+    }
   }, []);
 
   return (
