@@ -24,7 +24,8 @@ export function UserSetupModal() {
     }
   }, [loading, contextUser]);
 
-  const handleSubmit = () => {
+  const handleSubmit = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
     if (username.trim()) {
       // Save to localStorage
       localStorage.setItem('username', username);
@@ -59,23 +60,25 @@ export function UserSetupModal() {
         closeButtonProps={{ style: { display: 'none' } }} // Hide close button
         centered
       >
-        <TextInput
-          label="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          autoFocus
-        />
-        <Checkbox
-          label="Viewer mode (read-only access)"
-          checked={isViewer}
-          onChange={(e) => setIsViewer(e.currentTarget.checked)}
-          mt="md"
-        />
-        <Group mt="md" justify="flex-end">
-          <Button onClick={handleSubmit} disabled={!username.trim()}>
-            Continue
-          </Button>
-        </Group>
+        <form onSubmit={handleSubmit}>
+          <TextInput
+            label="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            autoFocus
+          />
+          <Checkbox
+            label="Viewer mode (read-only access)"
+            checked={isViewer}
+            onChange={(e) => setIsViewer(e.currentTarget.checked)}
+            mt="md"
+          />
+          <Group mt="md" justify="flex-end">
+            <Button type="submit" disabled={!username.trim()}>
+              Continue
+            </Button>
+          </Group>
+        </form>
       </Modal>
     </>
   );

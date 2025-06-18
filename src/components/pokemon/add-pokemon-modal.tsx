@@ -97,7 +97,8 @@ export function AddPokemonModal({
     setRoute(value);
   };
 
-  const handleAdd = () => {
+  const handleAdd = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
     if (name && route && selectedPokemon && playerId) {
       mutation.mutate({
         name,
@@ -119,28 +120,30 @@ export function AddPokemonModal({
 
   return (
     <Modal opened={opened} onClose={handleClose} title="Add Pokémon">
-      <Stack>
-        <PokemonAutocomplete
-          value={name}
-          onChange={setSelectedPokemon}
-          onNameChange={setName}
-        />
-        <Autocomplete
-          label="Route"
-          value={route}
-          onChange={handleRouteChange}
-          data={usedRoutes}
-          placeholder="Enter or select a route"
-          disabled={routesLoading}
-        />
-        <Button
-          onClick={handleAdd}
-          disabled={!name || !route || !selectedPokemon || mutation.isPending}
-          loading={mutation.isPending}
-        >
-          Add
-        </Button>
-      </Stack>
+      <form onSubmit={handleAdd}>
+        <Stack>
+          <PokemonAutocomplete
+            value={name}
+            onChange={setSelectedPokemon}
+            onNameChange={setName}
+          />
+          <Autocomplete
+            label="Route"
+            value={route}
+            onChange={handleRouteChange}
+            data={usedRoutes}
+            placeholder="Enter or select a route"
+            disabled={routesLoading}
+          />
+          <Button
+            type="submit"
+            disabled={!name || !route || !selectedPokemon || mutation.isPending}
+            loading={mutation.isPending}
+          >
+            Add
+          </Button>
+        </Stack>
+      </form>
     </Modal>
   );
 }

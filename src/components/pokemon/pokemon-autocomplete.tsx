@@ -72,9 +72,10 @@ export function PokemonAutocomplete({
               value={`${option.names.de} (${option.names.en})`}
               key={option.id}
               onClick={() => {
-                setSearch(option.names.en);
+                const formattedName = `${option.names.de} (${option.names.en})`;
+                setSearch(formattedName);
                 onChange(option); // Pass the full pokemon data
-                onNameChange?.(option.names.en);
+                onNameChange?.(formattedName);
                 combobox.closeDropdown();
               }}
             >
