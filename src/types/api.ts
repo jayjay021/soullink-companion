@@ -46,3 +46,14 @@ export interface Session {
   players: { id: string; username: string }[];
 }
 export type SessionResponse = Session;
+
+// Error response types
+export interface ApiError {
+  error: string;
+  details?: unknown;
+}
+
+export interface ValidationError extends ApiError {
+  error: string;
+  field?: string;
+}

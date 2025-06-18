@@ -54,6 +54,44 @@ export async function POST(
   }
   const { name, route, playerId, image, inBox, position } = parseResult.data;
 
+  // Validate uniqueness constraints per session per player
+  const existingPokemonByName = await prisma.pokemon.findFirst({
+    where: {
+      sessionId,
+      playerId,
+      name,
+    },
+  });
+
+  if (existingPokemonByName) {
+    return NextResponse.json(
+      {
+        error: `You have already caught a ${name} in this session. Each player can only catch one of each Pokemon species per session.`,
+      },
+      { status: 400 }
+    );
+  }
+
+  const existingPokemonByRoute = await prisma.pokemon.findFirst({
+    where: {
+      sessionId,
+      playerId,
+      route,
+    },
+    select: {
+      name: true,
+    },
+  });
+
+  if (existingPokemonByRoute) {
+    return NextResponse.json(
+      {
+        error: `You have already caught ${existingPokemonByRoute.name} on ${route}. Each player can only catch one Pokemon per route per session.`,
+      },
+      { status: 400 }
+    );
+  }
+
   // Validate team position constraints
   if (!inBox && position !== undefined && position > 5) {
     return NextResponse.json(

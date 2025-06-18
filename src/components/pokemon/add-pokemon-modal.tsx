@@ -2,9 +2,10 @@
 
 import React, { useState, useEffect } from 'react';
 import { Modal, Button, Autocomplete, Stack } from '@mantine/core';
+import { notifications } from '@mantine/notifications';
 import { PokemonAutocomplete } from './pokemon-autocomplete';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import type { CreatePokemonRequest } from '@/types/api';
+import type { CreatePokemonRequest, ApiError } from '@/types/api';
 import type { PokemonData } from '@/app/api/pokemon/route';
 
 interface AddPokemonModalProps {
@@ -62,7 +63,12 @@ export function AddPokemonModal({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...data, playerId }),
       });
-      if (!res.ok) throw new Error('Failed to add Pokémon');
+
+      if (!res.ok) {
+        const errorData: ApiError = await res.json();
+        throw new Error(errorData.error || 'Failed to add Pokémon');
+      }
+
       return res.json();
     },
     onSuccess: () => {
@@ -71,6 +77,19 @@ export function AddPokemonModal({
       setRoute('');
       setSelectedPokemon(null);
       onClose();
+
+      notifications.show({
+        title: 'Success',
+        message: `${name} has been added to your collection!`,
+        color: 'green',
+      });
+    },
+    onError: (error: Error) => {
+      notifications.show({
+        title: 'Error',
+        message: error.message,
+        color: 'red',
+      });
     },
   });
 
