@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
-import type { SessionResponse, JoinSessionRequest } from '@/types/api';
+import type { SessionResponse } from '@/types/api';
 import { JoinSessionRequestSchema } from '@/types/api';
 
 const prisma = new PrismaClient();
@@ -8,7 +8,9 @@ const prisma = new PrismaClient();
 // POST /api/session/join
 export async function POST(
   req: NextRequest
-): Promise<NextResponse<SessionResponse | { error: string; details?: any }>> {
+): Promise<
+  NextResponse<SessionResponse | { error: string; details?: unknown }>
+> {
   const body = await req.json();
   const parseResult = JoinSessionRequestSchema.safeParse(body);
   if (!parseResult.success) {

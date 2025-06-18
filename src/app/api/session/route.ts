@@ -1,14 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
-import type { SessionResponse, CreateSessionRequest } from '@/types/api';
+import type { SessionResponse } from '@/types/api';
 import { CreateSessionRequestSchema } from '@/types/api';
 
 const prisma = new PrismaClient();
 
 // GET /api/session
-export async function GET(
-  req: NextRequest
-): Promise<NextResponse<SessionResponse[]>> {
+export async function GET(): Promise<NextResponse<SessionResponse[]>> {
   const sessions = await prisma.session.findMany({
     include: { players: true },
     orderBy: { createdAt: 'desc' },
@@ -19,7 +17,9 @@ export async function GET(
 // POST /api/session
 export async function POST(
   req: NextRequest
-): Promise<NextResponse<SessionResponse | { error: string; details?: any }>> {
+): Promise<
+  NextResponse<SessionResponse | { error: string; details?: unknown }>
+> {
   const body = await req.json();
   const parseResult = CreateSessionRequestSchema.safeParse(body);
   if (!parseResult.success) {
