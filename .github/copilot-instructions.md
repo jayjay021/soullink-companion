@@ -350,8 +350,7 @@ const form = useForm({
 │   ├── route.ts              # GET /api/pokemon
 │   ├── [sessionId]/
 │   │   ├── route.ts          # GET /api/pokemon/[sessionId]
-│   │   ├── position/route.ts # PUT /api/pokemon/[sessionId]/position
-│   │   └── compact/route.ts  # GET /api/pokemon/[sessionId]/compact
+│   │   └── position/route.ts # PUT /api/pokemon/[sessionId]/position
 └── session/
     ├── route.ts              # GET/POST /api/session
     └── [sessionId]/route.ts  # GET/PUT/DELETE /api/session/[sessionId]
