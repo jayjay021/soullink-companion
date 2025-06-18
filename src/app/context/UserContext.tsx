@@ -39,7 +39,6 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     reloadUser();
-    // eslint-disable-next-line
   }, []);
 
   return (
