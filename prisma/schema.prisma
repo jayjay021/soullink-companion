@@ -1,0 +1,41 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Session {
+  id        String   @id @default(uuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  players   Player[]
+  pokemons  Pokemon[]
+}
+
+model Player {
+  id        String   @id @default(uuid())
+  username  String
+  sessionId String   @map("session_id")
+  session   Session  @relation(fields: [sessionId], references: [id])
+  isViewer  Boolean  @default(false)
+  pokemons  Pokemon[]
+}
+
+model Pokemon {
+  id        String   @id @default(uuid())
+  name      String
+  image     String
+  route     String
+  isDead    Boolean  @default(false)
+  isLinked  Boolean  @default(true)
+  inBox     Boolean  @default(false)
+  position  Int      @default(0)
+  player    Player   @relation(fields: [playerId], references: [id])
+  playerId  String
+  session   Session  @relation(fields: [sessionId], references: [id])
+  sessionId String
+}

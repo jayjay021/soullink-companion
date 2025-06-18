@@ -1,0 +1,129 @@
+'use client';
+
+import React, { useState, useEffect } from 'react';
+import { Modal, Button, Autocomplete, Stack } from '@mantine/core';
+import AsyncPokemonAutocomplete from './AsyncPokemonAutocomplete';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import type { CreatePokemonRequest } from '@/types/api';
+import type { PokemonData } from '@/app/api/pokemon/route';
+
+interface AddPokemonDialogProps {
+  sessionId: string;
+  playerId: string;
+  opened: boolean;
+  onClose: () => void;
+  defaultInBox?: boolean; // Whether the Pokemon should be added to box or team by default
+  position?: number; // Specific position to add the Pokemon to
+}
+
+const AddPokemonDialog: React.FC<AddPokemonDialogProps> = ({
+  sessionId,
+  playerId,
+  opened,
+  onClose,
+  defaultInBox = true,
+  position = 0,
+}) => {
+  const [name, setName] = useState('');
+  const [route, setRoute] = useState('');
+  const [selectedPokemon, setSelectedPokemon] = useState<PokemonData | null>(
+    null
+  );
+  const queryClient = useQueryClient();
+
+  // Fetch used routes for this session
+  const {
+    data: usedRoutes = [],
+    isLoading: routesLoading,
+    refetch: refetchRoutes,
+  } = useQuery({
+    queryKey: ['usedRoutes', sessionId],
+    queryFn: async () => {
+      const res = await fetch(`/api/session/${sessionId}/route`);
+      if (!res.ok) throw new Error('Failed to fetch routes');
+      return res.json();
+    },
+    enabled: opened,
+  });
+
+  // Refetch usedRoutes every time the modal is opened
+  useEffect(() => {
+    if (opened) {
+      refetchRoutes();
+    }
+  }, [opened, refetchRoutes]);
+
+  const mutation = useMutation({
+    mutationFn: async (
+      data: CreatePokemonRequest & { image: string; inBox: boolean }
+    ) => {
+      const res = await fetch(`/api/pokemon/${sessionId}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...data, playerId }),
+      });
+      if (!res.ok) throw new Error('Failed to add Pokémon');
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['pokemons', sessionId] });
+      setName('');
+      setRoute('');
+      setSelectedPokemon(null);
+      onClose();
+    },
+  });
+
+  const handleRouteChange = (value: string) => {
+    setRoute(value);
+  };
+
+  const handleAdd = () => {
+    if (name && route && selectedPokemon && playerId) {
+      mutation.mutate({
+        name,
+        route,
+        image: selectedPokemon.image,
+        playerId,
+        inBox: defaultInBox,
+        position: position,
+      });
+    }
+  };
+
+  const handleClose = () => {
+    setName('');
+    setRoute('');
+    setSelectedPokemon(null);
+    onClose();
+  };
+
+  return (
+    <Modal opened={opened} onClose={handleClose} title='Add Pokémon'>
+      <Stack>
+        <AsyncPokemonAutocomplete
+          value={name}
+          onChange={setSelectedPokemon}
+          onNameChange={setName}
+        />
+        <Autocomplete
+          label='Route'
+          value={route}
+          onChange={handleRouteChange}
+          data={usedRoutes}
+          placeholder='Enter or select a route'
+          disabled={routesLoading}
+        />
+        <Button
+          onClick={handleAdd}
+          disabled={!name || !route || !selectedPokemon || mutation.isPending}
+          loading={mutation.isPending}
+        >
+          Add
+        </Button>
+      </Stack>
+    </Modal>
+  );
+};
+
+export default AddPokemonDialog;
