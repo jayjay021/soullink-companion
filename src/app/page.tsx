@@ -26,15 +26,21 @@ function PageContent() {
     <main>
       <HydrationBoundary state={dehydrate(queryClient)}>
         <Center>
-          <Stack w={500} p='xl'>
-            <Group justify='space-between'>
+          <Stack w={500} p="xl">
+            <Group justify="space-between">
               <Title order={1}>Sessions</Title>
               <Button onClick={() => setAddDialogOpen(true)}>Add</Button>
             </Group>
             <Stack>
-              {sessions.map((session: { id: string; name: string; players: { username: string }[] }) => (
-                <SessionCard key={session.id} session={session} />
-              ))}
+              {sessions.map(
+                (session: {
+                  id: string;
+                  name: string;
+                  players: { username: string }[];
+                }) => (
+                  <SessionCard key={session.id} session={session} />
+                )
+              )}
             </Stack>
           </Stack>
           <CreateSessionModal

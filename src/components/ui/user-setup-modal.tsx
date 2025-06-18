@@ -49,23 +49,23 @@ export function UserSetupModal() {
         closeOnEscape={false}
         opened={opened && !loading}
         onClose={() => setOpened(false)}
-        title='Welcome! Please set up your profile'
+        title="Welcome! Please set up your profile"
         closeButtonProps={{ style: { display: 'none' } }} // Hide close button
         centered
       >
         <TextInput
-          label='Username'
+          label="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           autoFocus
         />
         <Checkbox
-          label='Viewer mode (read-only access)'
+          label="Viewer mode (read-only access)"
           checked={isViewer}
           onChange={(e) => setIsViewer(e.currentTarget.checked)}
-          mt='md'
+          mt="md"
         />
-        <Group mt='md' justify='flex-end'>
+        <Group mt="md" justify="flex-end">
           <Button onClick={handleSubmit} disabled={!username.trim()}>
             Continue
           </Button>

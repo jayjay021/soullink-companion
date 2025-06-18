@@ -17,7 +17,7 @@ export function CreateSessionModal({
   const [sessionName, setSessionName] = useState('');
   const queryClient = useQueryClient();
   const { username, userId } = useUser();
-  
+
   const inputRef = useCallback(
     (node: HTMLInputElement | null) => {
       if (opened && node) {
@@ -57,20 +57,20 @@ export function CreateSessionModal({
     <Modal
       opened={opened}
       onClose={onClose}
-      title='Create New Session'
+      title="Create New Session"
       centered
     >
       <form onSubmit={handleSubmit}>
         <TextInput
-          label='Session Name'
+          label="Session Name"
           value={sessionName}
           onChange={(e) => setSessionName(e.target.value)}
           ref={inputRef}
           data-autofocus
         />
-        <Group mt='md' justify='flex-end'>
+        <Group mt="md" justify="flex-end">
           <Button
-            type='submit'
+            type="submit"
             disabled={!sessionName.trim() || createSessionMutation.isPending}
           >
             {createSessionMutation.isPending ? 'Creating...' : 'Create'}

@@ -66,7 +66,7 @@ export function PlayerDashboard({
   return (
     <Stack>
       <Card>
-        <Title order={3} mb='md'>
+        <Title order={3} mb="md">
           Your Team
         </Title>
         <PokemonGrid
@@ -77,7 +77,7 @@ export function PlayerDashboard({
         />
       </Card>
       <Card>
-        <Title order={3} mb='md'>
+        <Title order={3} mb="md">
           Box
         </Title>
         <PokemonGrid

@@ -30,11 +30,13 @@ A fullstack web app built for playing local multiplayer **Pokémon Nuzlocke Soul
 ## 🧑‍💻 Player View (Control Panel)
 
 - ✅ **Add Encounter**
+
   - Pokémon name (autocomplete from PokéAPI)
   - Route name (autocomplete from others' entries)
   - Mark as `caught` or `not caught` (fail/death)
 
 - 🟰 **Team Management**
+
   - 6-slot party + Pokémon box
   - Drag-and-drop to organize active team
   - Red border: Dead
@@ -43,6 +45,7 @@ A fullstack web app built for playing local multiplayer **Pokémon Nuzlocke Soul
   - Click suggestion to auto-swap linked Pokémon
 
 - ❌ **Death Marking**
+
   - Players can manually mark Pokémon as dead
   - Dead Pokémon cannot be added to the party
 
@@ -98,6 +101,7 @@ pnpm dev
 ```
 
 ## Features
+
 - TypeScript support
 - ESLint for code linting
 - App Router for routing
@@ -129,7 +133,3 @@ pnpm build
 ## Deployment
 
 Follow Next.js deployment guidelines for hosting your application.
-
-
-
-

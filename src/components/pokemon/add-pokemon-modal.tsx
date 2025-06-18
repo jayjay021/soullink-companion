@@ -99,7 +99,7 @@ export function AddPokemonModal({
   };
 
   return (
-    <Modal opened={opened} onClose={handleClose} title='Add Pokémon'>
+    <Modal opened={opened} onClose={handleClose} title="Add Pokémon">
       <Stack>
         <PokemonAutocomplete
           value={name}
@@ -107,11 +107,11 @@ export function AddPokemonModal({
           onNameChange={setName}
         />
         <Autocomplete
-          label='Route'
+          label="Route"
           value={route}
           onChange={handleRouteChange}
           data={usedRoutes}
-          placeholder='Enter or select a route'
+          placeholder="Enter or select a route"
           disabled={routesLoading}
         />
         <Button

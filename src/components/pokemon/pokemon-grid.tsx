@@ -172,8 +172,8 @@ export function PokemonGrid({
                 pokemon.isDead
                   ? 'Dead'
                   : pokemon.isLinked
-                  ? 'Linked'
-                  : 'Link mismatch'
+                    ? 'Linked'
+                    : 'Link mismatch'
               }
               withArrow
             >
@@ -188,7 +188,7 @@ export function PokemonGrid({
                   alt={pokemon.name}
                   width={64}
                   height={64}
-                  fit='contain'
+                  fit="contain"
                 />
               </div>
             </Tooltip>
@@ -200,8 +200,8 @@ export function PokemonGrid({
                       index + 1
                     } - Drop here to add or swap Pokemon, or click to add new Pokemon`
                   : index >= pokemons.length
-                  ? 'Drop Pokemon here to add to box, or click to add new Pokemon'
-                  : `Box position ${index} - Drop here to swap Pokemon`
+                    ? 'Drop Pokemon here to add to box, or click to add new Pokemon'
+                    : `Box position ${index} - Drop here to swap Pokemon`
               }
               withArrow
               disabled={draggedPokemon === null && !onEmptySlotClick}

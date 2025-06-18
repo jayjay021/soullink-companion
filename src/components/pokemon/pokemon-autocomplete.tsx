@@ -56,11 +56,11 @@ export function PokemonAutocomplete({
     <Combobox store={combobox} withinPortal>
       <Combobox.Target>
         <TextInput
-          label='Pokémon Name'
+          label="Pokémon Name"
           value={search}
           onChange={handleInput}
           rightSection={loading ? <span>⏳</span> : null}
-          placeholder='Start typing...'
+          placeholder="Start typing..."
         />
       </Combobox.Target>
       <Combobox.Dropdown>

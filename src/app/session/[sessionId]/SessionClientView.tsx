@@ -108,7 +108,7 @@ const SessionClientView: React.FC<SessionClientViewProps> = ({ sessionId }) => {
 
   return (
     <Box m={50}>
-      <Stack gap='lg'>
+      <Stack gap="lg">
         <Card>
           <Title order={2}>{session.name}</Title>
           <Text>ID: {session.id}</Text>
@@ -116,8 +116,8 @@ const SessionClientView: React.FC<SessionClientViewProps> = ({ sessionId }) => {
             Players: {session.players.map((p) => p.username).join(', ')}
           </Text>
         </Card>
-        <Card variant='outline' p='md'>
-          <Group justify='space-between' align='center' mb='md'>
+        <Card variant="outline" p="md">
+          <Group justify="space-between" align="center" mb="md">
             <Title order={3}>Pokemon</Title>
           </Group>
           <Text>

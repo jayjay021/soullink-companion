@@ -15,7 +15,7 @@ interface SessionCardProps {
 export function SessionCard({ session }: SessionCardProps) {
   const router = useRouter();
   const { username, userId, isViewer } = useUser();
-  
+
   const joinSessionMutation = useMutation({
     mutationFn: async (id: string) => {
       if (isViewer) {
@@ -39,8 +39,8 @@ export function SessionCard({ session }: SessionCardProps) {
   });
 
   return (
-    <Card withBorder shadow='sm' p='md'>
-      <Group justify='space-between'>
+    <Card withBorder shadow="sm" p="md">
+      <Group justify="space-between">
         <div>
           <Title order={3}>{session.name}</Title>
           <div>
@@ -56,8 +56,8 @@ export function SessionCard({ session }: SessionCardProps) {
               ? 'Opening...'
               : 'Joining...'
             : isViewer
-            ? 'View'
-            : 'Join'}
+              ? 'View'
+              : 'Join'}
         </Button>
       </Group>
     </Card>
