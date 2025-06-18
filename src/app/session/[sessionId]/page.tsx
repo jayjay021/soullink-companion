@@ -1,4 +1,4 @@
-import SessionClientView from './SessionClientView';
+import { SessionView } from './SessionView';
 
 export default async function SessionPage({
   params,
@@ -6,5 +6,5 @@ export default async function SessionPage({
   params: { sessionId: string };
 }) {
   const { sessionId } = await params;
-  return <SessionClientView sessionId={sessionId} />;
+  return <SessionView sessionId={sessionId} />;
 }

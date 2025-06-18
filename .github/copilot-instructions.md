@@ -120,6 +120,128 @@ export interface ApiError {
 - Migrations are auto-generated
 - Use descriptive migration names
 
+## ⚠️ CRITICAL: Structure Validation & Enforcement
+
+### MANDATORY: Always Check Existing Structure First
+
+Before creating ANY new files, components, types, or hooks, you MUST:
+
+1. **🔍 Check existing folders**: Use `list_dir` or `file_search` to examine current structure
+2. **🧩 Check existing components**: Use `semantic_search` to find similar functionality
+3. **📝 Check existing types**: Look in `/src/types/` before defining new interfaces
+4. **🎣 Check existing contexts/hooks**: Look in `/src/app/context/` before creating state management
+5. **📁 Follow domain organization**: Never create new folders in `/src/app/` for reusable code
+
+### Structure-First Development Checklist
+
+When asked to create components, ALWAYS follow this order:
+
+- [ ] **FIRST**: Run `semantic_search` to find existing similar components
+- [ ] **SECOND**: Check folder structure with `list_dir`
+- [ ] **THIRD**: Use existing patterns, contexts, and utilities
+- [ ] **FOURTH**: Place files in correct locations following established patterns
+- [ ] **LAST**: Update appropriate `index.ts` files for exports
+
+### Existing Context Usage Rules
+
+#### UserContext - `/src/app/context/UserContext.tsx`
+
+- **Use `useUser()` hook** for all user state needs
+- **Contains**: `username`, `userId`, `isViewer`, `loading`, `setUsername`, `setUserId`, `setIsViewer`, `reloadUser`
+- **NEVER** create duplicate user state management hooks or contexts
+- **Check UserContext first** before creating any user-related functionality
+
+```typescript
+// ✅ CORRECT: Use existing UserContext
+import { useUser } from '@/app/context/UserContext';
+
+const MyComponent = () => {
+  const { userId, username, isViewer, loading } = useUser();
+  // ... use existing user state
+};
+
+// ❌ WRONG: Creating new user state management
+const [userId, setUserId] = useState('');
+const [username, setUsername] = useState('');
+```
+
+### File Location Rules - NO EXCEPTIONS
+
+#### ✅ CORRECT Locations:
+
+- **Reusable Components**: `/src/components/{domain}/component-name.tsx`
+- **Types**: `/src/types/domain-name.ts` (exported via `/src/types/index.ts`)
+- **Utilities/Hooks**: `/src/components/{domain}/use-hook-name.ts` (if domain-specific)
+- **Context**: `/src/app/context/` (only for app-wide state)
+
+#### ❌ NEVER Create:
+
+- `/src/app/*/components/` folders
+- `/src/app/*/types/` folders
+- `/src/app/*/hooks/` folders
+- `/src/app/*/utils/` folders
+- New context when UserContext already exists
+
+### Domain Organization
+
+Components must be organized by domain:
+
+```
+/src/components/
+├── pokemon/           # Pokemon-related components
+│   ├── pokemon-grid.tsx
+│   ├── pokemon-manager.tsx
+│   └── index.ts
+├── session/           # Session-related components
+│   ├── session-header.tsx
+│   ├── session-card.tsx
+│   └── index.ts
+├── player/            # Player-related components
+├── ui/                # Generic/shared UI components
+└── index.ts           # Re-exports all domains
+```
+
+### Import Validation
+
+✅ **CORRECT Imports**:
+
+```typescript
+// External libraries first
+import { Button } from '@mantine/core';
+import { useQuery } from '@tanstack/react-query';
+
+// Internal types
+import type { SessionData } from '@/types';
+
+// Internal components (via index exports)
+import { SessionHeader, PokemonManager } from '@/components';
+
+// Existing contexts
+import { useUser } from '@/app/context/UserContext';
+```
+
+❌ **WRONG Imports**:
+
+```typescript
+// Don't import from nested app folders
+import { SessionHeader } from '../components/SessionHeader';
+import { useUserRole } from './hooks/useUserRole';
+
+// Don't create relative imports to app folders
+import { MyComponent } from '../../app/session/components/MyComponent';
+```
+
+### Enforcement Actions
+
+If you catch yourself about to:
+
+- Create folders in `/src/app/*/` for reusable code → **STOP** and use `/src/components/`
+- Define new user state → **STOP** and check UserContext first
+- Create new types → **STOP** and check `/src/types/` first
+- Import from nested app paths → **STOP** and use proper index exports
+
+**Remember**: The goal is maintainable, reusable, and properly organized code that follows established patterns.
+
 ## Component Development Guidelines
 
 ### 1. Always Use Mantine Components

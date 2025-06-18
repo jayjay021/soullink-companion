@@ -8,7 +8,7 @@ export async function POST(
   { params }: { params: { sessionId: string } }
 ) {
   try {
-    const { sessionId } = params;
+    const { sessionId } = await params;
     const { pokemonId, playerId } = await request.json();
 
     // Validate required fields
