@@ -7,7 +7,7 @@ A fullstack web app built for playing local multiplayer **Pokémon Nuzlocke Soul
 ## ✨ Features
 
 - 🎮 Each player can manage their own team and encounter history
-- 🔄 Real-time syncing of game state via **Socket.IO**
+- 🔄 Real-time syncing of game state via **Server-Sent Events (SSE)**
 - 🎥 Screen sharing via **WebRTC** (each player can stream their emulator window)
 - 🖥️ Fullscreen **viewer dashboard** for TV display
 - 🔗 Built-in logic for **Soullink rules** and team validation
@@ -82,7 +82,7 @@ A fullstack web app built for playing local multiplayer **Pokémon Nuzlocke Soul
 - **Framework:** Next.js (App Router, Fullstack)
 - **Language:** TypeScript
 - **UI Library:** Mantine (with custom theme + dark mode)
-- **Realtime:** Socket.IO (via API Route)
+- **Realtime:** Server-Sent Events (SSE) for real-time updates
 - **Database:** SQLite (via Prisma ORM)
 - **Streaming:** WebRTC (peer-to-peer)
 - **Styling:** Prettier, ESLint, Commitlint, Husky

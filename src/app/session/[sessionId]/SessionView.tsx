@@ -1,9 +1,11 @@
 'use client';
 import { useQuery } from '@tanstack/react-query';
+import { useEffect } from 'react';
 import { PlayerSessionView } from './PlayerSessionView';
 import { ViewerSessionView } from './ViewerSessionView';
 import { useUserRoleInSession } from '@/components';
 import { useUser } from '@/app/context/UserContext';
+import { useRealtime } from '@/app/context/SocketContext';
 import type { SessionData } from '@/types';
 
 interface SessionViewProps {
@@ -12,6 +14,18 @@ interface SessionViewProps {
 
 export const SessionView: React.FC<SessionViewProps> = ({ sessionId }) => {
   const { userId, isViewer } = useUser();
+  const { joinSession, leaveSession } = useRealtime();
+
+  // Join the session for real-time updates
+  useEffect(() => {
+    if (sessionId) {
+      joinSession(sessionId);
+
+      return () => {
+        leaveSession(sessionId);
+      };
+    }
+  }, [sessionId, joinSession, leaveSession]);
 
   // First fetch session data to determine user role
   const {

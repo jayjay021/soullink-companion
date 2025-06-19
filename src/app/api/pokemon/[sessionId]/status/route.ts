@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 import { z } from 'zod';
+import { emitToSession } from '@/lib/realtime';
 
 const prisma = new PrismaClient();
 
@@ -64,21 +65,52 @@ export async function PUT(
         where: { linkGroup },
       });
 
+      // Emit real-time event for Pokemon death
+      if (isDead === true) {
+        try {
+          emitToSession(sessionId, {
+            type: 'pokemon-died',
+            data: {
+              pokemonId,
+              playerId: pokemon.playerId,
+              linkGroup: linkGroup,
+            },
+            timestamp: new Date().toISOString(),
+          });
+        } catch (error) {
+          console.error('Failed to emit real-time event:', error);
+          // Don't fail the main operation if event emission fails
+        }
+      }
+
       return NextResponse.json(updatedPokemons);
     }
 
     // Update the Pokemon with the changes
-    await prisma.pokemon.update({
+    const updatedPokemon = await prisma.pokemon.update({
       where: { id: pokemonId },
       data: updateData,
     });
 
+    // Emit real-time event for Pokemon death if applicable
+    if (isDead === true) {
+      try {
+        emitToSession(sessionId, {
+          type: 'pokemon-died',
+          data: {
+            pokemonId,
+            playerId: pokemon.playerId,
+          },
+          timestamp: new Date().toISOString(),
+        });
+      } catch (error) {
+        console.error('Failed to emit real-time event:', error);
+        // Don't fail the main operation if event emission fails
+      }
+    }
+
     // If no link group or team status change, just return the updated Pokemon
-    return NextResponse.json(
-      await prisma.pokemon.findUnique({
-        where: { id: pokemonId },
-      })
-    );
+    return NextResponse.json(updatedPokemon);
   } catch (error) {
     console.error('Error updating Pokemon status:', error);
 

@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This is a Next.js 15 TypeScript project using the App Router, Mantine UI components, Prisma ORM, TanStack Query, and Socket.IO for real-time features. The project follows modern React patterns and TypeScript best practices.
+This is a Next.js 15 TypeScript project using the App Router, Mantine UI components, Prisma ORM, TanStack Query, and Server-Sent Events (SSE) for real-time features. The project follows modern React patterns and TypeScript best practices.
 
 ## Technology Stack
 
@@ -11,7 +11,7 @@ This is a Next.js 15 TypeScript project using the App Router, Mantine UI compone
 - **UI Library**: Mantine v8.1.1 (Primary UI component library)
 - **Database**: Prisma ORM ^6.9.0 with SQLite
 - **State Management**: TanStack Query ^5.80.7 for server state
-- **Real-time**: Socket.IO ^4.8.1
+- **Real-time**: Server-Sent Events (SSE) for real-time updates
 - **Styling**: CSS Modules + Mantine styling system
 - **Package Manager**: pnpm
 - **Runtime**: React ^19.0.0 + React DOM ^19.0.0
@@ -31,7 +31,6 @@ This is a Next.js 15 TypeScript project using the App Router, Mantine UI compone
   "@tanstack/react-query": "^5.80.7",
   "@prisma/client": "^6.9.0",
   "prisma": "^6.9.0",
-  "socket.io": "^4.8.1",
   "zod": "^3.25.67",
   "typescript": "^5"
 }

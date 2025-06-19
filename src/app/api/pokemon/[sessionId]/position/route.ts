@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient, Prisma } from '@prisma/client';
+import { emitToSession } from '@/lib/realtime';
 
 const prisma = new PrismaClient();
 
@@ -165,6 +166,49 @@ export async function PUT(
     const updatedPokemon = await prisma.pokemon.findUnique({
       where: { id: result?.id || pokemonId },
     });
+
+    // Determine if this move should trigger a real-time event
+    let shouldEmitEvent = false;
+    let eventType = 'pokemon-moved';
+
+    if (targetPokemon && targetPokemon.id !== pokemonId) {
+      // This was a swap operation - emit event if one Pokemon moved between team/box
+      const movedBetweenContainers =
+        movingPokemon.inBox !== inBox ||
+        targetPokemon.inBox !== movingPokemon.inBox;
+
+      if (movedBetweenContainers) {
+        shouldEmitEvent = true;
+        eventType = 'pokemon-moved';
+      }
+    } else {
+      // This was a move operation - emit event if Pokemon moved between team/box
+      const movedBetweenContainers = movingPokemon.inBox !== inBox;
+
+      if (movedBetweenContainers) {
+        shouldEmitEvent = true;
+        eventType = 'pokemon-moved';
+      }
+    }
+
+    // Emit real-time event to notify other players if needed
+    if (shouldEmitEvent) {
+      try {
+        emitToSession(sessionId, {
+          type: eventType,
+          data: {
+            pokemonId,
+            playerId: movingPokemon.playerId,
+            fromContainer: movingPokemon.inBox ? 'box' : 'team',
+            toContainer: inBox ? 'box' : 'team',
+          },
+          timestamp: new Date().toISOString(),
+        });
+      } catch (error) {
+        console.error('Failed to emit real-time event:', error);
+        // Don't fail the main operation if event emission fails
+      }
+    }
 
     return NextResponse.json(updatedPokemon);
   } catch (error) {

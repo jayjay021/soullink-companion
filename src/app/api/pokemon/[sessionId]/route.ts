@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 import type { PokemonListResponse } from '@/types/api';
 import { CreatePokemonRequestSchema } from '@/types/api';
+import { emitToSession } from '@/lib/realtime';
 
 const prisma = new PrismaClient();
 
@@ -229,6 +230,23 @@ export async function POST(
   const updatedPokemon = await prisma.pokemon.findUnique({
     where: { id: pokemon.id },
   });
+
+  // Emit real-time event to notify other players
+  try {
+    emitToSession(sessionId, {
+      type: 'pokemon-added',
+      data: {
+        pokemonId: pokemon.id,
+        playerId,
+        name,
+        route,
+        container: inBox ? 'box' : 'team',
+      },
+      timestamp: new Date().toISOString(),
+    });
+  } catch {
+    // Don't fail the main operation if event emission fails
+  }
 
   return NextResponse.json(updatedPokemon!, { status: 201 });
 }
