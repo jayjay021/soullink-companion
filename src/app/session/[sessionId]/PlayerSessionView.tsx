@@ -50,6 +50,20 @@ export const PlayerSessionView: React.FC<PlayerSessionViewProps> = ({
     enabled: !!userId,
   });
 
+  // Fetch ALL pokemons for this session (for tooltip links)
+  const {
+    data: allSessionPokemon,
+    isLoading: loadingAllPokemon,
+    error: errorAllPokemon,
+  } = useQuery<PokemonData[]>({
+    queryKey: ['allPokemons', sessionId],
+    queryFn: async () => {
+      const res = await fetch(`/api/pokemon/${sessionId}`);
+      if (!res.ok) throw new Error('All Pokemon not found');
+      return res.json();
+    },
+  });
+
   // Fetch used routes for this session
   const {
     data: usedRoutes,
@@ -64,11 +78,13 @@ export const PlayerSessionView: React.FC<PlayerSessionViewProps> = ({
     },
   });
 
-  if (loadingSession || loadingPokemons || loadingRoutes)
+  if (loadingSession || loadingPokemons || loadingRoutes || loadingAllPokemon)
     return <div>Loading...</div>;
   if (errorSession || !session) return <div>Session not found.</div>;
   if (errorPokemons || !pokemons) return <div>Failed to load Pokémon.</div>;
   if (errorRoutes || !usedRoutes) return <div>Failed to load routes.</div>;
+  if (errorAllPokemon || !allSessionPokemon)
+    return <div>Failed to load session Pokemon.</div>;
 
   const team = pokemons.filter((p) => !p.inBox);
   const box = pokemons.filter((p) => p.inBox);
@@ -87,6 +103,8 @@ export const PlayerSessionView: React.FC<PlayerSessionViewProps> = ({
           sessionId={sessionId}
           playerId={userId}
           onPokemonUpdate={handlePokemonUpdate}
+          sessionPlayers={session.players}
+          allSessionPokemon={allSessionPokemon}
         />
       </Stack>
     </Box>

@@ -1,19 +1,12 @@
 import React, { useState } from 'react';
-import { Tooltip, Image } from '@mantine/core';
+import { HoverCard, Tooltip } from '@mantine/core';
 import styles from './pokemon-grid.module.css';
+import { PokemonTooltip, type Pokemon } from './pokemon-tooltip';
+import { PokemonWrapper } from './pokemon-wrapper';
 
-export interface Pokemon {
+interface SessionPlayer {
   id: string;
-  name: string;
-  image: string;
-  route: string;
-  isDead: boolean;
-  isLinked: boolean;
-  position: number;
-  linkGroup?: string | null;
-  inTeam: boolean;
-  inBox: boolean;
-  validTeamLink: boolean;
+  username: string;
 }
 
 interface PokemonGridProps {
@@ -25,7 +18,8 @@ interface PokemonGridProps {
     toTeam: boolean
   ) => void;
   onEmptySlotClick?: (isTeam: boolean, position?: number) => void;
-  onContextMenu?: (pokemon: Pokemon, e: React.MouseEvent) => void;
+  sessionPlayers?: SessionPlayer[];
+  allSessionPokemon?: Pokemon[];
 }
 
 const getBoxClass = (
@@ -65,7 +59,8 @@ export function PokemonGrid({
   isTeam = false,
   onPokemonMove,
   onEmptySlotClick,
-  onContextMenu,
+  sessionPlayers,
+  allSessionPokemon,
 }: PokemonGridProps) {
   const [draggedPokemon, setDraggedPokemon] = useState<string | null>(null);
   const [dragOverSlot, setDragOverSlot] = useState<number | null>(null);
@@ -194,60 +189,28 @@ export function PokemonGrid({
           onDrop={(e) => handleDrop(e, index)}
         >
           {pokemon ? (
-            <Tooltip
-              label={
-                <div style={{ maxWidth: '150px' }}>
-                  <strong>{pokemon.name}</strong>
-                  <div>Route: {pokemon.route}</div>
-                  {pokemon.isDead ? (
-                    <div style={{ color: 'var(--mantine-color-red-6)' }}>
-                      Dead
-                    </div>
-                  ) : pokemon.linkGroup ? (
-                    <>
-                      {pokemon.isLinked ? (
-                        <div style={{ color: 'var(--mantine-color-green-6)' }}>
-                          Linked with other players
-                        </div>
-                      ) : (
-                        <div style={{ color: 'var(--mantine-color-yellow-6)' }}>
-                          Waiting for other players to catch on this route
-                        </div>
-                      )}
-                      {pokemon.inTeam && !pokemon.validTeamLink && (
-                        <div style={{ color: 'var(--mantine-color-orange-6)' }}>
-                          Missing team link - other players must add linked
-                          Pokemon to team
-                        </div>
-                      )}
-                    </>
-                  ) : (
-                    <div>No link information</div>
-                  )}
-                </div>
-              }
+            <HoverCard
               withArrow
+              position="top"
+              shadow="md"
               openDelay={500}
-              multiline
+              closeDelay={200}
             >
-              <div
-                draggable
-                onDragStart={(e) => handleDragStart(e, pokemon)}
-                onDragEnd={handleDragEnd}
-                onContextMenu={(e) =>
-                  onContextMenu && onContextMenu(pokemon, e)
-                }
-                style={{ cursor: 'grab' }}
-              >
-                <Image
-                  src={pokemon.image}
-                  alt={pokemon.name}
-                  width={64}
-                  height={64}
-                  fit="contain"
+              <HoverCard.Target>
+                <PokemonWrapper
+                  pokemon={pokemon}
+                  onDragStart={handleDragStart}
+                  onDragEnd={handleDragEnd}
                 />
-              </div>
-            </Tooltip>
+              </HoverCard.Target>
+              <HoverCard.Dropdown>
+                <PokemonTooltip
+                  pokemon={pokemon}
+                  sessionPlayers={sessionPlayers || []}
+                  allSessionPokemon={allSessionPokemon || []}
+                />
+              </HoverCard.Dropdown>
+            </HoverCard>
           ) : (
             <Tooltip
               label={

@@ -8,10 +8,23 @@ const prisma = new PrismaClient();
 // GET /api/session
 export async function GET(): Promise<NextResponse<SessionResponse[]>> {
   const sessions = await prisma.session.findMany({
-    include: { players: true },
+    include: {
+      playerSessions: {
+        include: {
+          player: true,
+        },
+      },
+    },
     orderBy: { createdAt: 'desc' },
   });
-  return NextResponse.json(sessions);
+
+  // Transform the response to match the expected format
+  const transformedSessions = sessions.map((session) => ({
+    ...session,
+    players: session.playerSessions.map((ps) => ps.player),
+  }));
+
+  return NextResponse.json(transformedSessions as SessionResponse[]);
 }
 
 // POST /api/session
@@ -31,18 +44,46 @@ export async function POST(
   const { name, username, playerUuid } = parseResult.data;
 
   // Check if player already exists
-  const player = await prisma.player.findUnique({
+  let player = await prisma.player.findUnique({
     where: { id: playerUuid },
   });
+
+  // Create player if it doesn't exist
+  if (!player) {
+    player = await prisma.player.create({
+      data: {
+        id: playerUuid,
+        username,
+      },
+    });
+  }
 
   const session = await prisma.session.create({
     data: {
       name,
-      players: player
-        ? { connect: { id: playerUuid } }
-        : { create: { username, id: playerUuid } },
+      playerSessions: {
+        create: {
+          playerId: player.id,
+          isViewer: false,
+        },
+      },
     },
-    include: { players: true },
+    include: {
+      playerSessions: {
+        include: {
+          player: true,
+        },
+      },
+    },
   });
-  return NextResponse.json(session, { status: 201 });
+
+  // Transform the response to match the expected format
+  const transformedSession = {
+    ...session,
+    players: session.playerSessions.map((ps) => ps.player),
+  };
+
+  return NextResponse.json(transformedSession as SessionResponse, {
+    status: 201,
+  });
 }

@@ -7,15 +7,28 @@ const prisma = new PrismaClient();
 // GET /api/session/[sessionId]
 export async function GET(
   req: NextRequest,
-  { params }: { params: { sessionId: string } }
+  { params }: { params: Promise<{ sessionId: string }> }
 ): Promise<NextResponse<SessionResponse | { error: string }>> {
   const { sessionId } = await params;
   const session = await prisma.session.findUnique({
     where: { id: sessionId },
-    include: { players: true },
+    include: {
+      playerSessions: {
+        include: {
+          player: true,
+        },
+      },
+    },
   });
   if (!session) {
     return NextResponse.json({ error: 'Session not found' }, { status: 404 });
   }
-  return NextResponse.json(session);
+
+  // Transform the response to match the expected format
+  const transformedSession = {
+    ...session,
+    players: session.playerSessions.map((ps) => ps.player),
+  };
+
+  return NextResponse.json(transformedSession as SessionResponse);
 }

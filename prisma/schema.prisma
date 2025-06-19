@@ -8,21 +8,31 @@ datasource db {
 }
 
 model Session {
-  id        String   @id @default(uuid())
-  name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  players   Player[]
-  pokemons  Pokemon[]
+  id            String          @id @default(uuid())
+  name          String
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  playerSessions PlayerSession[]
+  pokemons      Pokemon[]
 }
 
 model Player {
-  id        String   @id
-  username  String
-  sessionId String   @map("session_id")
+  id             String          @id
+  username       String
+  playerSessions PlayerSession[]
+  pokemons       Pokemon[]
+}
+
+model PlayerSession {
+  id        String   @id @default(uuid())
+  playerId  String
+  sessionId String
+  player    Player   @relation(fields: [playerId], references: [id])
   session   Session  @relation(fields: [sessionId], references: [id])
   isViewer  Boolean  @default(false)
-  pokemons  Pokemon[]
+  joinedAt  DateTime @default(now())
+
+  @@unique([playerId, sessionId])
 }
 
 model Pokemon {
@@ -41,4 +51,6 @@ model Pokemon {
   linkGroup      String?  // Identifier for linked Pokémon (based on route)
   inTeam         Boolean  @default(false) // Whether the Pokémon is in the team
   validTeamLink  Boolean  @default(false) // Whether the Pokémon has valid team links
+
+  @@unique([playerId, sessionId, position]) // Ensure unique positions per player per session
 }

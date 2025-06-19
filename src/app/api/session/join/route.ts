@@ -20,20 +20,60 @@ export async function POST(
     );
   }
   const { sessionId, username, playerUuid } = parseResult.data;
-  let player = await prisma.player.findFirst({
-    where: { sessionId, id: playerUuid },
+
+  // Check if player already exists
+  let player = await prisma.player.findUnique({
+    where: { id: playerUuid },
   });
+
+  // Create player if it doesn't exist
   if (!player) {
     player = await prisma.player.create({
-      data: { id: playerUuid, sessionId, username },
+      data: { id: playerUuid, username },
     });
   }
+
+  // Check if player is already in the session
+  const existingPlayerSession = await prisma.playerSession.findUnique({
+    where: {
+      playerId_sessionId: {
+        playerId: playerUuid,
+        sessionId: sessionId,
+      },
+    },
+  });
+
+  // Create player-session relationship if it doesn't exist
+  if (!existingPlayerSession) {
+    await prisma.playerSession.create({
+      data: {
+        playerId: playerUuid,
+        sessionId: sessionId,
+        isViewer: false,
+      },
+    });
+  }
+
   const session = await prisma.session.findUnique({
     where: { id: sessionId },
-    include: { players: true },
+    include: {
+      playerSessions: {
+        include: {
+          player: true,
+        },
+      },
+    },
   });
+
   if (!session) {
     return NextResponse.json({ error: 'Session not found' }, { status: 404 });
   }
-  return NextResponse.json(session);
+
+  // Transform the response to match the expected format
+  const transformedSession = {
+    ...session,
+    players: session.playerSessions.map((ps) => ps.player),
+  };
+
+  return NextResponse.json(transformedSession as SessionResponse);
 }

@@ -16,4 +16,6 @@ export interface PokemonData {
   linkGroup?: string | null;
   inTeam: boolean;
   validTeamLink: boolean;
+  playerId: string;
+  sessionId: string;
 }

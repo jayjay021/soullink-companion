@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 // GET /api/session/[sessionId]/route
 export async function GET(
   req: NextRequest,
-  { params }: { params: { sessionId: string } }
+  { params }: { params: Promise<{ sessionId: string }> }
 ) {
   const { sessionId } = await params;
   if (!sessionId) {

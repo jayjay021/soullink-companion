@@ -8,7 +8,7 @@ const prisma = new PrismaClient();
 // GET /api/pokemon/[sessionId]
 export async function GET(
   req: NextRequest,
-  { params }: { params: { sessionId: string } }
+  { params }: { params: Promise<{ sessionId: string }> }
 ): Promise<NextResponse<PokemonListResponse>> {
   const { sessionId } = await params;
   const { searchParams } = new URL(req.url);
@@ -39,7 +39,7 @@ export async function GET(
 // POST /api/pokemon/[sessionId]
 export async function POST(
   req: NextRequest,
-  { params }: { params: { sessionId: string } }
+  { params }: { params: Promise<{ sessionId: string }> }
 ): Promise<
   NextResponse<PokemonListResponse[0] | { error: string; details?: unknown }>
 > {
@@ -153,9 +153,9 @@ export async function POST(
   }
 
   // Get all players in the session to check linking
-  const sessionPlayers = await prisma.player.findMany({
+  const sessionPlayers = await prisma.playerSession.findMany({
     where: { sessionId, isViewer: false },
-    select: { id: true },
+    select: { playerId: true },
   });
 
   // Create the Pokemon

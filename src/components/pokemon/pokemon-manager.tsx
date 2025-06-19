@@ -10,6 +10,8 @@ interface PokemonManagerProps {
   sessionId: string;
   playerId: string;
   onPokemonUpdate: () => void;
+  sessionPlayers?: { id: string; username: string }[];
+  allSessionPokemon?: PokemonData[];
 }
 
 export const PokemonManager: React.FC<PokemonManagerProps> = ({
@@ -18,6 +20,8 @@ export const PokemonManager: React.FC<PokemonManagerProps> = ({
   sessionId,
   playerId,
   onPokemonUpdate,
+  sessionPlayers,
+  allSessionPokemon,
 }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogInBox, setDialogInBox] = useState(true);
@@ -47,6 +51,8 @@ export const PokemonManager: React.FC<PokemonManagerProps> = ({
         sessionId={sessionId}
         onPokemonUpdate={onPokemonUpdate}
         onAddPokemon={handleAddPokemon}
+        sessionPlayers={sessionPlayers}
+        allSessionPokemon={allSessionPokemon}
       />
       <AddPokemonModal
         sessionId={sessionId}

@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 // GET /api/pokemon/[sessionId]/routes
 export async function GET(
   req: NextRequest,
-  { params }: { params: { sessionId: string } }
+  { params }: { params: Promise<{ sessionId: string }> }
 ): Promise<NextResponse<RouteListResponse>> {
   const { sessionId } = await params;
   const routes = await prisma.pokemon.findMany({

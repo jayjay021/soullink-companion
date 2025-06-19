@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 // PUT /api/pokemon/[sessionId]/status
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { sessionId: string } }
+  { params }: { params: Promise<{ sessionId: string }> }
 ): Promise<NextResponse> {
   const { sessionId } = await params;
 
