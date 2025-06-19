@@ -1,4 +1,5 @@
 import { Prisma } from '@prisma/client';
+import { createHelperLogger } from '@/lib/logger-helpers';
 import { logger } from '@/lib/logger';
 
 export interface PositionSwapContext {
@@ -40,7 +41,7 @@ export async function handlePokemonPositionSwap(
       movingPokemonId: context.movingPokemonId,
       targetPokemonId: context.targetPokemonId,
     }) ||
-    logger.child({
+    createHelperLogger({
       component: 'position-helpers',
       function: 'handlePokemonPositionSwap',
       movingPokemonId: context.movingPokemonId,
@@ -131,7 +132,7 @@ export async function handlePokemonPositionMove(
       function: 'handlePokemonPositionMove',
       pokemonId: context.pokemonId,
     }) ||
-    logger.child({
+    createHelperLogger({
       component: 'position-helpers',
       function: 'handlePokemonPositionMove',
       pokemonId: context.pokemonId,
@@ -218,7 +219,7 @@ async function compactBoxPositionsInTransaction(
     parentLogger?.child({
       function: 'compactBoxPositionsInTransaction',
     }) ||
-    logger.child({
+    createHelperLogger({
       component: 'position-helpers',
       function: 'compactBoxPositionsInTransaction',
     });
@@ -264,7 +265,7 @@ async function adjustBoxPositionsAfterMove(
     parentLogger?.child({
       function: 'adjustBoxPositionsAfterMove',
     }) ||
-    logger.child({
+    createHelperLogger({
       component: 'position-helpers',
       function: 'adjustBoxPositionsAfterMove',
     });

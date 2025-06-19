@@ -2,12 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 import type { PokemonListResponse, CreatePokemonRequest } from '@/types/api';
 import { CreatePokemonRequestSchema } from '@/types/api';
-import {
-  logger,
-  logApiRequest,
-  logApiError,
-  logDbOperation,
-} from '@/lib/logger';
+import { logApiRequest, logApiError, logDbOperation } from '@/lib/logger';
+import { createHelperLogger } from '@/lib/logger-helpers';
 import {
   validatePokemonConstraints,
   assignPokemonPosition,
@@ -40,7 +36,7 @@ export async function GET(
   const playerId = searchParams.get('player') || undefined;
   const name = searchParams.get('name') || undefined;
 
-  const apiLogger = logger.child({
+  const apiLogger = createHelperLogger({
     component: 'api',
     endpoint: `/api/pokemon/${sessionId}`,
     sessionId,

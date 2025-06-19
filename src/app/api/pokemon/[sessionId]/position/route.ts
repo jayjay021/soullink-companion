@@ -128,7 +128,8 @@ export async function PUT(
     // Use a transaction to handle the swap/move atomically
     const transactionStart = Date.now();
     const result = await prisma.$transaction(async (tx) => {
-      const txLogger = apiLogger.child({ transactionId: 'position-update' });
+      const txLogger =
+        apiLogger?.child?.({ transactionId: 'position-update' }) ?? apiLogger;
 
       if (isSwap) {
         // Handle swap operation

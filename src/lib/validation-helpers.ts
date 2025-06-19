@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
-import { logger, logDbOperation } from '@/lib/logger';
+import { logDbOperation } from '@/lib/logger';
+import { createHelperLogger } from '@/lib/logger-helpers';
 
 const prisma = new PrismaClient();
 
@@ -31,11 +32,11 @@ export interface PokemonValidationResult {
 export async function validatePokemonAccess(
   context: SessionValidationContext
 ): Promise<PokemonValidationResult> {
-  const helperLogger = logger.child({
-    component: 'validation-helpers',
-    function: 'validatePokemonAccess',
+  const helperLogger = createHelperLogger({
+    component: 'pokemon-helpers',
+    function: 'validatePokemonConstraints',
     sessionId: context.sessionId,
-    pokemonId: context.pokemonId,
+    playerId: context.playerId,
   });
 
   if (!context.pokemonId) {
@@ -180,7 +181,7 @@ export function validateTeamPosition(
 export async function getSessionPlayers(
   sessionId: string
 ): Promise<{ playerId: string }[]> {
-  const helperLogger = logger.child({
+  const helperLogger = createHelperLogger({
     component: 'validation-helpers',
     function: 'getSessionPlayers',
     sessionId,
@@ -234,7 +235,7 @@ export async function validateSessionAccess(
     playerSessions: { playerId: string }[];
   };
 }> {
-  const helperLogger = logger.child({
+  const helperLogger = createHelperLogger({
     component: 'validation-helpers',
     function: 'validateSessionAccess',
     sessionId,

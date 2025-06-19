@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
-import { logger, logApiRequest, logApiError } from '@/lib/logger';
+import { logApiRequest, logApiError } from '@/lib/logger';
+import { createHelperLogger } from '@/lib/logger-helpers';
 import { emitToSession } from '@/lib/realtime';
 
 export interface ApiError {
@@ -67,7 +68,7 @@ export function handleApiError(
   logApiError(context.method, context.endpoint, error, 500);
 
   // Create error logger
-  const errorLogger = logger.child({
+  const errorLogger = createHelperLogger({
     component: 'api',
     endpoint: context.endpoint,
     sessionId: context.sessionId,
@@ -94,7 +95,7 @@ export async function safeEmitRealtimeEvent(
   eventData: RealtimeEventData,
   context?: { pokemonId?: string; playerId?: string }
 ): Promise<void> {
-  const eventLogger = logger.child({
+  const eventLogger = createHelperLogger({
     component: 'realtime',
     sessionId,
     eventType: eventData.type,
@@ -151,8 +152,8 @@ export function createApiContext(
 export function logApiRequestStart(
   context: ApiRequestContext,
   requestData?: unknown
-): typeof logger {
-  const apiLogger = logger.child({
+): ReturnType<typeof createHelperLogger> {
+  const apiLogger = createHelperLogger({
     component: 'api',
     endpoint: context.endpoint,
     sessionId: context.sessionId,

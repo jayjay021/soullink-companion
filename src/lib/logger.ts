@@ -2,6 +2,7 @@ import pino from 'pino';
 
 // Create logger configuration based on environment
 const isDevelopment = process.env.NODE_ENV === 'development';
+const isTest = process.env.NODE_ENV === 'test';
 const isServer = typeof window === 'undefined';
 const usePrettyLogs = process.env.PRETTY_LOGS !== 'false'; // Default to true, set to 'false' to disable
 
@@ -17,35 +18,39 @@ const baseConfig: pino.LoggerOptions = {
 };
 
 // Server-side logger configuration
-const serverConfig: pino.LoggerOptions = {
-  ...baseConfig,
-  ...(isDevelopment && usePrettyLogs
-    ? {
-        transport: {
-          target: 'pino-pretty',
-          options: {
-            colorize: true,
-            translateTime: 'SYS:yyyy-mm-dd HH:MM:ss',
-            ignore: 'pid,hostname',
-            messageFormat:
-              '\x1b[36m[{level}]\x1b[0m \x1b[35m{component}\x1b[0m - {msg}',
-            customPrettifiers: {
-              level: (logLevel: string) => `${logLevel.toUpperCase()}`,
+const serverConfig: pino.LoggerOptions = isTest
+  ? {
+      level: 'silent', // Disable logs in test environment to avoid conflicts
+    }
+  : {
+      ...baseConfig,
+      ...(isDevelopment && usePrettyLogs
+        ? {
+            transport: {
+              target: 'pino-pretty',
+              options: {
+                colorize: true,
+                translateTime: 'SYS:yyyy-mm-dd HH:MM:ss',
+                ignore: 'pid,hostname',
+                messageFormat:
+                  '\x1b[36m[{level}]\x1b[0m \x1b[35m{component}\x1b[0m - {msg}',
+                customPrettifiers: {
+                  level: (logLevel: string) => `${logLevel.toUpperCase()}`,
+                },
+                levelFirst: true,
+              },
             },
-            levelFirst: true,
-          },
-        },
-      }
-    : isDevelopment && !usePrettyLogs
-      ? {
-          // Development with JSON logs (shows log levels clearly)
-          serializers: pino.stdSerializers,
-        }
-      : {
-          // Production configuration - structured JSON logs
-          serializers: pino.stdSerializers,
-        }),
-};
+          }
+        : isDevelopment && !usePrettyLogs
+          ? {
+              // Development with JSON logs (shows log levels clearly)
+              serializers: pino.stdSerializers,
+            }
+          : {
+              // Production configuration - structured JSON logs
+              serializers: pino.stdSerializers,
+            }),
+    };
 
 // Client-side logger configuration (browser)
 const clientConfig: pino.LoggerOptions = {

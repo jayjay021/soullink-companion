@@ -2,12 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 import type { SessionResponse } from '@/types/api';
 import { JoinSessionRequestSchema } from '@/types/api';
-import {
-  logger,
-  logApiRequest,
-  logApiError,
-  logDbOperation,
-} from '@/lib/logger';
+import { logApiRequest, logApiError, logDbOperation } from '@/lib/logger';
+import { createHelperLogger } from '@/lib/logger-helpers';
 
 const prisma = new PrismaClient();
 
@@ -18,7 +14,7 @@ export async function POST(
   NextResponse<SessionResponse | { error: string; details?: unknown }>
 > {
   const start = Date.now();
-  const apiLogger = logger.child({
+  const apiLogger = createHelperLogger({
     component: 'api',
     endpoint: '/api/session/join',
   });

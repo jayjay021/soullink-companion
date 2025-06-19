@@ -1,6 +1,7 @@
 import { NextRequest } from 'next/server';
 import { addConnection, removeConnection, emitToSession } from '@/lib/realtime';
-import { logger, logApiRequest, logApiError } from '@/lib/logger';
+import { logApiRequest, logApiError } from '@/lib/logger';
+import { createHelperLogger } from '@/lib/logger-helpers';
 
 // Type for our connection wrapper
 interface ConnectionWrapper {
@@ -14,7 +15,7 @@ export async function GET(
 ) {
   const start = Date.now();
   const { sessionId } = await params;
-  const apiLogger = logger.child({
+  const apiLogger = createHelperLogger({
     component: 'api',
     endpoint: `/api/session/${sessionId}/events`,
     sessionId,
@@ -147,7 +148,7 @@ export async function POST(
 ) {
   const start = Date.now();
   const sessionId = params.sessionId;
-  const apiLogger = logger.child({
+  const apiLogger = createHelperLogger({
     component: 'api',
     endpoint: `/api/session/${sessionId}/events`,
     sessionId,

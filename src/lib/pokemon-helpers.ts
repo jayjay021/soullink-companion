@@ -1,5 +1,6 @@
 import { PrismaClient, Prisma } from '@prisma/client';
-import { logger, logDbOperation } from '@/lib/logger';
+import { logDbOperation } from '@/lib/logger';
+import { createHelperLogger } from '@/lib/logger-helpers';
 
 const prisma = new PrismaClient();
 
@@ -30,7 +31,7 @@ export interface TeamLinkValidationContext {
 export async function validatePokemonConstraints(
   context: PokemonValidationContext
 ): Promise<{ isValid: boolean; error?: string }> {
-  const helperLogger = logger.child({
+  const helperLogger = createHelperLogger({
     component: 'pokemon-helpers',
     function: 'validatePokemonConstraints',
     sessionId: context.sessionId,
@@ -123,7 +124,7 @@ export async function assignPokemonPosition(
   inBox: boolean,
   requestedPosition?: number
 ): Promise<{ position: number; error?: string }> {
-  const helperLogger = logger.child({
+  const helperLogger = createHelperLogger({
     component: 'pokemon-helpers',
     function: 'assignPokemonPosition',
     sessionId,
@@ -261,7 +262,7 @@ export async function assignPokemonPosition(
 export async function processPokemonLinking(
   context: LinkingContext
 ): Promise<{ isLinked: boolean; linkGroupId: string }> {
-  const helperLogger = logger.child({
+  const helperLogger = createHelperLogger({
     component: 'pokemon-helpers',
     function: 'processPokemonLinking',
     sessionId: context.sessionId,
@@ -376,7 +377,7 @@ export async function updateTeamLinkValidity(
   context: TeamLinkValidationContext,
   tx?: Prisma.TransactionClient
 ): Promise<void> {
-  const helperLogger = logger.child({
+  const helperLogger = createHelperLogger({
     component: 'pokemon-helpers',
     function: 'updateTeamLinkValidity',
     sessionId: context.sessionId,
@@ -482,7 +483,7 @@ export async function processLinkedPokemonDeath(
 ): Promise<
   { id: string; name: string; playerId: string; sessionId: string }[]
 > {
-  const helperLogger = logger.child({
+  const helperLogger = createHelperLogger({
     component: 'pokemon-helpers',
     function: 'processLinkedPokemonDeath',
     sessionId,
@@ -539,7 +540,7 @@ export async function compactBoxPositions(
   playerId: string,
   tx?: Prisma.TransactionClient
 ): Promise<void> {
-  const helperLogger = logger.child({
+  const helperLogger = createHelperLogger({
     component: 'pokemon-helpers',
     function: 'compactBoxPositions',
     sessionId,

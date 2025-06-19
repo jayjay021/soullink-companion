@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { logger, logApiRequest, logApiError } from '@/lib/logger';
+import { logApiRequest, logApiError } from '@/lib/logger';
+import { createHelperLogger } from '@/lib/logger-helpers';
 import pokemonData from './pokemon.json';
 
 export type PokemonData = {
@@ -13,7 +14,7 @@ export type PokemonData = {
 
 export async function GET(req: NextRequest) {
   const start = Date.now();
-  const apiLogger = logger.child({
+  const apiLogger = createHelperLogger({
     component: 'api',
     endpoint: '/api/pokemon',
   });

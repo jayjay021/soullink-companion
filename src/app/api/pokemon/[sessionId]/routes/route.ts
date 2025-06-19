@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 import type { RouteListResponse } from '@/types/api';
-import { logger } from '@/lib/logger';
+import { createHelperLogger } from '@/lib/logger-helpers';
 
 const prisma = new PrismaClient();
 
@@ -11,7 +11,7 @@ export async function GET(
   { params }: { params: Promise<{ sessionId: string }> }
 ): Promise<NextResponse<RouteListResponse | { error: string }>> {
   const start = Date.now();
-  const apiLogger = logger.child({
+  const apiLogger = createHelperLogger({
     component: 'api',
     endpoint: '/api/pokemon/[sessionId]/routes',
   });
