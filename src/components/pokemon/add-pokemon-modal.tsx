@@ -40,7 +40,7 @@ export function AddPokemonModal({
   } = useQuery({
     queryKey: ['usedRoutes', sessionId],
     queryFn: async () => {
-      const res = await fetch(`/api/session/${sessionId}/route`);
+      const res = await fetch(`/api/pokemon/${sessionId}/routes`);
       if (!res.ok) throw new Error('Failed to fetch routes');
       return res.json();
     },

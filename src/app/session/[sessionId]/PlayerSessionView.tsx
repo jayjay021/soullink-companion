@@ -64,25 +64,10 @@ export const PlayerSessionView: React.FC<PlayerSessionViewProps> = ({
     },
   });
 
-  // Fetch used routes for this session
-  const {
-    data: usedRoutes,
-    isLoading: loadingRoutes,
-    error: errorRoutes,
-  } = useQuery<string[]>({
-    queryKey: ['routes', sessionId],
-    queryFn: async () => {
-      const res = await fetch(`/api/pokemon/${sessionId}/routes`);
-      if (!res.ok) throw new Error('Routes not found');
-      return res.json();
-    },
-  });
-
-  if (loadingSession || loadingPokemons || loadingRoutes || loadingAllPokemon)
+  if (loadingSession || loadingPokemons || loadingAllPokemon)
     return <div>Loading...</div>;
   if (errorSession || !session) return <div>Session not found.</div>;
   if (errorPokemons || !pokemons) return <div>Failed to load Pokémon.</div>;
-  if (errorRoutes || !usedRoutes) return <div>Failed to load routes.</div>;
   if (errorAllPokemon || !allSessionPokemon)
     return <div>Failed to load session Pokemon.</div>;
 
