@@ -52,5 +52,5 @@ model Pokemon {
   inTeam         Boolean  @default(false) // Whether the Pokémon is in the team
   validTeamLink  Boolean  @default(false) // Whether the Pokémon has valid team links
 
-  @@unique([playerId, sessionId, position]) // Ensure unique positions per player per session
+  @@unique([playerId, sessionId, position, inBox]) // Ensure unique positions per player per session and container (team/box)
 }

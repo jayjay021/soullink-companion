@@ -42,7 +42,28 @@ export async function PUT(
     const result = await prisma.$transaction(async (tx) => {
       // Handle swapping first if there's a target Pokemon
       if (targetPokemon && targetPokemon.id !== pokemonId) {
-        // This is a swap operation
+        // This is a swap operation - use a temporary position to avoid constraint conflicts
+        const tempPosition = -999; // Temporary position that won't conflict
+
+        // Step 1: Move target Pokemon to temporary position
+        await tx.pokemon.update({
+          where: { id: targetPokemon.id },
+          data: {
+            position: tempPosition,
+          },
+        });
+
+        // Step 2: Move the dragged Pokemon to the target position
+        await tx.pokemon.update({
+          where: { id: pokemonId },
+          data: {
+            position: newPosition,
+            inBox: inBox,
+            inTeam: !inBox, // Update team status
+          },
+        });
+
+        // Step 3: Move target Pokemon to the dragged Pokemon's original position
         await tx.pokemon.update({
           where: { id: targetPokemon.id },
           data: {
@@ -52,14 +73,13 @@ export async function PUT(
           },
         });
 
-        // Move the dragged Pokemon to the new position (simple swap)
-        const updatedPokemon = await tx.pokemon.update({
+        // Update team link validity for both Pokemon involved in the swap
+        await updateTeamLinkValidity(tx, movingPokemon);
+        await updateTeamLinkValidity(tx, targetPokemon);
+
+        // Return the moved Pokemon
+        const updatedPokemon = await tx.pokemon.findUnique({
           where: { id: pokemonId },
-          data: {
-            position: newPosition,
-            inBox: inBox,
-            inTeam: !inBox, // Update team status
-          },
         });
 
         return updatedPokemon;
@@ -143,7 +163,7 @@ export async function PUT(
 
     // Get fresh data with updated link status
     const updatedPokemon = await prisma.pokemon.findUnique({
-      where: { id: result.id },
+      where: { id: result?.id || pokemonId },
     });
 
     return NextResponse.json(updatedPokemon);

@@ -64,6 +64,9 @@ export function PokemonGrid({
 }: PokemonGridProps) {
   const [draggedPokemon, setDraggedPokemon] = useState<string | null>(null);
   const [dragOverSlot, setDragOverSlot] = useState<number | null>(null);
+  const [justFinishedDragging, setJustFinishedDragging] = useState<
+    string | null
+  >(null);
 
   // Create slots array for team (always 6 slots) or box (dynamic)
   const createSlots = () => {
@@ -170,8 +173,18 @@ export function PokemonGrid({
   };
 
   const handleDragEnd = () => {
+    const draggedId = draggedPokemon;
     setDraggedPokemon(null);
     setDragOverSlot(null);
+
+    // Temporarily disable hover card for the just-dragged Pokemon
+    if (draggedId) {
+      setJustFinishedDragging(draggedId);
+      // Re-enable hover card after a short delay
+      setTimeout(() => {
+        setJustFinishedDragging(null);
+      }, 300);
+    }
   };
 
   return (
@@ -195,6 +208,10 @@ export function PokemonGrid({
               shadow="md"
               openDelay={500}
               closeDelay={200}
+              disabled={
+                draggedPokemon === pokemon.id ||
+                justFinishedDragging === pokemon.id
+              }
             >
               <HoverCard.Target>
                 <PokemonWrapper
