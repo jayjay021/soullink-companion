@@ -84,6 +84,7 @@ export function PlayerDashboard({
           onEmptySlotClick={handleEmptySlotClick}
           sessionPlayers={sessionPlayers}
           allSessionPokemon={allSessionPokemon}
+          sessionId={sessionId}
         />
       </Card>
       <Card>
@@ -97,6 +98,7 @@ export function PlayerDashboard({
           onEmptySlotClick={handleEmptySlotClick}
           sessionPlayers={sessionPlayers}
           allSessionPokemon={allSessionPokemon}
+          sessionId={sessionId}
         />
       </Card>
     </Stack>

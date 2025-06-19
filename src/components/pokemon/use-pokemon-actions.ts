@@ -51,7 +51,9 @@ export function usePokemonActions(sessionId: string) {
     },
     onSuccess: () => {
       // Invalidate queries to refresh Pokemon data
-      queryClient.invalidateQueries({ queryKey: ['pokemon', sessionId] });
+      // Invalidate all pokemon queries for this session (including all users)
+      queryClient.invalidateQueries({ queryKey: ['pokemons', sessionId] });
+      queryClient.invalidateQueries({ queryKey: ['allPokemons', sessionId] });
     },
   });
 
@@ -148,7 +150,9 @@ export function usePokemonActions(sessionId: string) {
     },
     onSuccess: () => {
       // Invalidate queries to refresh Pokemon data
-      queryClient.invalidateQueries({ queryKey: ['pokemon', sessionId] });
+      // Invalidate all pokemon queries for this session (including all users)
+      queryClient.invalidateQueries({ queryKey: ['pokemons', sessionId] });
+      queryClient.invalidateQueries({ queryKey: ['allPokemons', sessionId] });
     },
   });
 

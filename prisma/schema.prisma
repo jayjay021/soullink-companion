@@ -41,7 +41,7 @@ model Pokemon {
   image          String
   route          String
   isDead         Boolean  @default(false)
-  isLinked       Boolean  @default(true)
+  isLinked       Boolean  @default(false)
   inBox          Boolean  @default(false)
   position       Int      @default(0)
   player         Player   @relation(fields: [playerId], references: [id])

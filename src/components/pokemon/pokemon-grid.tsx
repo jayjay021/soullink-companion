@@ -20,6 +20,7 @@ interface PokemonGridProps {
   onEmptySlotClick?: (isTeam: boolean, position?: number) => void;
   sessionPlayers?: SessionPlayer[];
   allSessionPokemon?: Pokemon[];
+  sessionId: string;
 }
 
 const getBoxClass = (
@@ -61,6 +62,7 @@ export function PokemonGrid({
   onEmptySlotClick,
   sessionPlayers,
   allSessionPokemon,
+  sessionId,
 }: PokemonGridProps) {
   const [draggedPokemon, setDraggedPokemon] = useState<string | null>(null);
   const [dragOverSlot, setDragOverSlot] = useState<number | null>(null);
@@ -225,6 +227,7 @@ export function PokemonGrid({
                   pokemon={pokemon}
                   sessionPlayers={sessionPlayers || []}
                   allSessionPokemon={allSessionPokemon || []}
+                  sessionId={sessionId}
                 />
               </HoverCard.Dropdown>
             </HoverCard>

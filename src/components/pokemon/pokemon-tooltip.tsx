@@ -1,6 +1,16 @@
 import React from 'react';
-import { Stack, Group, Text, Box, Divider, Image } from '@mantine/core';
+import {
+  Stack,
+  Group,
+  Text,
+  Box,
+  Divider,
+  Image,
+  ActionIcon,
+} from '@mantine/core';
+import { IconSkull, IconSwitchHorizontal } from '@tabler/icons-react';
 import { useUser } from '@/app/context/UserContext';
+import { usePokemonActions } from './use-pokemon-actions';
 import styles from './pokemon-grid.module.css';
 
 export interface Pokemon {
@@ -28,14 +38,17 @@ interface PokemonTooltipProps {
   pokemon: Pokemon;
   sessionPlayers: SessionPlayer[];
   allSessionPokemon: Pokemon[];
+  sessionId: string;
 }
 
 export const PokemonTooltip: React.FC<PokemonTooltipProps> = ({
   pokemon,
   sessionPlayers,
   allSessionPokemon,
+  sessionId,
 }) => {
   const { userId } = useUser();
+  const { markAsDead, movePokemon, isLoading } = usePokemonActions(sessionId);
 
   // Get linked Pokemon for this route
   const linkedPokemon = allSessionPokemon.filter(
@@ -53,9 +66,11 @@ export const PokemonTooltip: React.FC<PokemonTooltipProps> = ({
   // Filter out current user from the display (improvement #1)
   const otherPlayers = sessionPlayers.filter((player) => player.id !== userId);
 
-  // Count how many players have linked Pokemon
-  const linkedPlayerCount = linkedPokemon.length;
-  const totalPlayers = sessionPlayers.length;
+  // Count how many OTHER players have linked Pokemon (excluding current user)
+  const linkedOtherPlayerCount = linkedPokemon.filter(
+    (p) => p.playerId !== userId
+  ).length;
+  const totalOtherPlayers = sessionPlayers.length - 1;
 
   return (
     <Box style={{ maxWidth: '400px' }}>
@@ -63,25 +78,58 @@ export const PokemonTooltip: React.FC<PokemonTooltipProps> = ({
         {/* Header */}
         <Box>
           <Group justify="space-between" align="flex-start">
-            <Text fw={600} size="sm">
-              {pokemon.name}
-            </Text>
-            <Text size="xs" c="dimmed">
-              {pokemon.inBox ? 'Box' : 'Team'}
-            </Text>
+            <Box>
+              <Group gap="xs" align="center">
+                <Text fw={600} size="sm">
+                  {pokemon.name}
+                </Text>
+                <Text size="xs" c="dimmed">
+                  ({pokemon.inBox ? 'Box' : 'Team'})
+                </Text>
+              </Group>
+
+              {/* Route */}
+              <Text size="xs" c="dimmed">
+                {pokemon.route}
+              </Text>
+
+              {/* Death status */}
+              {pokemon.isDead && (
+                <Text size="xs" c="red">
+                  💀 Dead
+                </Text>
+              )}
+            </Box>
+
+            {/* Action buttons */}
+            {pokemon.playerId === userId && !pokemon.isDead && (
+              <Group gap="xs">
+                <ActionIcon
+                  size="sm"
+                  onClick={() =>
+                    movePokemon.mutate({
+                      pokemonId: pokemon.id,
+                      inBox: !pokemon.inBox,
+                    })
+                  }
+                  disabled={isLoading}
+                  title={pokemon.inBox ? 'Move to Team' : 'Move to Box'}
+                >
+                  <IconSwitchHorizontal size={16} />
+                </ActionIcon>
+
+                <ActionIcon
+                  size="sm"
+                  color="red"
+                  onClick={() => markAsDead.mutate({ pokemonId: pokemon.id })}
+                  disabled={isLoading || pokemon.isDead}
+                  title="Mark as Dead"
+                >
+                  <IconSkull size={16} />
+                </ActionIcon>
+              </Group>
+            )}
           </Group>
-
-          {/* Route */}
-          <Text size="xs" c="dimmed">
-            {pokemon.route}
-          </Text>
-
-          {/* Death status */}
-          {pokemon.isDead && (
-            <Text size="xs" c="red">
-              💀 Dead
-            </Text>
-          )}
         </Box>
 
         {/* Separator */}
@@ -191,13 +239,13 @@ export const PokemonTooltip: React.FC<PokemonTooltipProps> = ({
                 </Text>
                 {pokemon.isLinked ? (
                   <Text size="xs" c="green">
-                    ✓ Valid link ({linkedPlayerCount}/{totalPlayers - 1} players
-                    linked)
+                    ✓ Valid link ({linkedOtherPlayerCount}/{totalOtherPlayers}{' '}
+                    players linked)
                   </Text>
                 ) : (
                   <Text size="xs" c="yellow">
-                    ⏳ Waiting for players ({linkedPlayerCount}/
-                    {totalPlayers - 1} players linked)
+                    ⏳ Waiting for players ({linkedOtherPlayerCount}/
+                    {totalOtherPlayers} players linked)
                   </Text>
                 )}
               </Group>
