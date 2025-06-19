@@ -152,6 +152,13 @@ export async function POST(
     );
   }
 
+  // Get all players in the session to check linking
+  const sessionPlayers = await prisma.player.findMany({
+    where: { sessionId, isViewer: false },
+    select: { id: true },
+  });
+
+  // Create the Pokemon
   const pokemon = await prisma.pokemon.create({
     data: {
       name,
@@ -161,7 +168,104 @@ export async function POST(
       image,
       inBox: inBox ?? true, // Default to true (box) if not specified
       position: finalPosition,
+      inTeam: inBox !== undefined ? !inBox : false, // If not in box, it's in team
     },
   });
-  return NextResponse.json(pokemon, { status: 201 });
+
+  // Handle linking logic - first get all Pokemon on the same route from other players
+  const pokemonOnSameRoute = await prisma.pokemon.findMany({
+    where: {
+      sessionId,
+      route,
+      playerId: { not: playerId }, // Only other players' Pokemon
+    },
+  });
+
+  // Generate a link group identifier (route-based)
+  const linkGroupId = `${sessionId}-${route}`;
+
+  // Update this Pokemon with linkGroup
+  await prisma.pokemon.update({
+    where: { id: pokemon.id },
+    data: { linkGroup: linkGroupId },
+  });
+
+  // Update all Pokemon on the same route with the same link group
+  if (pokemonOnSameRoute.length > 0) {
+    await prisma.pokemon.updateMany({
+      where: {
+        sessionId,
+        route,
+      },
+      data: { linkGroup: linkGroupId },
+    });
+  }
+
+  // Check if all players have a Pokemon on this route, making it a valid link
+  const playersWithPokemonOnRoute = await prisma.pokemon.groupBy({
+    by: ['playerId'],
+    where: {
+      sessionId,
+      route,
+    },
+  });
+
+  // A link is valid if every player has caught a Pokemon on this route
+  const isValidLink =
+    playersWithPokemonOnRoute.length === sessionPlayers.length;
+
+  // Update all Pokemon in this link group with isLinked based on validity
+  await prisma.pokemon.updateMany({
+    where: { linkGroup: linkGroupId },
+    data: { isLinked: isValidLink },
+  });
+
+  // Handle team linking logic if this is a team Pokemon
+  if (!inBox) {
+    await updateTeamLinkValidity(sessionId, linkGroupId);
+  }
+
+  // Get the updated Pokemon with all the link information
+  const updatedPokemon = await prisma.pokemon.findUnique({
+    where: { id: pokemon.id },
+  });
+
+  return NextResponse.json(updatedPokemon!, { status: 201 });
+}
+
+// Helper function to update team link validity
+async function updateTeamLinkValidity(sessionId: string, linkGroupId: string) {
+  // Get all Pokemon in this link group
+  const linkedPokemons = await prisma.pokemon.findMany({
+    where: { linkGroup: linkGroupId },
+    include: { player: true },
+  });
+
+  // Count how many linked Pokemon are in team
+  const linkGroupByPlayer = linkedPokemons.reduce(
+    (acc, pokemon) => {
+      if (!acc[pokemon.playerId]) {
+        acc[pokemon.playerId] = { inTeam: false };
+      }
+      if (!pokemon.inBox) {
+        acc[pokemon.playerId].inTeam = true;
+      }
+      return acc;
+    },
+    {} as Record<string, { inTeam: boolean }>
+  );
+
+  // Check if all linked Pokemon are in team or all are in box
+  const playerIds = Object.keys(linkGroupByPlayer);
+  const allInTeam = playerIds.every(
+    (playerId) => linkGroupByPlayer[playerId].inTeam
+  );
+
+  // Update the team link validity
+  await prisma.pokemon.updateMany({
+    where: { linkGroup: linkGroupId },
+    data: {
+      validTeamLink: allInTeam && linkedPokemons.length > 1,
+    },
+  });
 }

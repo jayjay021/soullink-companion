@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Prisma } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -48,6 +48,7 @@ export async function PUT(
           data: {
             position: movingPokemon.position,
             inBox: movingPokemon.inBox,
+            inTeam: !movingPokemon.inBox, // Update team status
           },
         });
 
@@ -57,6 +58,7 @@ export async function PUT(
           data: {
             position: newPosition,
             inBox: inBox,
+            inTeam: !inBox, // Update team status
           },
         });
 
@@ -69,6 +71,7 @@ export async function PUT(
           data: {
             position: newPosition,
             inBox: inBox,
+            inTeam: !inBox, // Update team status
           },
         });
 
@@ -131,14 +134,19 @@ export async function PUT(
           }
         }
 
+        // Update team link validity for linked Pokemon
+        await updateTeamLinkValidity(tx, movingPokemon);
+
         return updatedPokemon;
       }
     });
 
-    return NextResponse.json({
-      success: true,
-      pokemon: result,
+    // Get fresh data with updated link status
+    const updatedPokemon = await prisma.pokemon.findUnique({
+      where: { id: result.id },
     });
+
+    return NextResponse.json(updatedPokemon);
   } catch (error) {
     console.error('Error updating Pokemon position:', error);
     return NextResponse.json(
@@ -146,4 +154,47 @@ export async function PUT(
       { status: 500 }
     );
   }
+}
+
+// Helper function to update team link validity
+async function updateTeamLinkValidity(
+  tx: Prisma.TransactionClient, // Use proper transaction client type
+  pokemon: { id: string; linkGroup: string | null }
+) {
+  // Skip if Pokemon has no link group
+  if (!pokemon.linkGroup) return;
+
+  // Get all Pokemon in this link group
+  const linkedPokemons = await tx.pokemon.findMany({
+    where: { linkGroup: pokemon.linkGroup },
+  });
+
+  // Create a map of player IDs to whether they have this Pokemon in their team
+  const linkGroupByPlayer = linkedPokemons.reduce(
+    (
+      acc: Record<string, { inTeam: boolean }>,
+      pokemon: { playerId: string; inTeam: boolean; inBox: boolean }
+    ) => {
+      if (!acc[pokemon.playerId]) {
+        acc[pokemon.playerId] = { inTeam: false };
+      }
+      if (!pokemon.inBox) {
+        acc[pokemon.playerId].inTeam = true;
+      }
+      return acc;
+    },
+    {} as Record<string, { inTeam: boolean }>
+  );
+
+  // Check if all linked Pokemon are in team or all are in box
+  const playerIds = Object.keys(linkGroupByPlayer);
+  const allInTeam = playerIds.every(
+    (playerId) => linkGroupByPlayer[playerId].inTeam
+  );
+
+  // Update team link validity for all Pokemon in this group
+  await tx.pokemon.updateMany({
+    where: { linkGroup: pokemon.linkGroup },
+    data: { validTeamLink: allInTeam && linkedPokemons.length > 1 },
+  });
 }

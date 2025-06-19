@@ -26,16 +26,19 @@ model Player {
 }
 
 model Pokemon {
-  id        String   @id @default(uuid())
-  name      String
-  image     String
-  route     String
-  isDead    Boolean  @default(false)
-  isLinked  Boolean  @default(true)
-  inBox     Boolean  @default(false)
-  position  Int      @default(0)
-  player    Player   @relation(fields: [playerId], references: [id])
-  playerId  String
-  session   Session  @relation(fields: [sessionId], references: [id])
-  sessionId String
+  id             String   @id @default(uuid())
+  name           String
+  image          String
+  route          String
+  isDead         Boolean  @default(false)
+  isLinked       Boolean  @default(true)
+  inBox          Boolean  @default(false)
+  position       Int      @default(0)
+  player         Player   @relation(fields: [playerId], references: [id])
+  playerId       String
+  session        Session  @relation(fields: [sessionId], references: [id])
+  sessionId      String
+  linkGroup      String?  // Identifier for linked Pokémon (based on route)
+  inTeam         Boolean  @default(false) // Whether the Pokémon is in the team
+  validTeamLink  Boolean  @default(false) // Whether the Pokémon has valid team links
 }

@@ -22,8 +22,6 @@ export async function POST(
 > {
   const body = await req.json();
   const parseResult = CreateSessionRequestSchema.safeParse(body);
-  console.log('Received request body:', body);
-  console.log('Parse result:', parseResult);
   if (!parseResult.success) {
     return NextResponse.json(
       { error: 'Invalid request', details: parseResult.error.flatten() },
@@ -31,7 +29,6 @@ export async function POST(
     );
   }
   const { name, username, playerUuid } = parseResult.data;
-  console.log('Creating session with data:', { name, username, playerUuid });
 
   // Check if player already exists
   const player = await prisma.player.findUnique({

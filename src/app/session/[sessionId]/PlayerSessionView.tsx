@@ -28,19 +28,26 @@ export const PlayerSessionView: React.FC<PlayerSessionViewProps> = ({
     },
   });
 
-  // Fetch pokemons for this session
+  // Fetch pokemons for this session and current player
   const {
     data: pokemons,
     isLoading: loadingPokemons,
     error: errorPokemons,
     refetch: refetchPokemons,
   } = useQuery<PokemonData[]>({
-    queryKey: ['pokemons', sessionId],
+    queryKey: ['pokemons', sessionId, userId],
     queryFn: async () => {
-      const res = await fetch(`/api/pokemon/${sessionId}`);
+      // Filter by player ID to only fetch this player's Pokémon
+      const url = `/api/pokemon/${sessionId}?player=${userId}`;
+
+      const res = await fetch(url);
       if (!res.ok) throw new Error('Pokémon not found');
-      return res.json();
+
+      const data = await res.json();
+      return data;
     },
+    // Only run this query if we have a valid userId
+    enabled: !!userId,
   });
 
   // Fetch used routes for this session

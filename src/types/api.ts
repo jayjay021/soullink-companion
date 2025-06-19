@@ -21,8 +21,19 @@ export const CreatePokemonRequestSchema = z.object({
   image: z.string().min(1),
   inBox: z.boolean().optional().default(true),
   position: z.number().optional().default(0),
+  inTeam: z.boolean().optional().default(false),
 });
 export type CreatePokemonRequest = z.infer<typeof CreatePokemonRequestSchema>;
+
+export const UpdatePokemonStatusSchema = z.object({
+  pokemonId: z.string().min(1),
+  isDead: z.boolean().optional(),
+  inBox: z.boolean().optional(),
+  inTeam: z.boolean().optional(),
+});
+export type UpdatePokemonStatusRequest = z.infer<
+  typeof UpdatePokemonStatusSchema
+>;
 
 export interface Pokemon {
   id: string;
@@ -35,6 +46,9 @@ export interface Pokemon {
   position: number;
   playerId: string;
   sessionId: string;
+  linkGroup?: string | null;
+  inTeam: boolean;
+  validTeamLink: boolean;
 }
 
 export type PokemonListResponse = Pokemon[];

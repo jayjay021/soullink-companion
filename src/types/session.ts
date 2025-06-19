@@ -13,4 +13,7 @@ export interface PokemonData {
   isLinked: boolean;
   position: number;
   inBox: boolean;
+  linkGroup?: string | null;
+  inTeam: boolean;
+  validTeamLink: boolean;
 }

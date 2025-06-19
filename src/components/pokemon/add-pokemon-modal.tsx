@@ -107,6 +107,7 @@ export function AddPokemonModal({
         playerId,
         inBox: defaultInBox,
         position: position,
+        inTeam: !defaultInBox,
       });
     }
   };

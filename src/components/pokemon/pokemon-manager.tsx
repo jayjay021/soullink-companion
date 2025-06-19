@@ -25,7 +25,7 @@ export const PokemonManager: React.FC<PokemonManagerProps> = ({
 
   const handleAddPokemon = (inBox: boolean, position?: number) => {
     setDialogInBox(inBox);
-    setDialogPosition(position ?? 0);
+    setDialogPosition(position !== undefined ? position : 0);
     setDialogOpen(true);
   };
 

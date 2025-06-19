@@ -10,6 +10,10 @@ export interface Pokemon {
   isDead: boolean;
   isLinked: boolean;
   position: number;
+  linkGroup?: string | null;
+  inTeam: boolean;
+  inBox: boolean;
+  validTeamLink: boolean;
 }
 
 interface PokemonGridProps {
@@ -21,6 +25,7 @@ interface PokemonGridProps {
     toTeam: boolean
   ) => void;
   onEmptySlotClick?: (isTeam: boolean, position?: number) => void;
+  onContextMenu?: (pokemon: Pokemon, e: React.MouseEvent) => void;
 }
 
 const getBoxClass = (
@@ -33,8 +38,20 @@ const getBoxClass = (
   if (!poke) {
     classes += ` ${styles.empty}`;
   } else {
-    if (poke.isDead) classes += ` ${styles.dead}`;
-    else if (!poke.isLinked) classes += ` ${styles.mismatch}`;
+    // Priority order for borders (highest to lowest):
+    // 1. Dead (red)
+    // 2. Invalid team link (orange)
+    // 3. Not linked yet (yellow)
+    // 4. Linked successfully (green)
+    if (poke.isDead) {
+      classes += ` ${styles.dead}`;
+    } else if (poke.inTeam && !poke.validTeamLink && poke.linkGroup) {
+      classes += ` ${styles.invalidTeamLink}`;
+    } else if (!poke.isLinked) {
+      classes += ` ${styles.mismatch}`;
+    } else if (poke.linkGroup && poke.isLinked) {
+      classes += ` ${styles.linked}`;
+    }
   }
 
   if (isDragging) classes += ` ${styles.dragging}`;
@@ -48,6 +65,7 @@ export function PokemonGrid({
   isTeam = false,
   onPokemonMove,
   onEmptySlotClick,
+  onContextMenu,
 }: PokemonGridProps) {
   const [draggedPokemon, setDraggedPokemon] = useState<string | null>(null);
   const [dragOverSlot, setDragOverSlot] = useState<number | null>(null);
@@ -112,7 +130,14 @@ export function PokemonGrid({
     setDraggedPokemon(null);
 
     try {
-      const data = JSON.parse(e.dataTransfer.getData('text/plain'));
+      const dataStr = e.dataTransfer.getData('text/plain');
+
+      if (!dataStr) {
+        console.error('No data transferred during drop');
+        return;
+      }
+
+      const data = JSON.parse(dataStr);
       const { pokemonId, fromTeam } = data;
 
       // Prevent dropping Pokemon on its own slot
@@ -141,6 +166,8 @@ export function PokemonGrid({
 
       if (onPokemonMove) {
         await onPokemonMove(pokemonId, targetPosition, isTeam);
+      } else {
+        console.warn('onPokemonMove callback is not defined');
       }
     } catch (error) {
       console.error('Error handling drop:', error);
@@ -169,19 +196,47 @@ export function PokemonGrid({
           {pokemon ? (
             <Tooltip
               label={
-                pokemon.isDead
-                  ? 'Dead'
-                  : pokemon.isLinked
-                    ? 'Linked'
-                    : 'Link mismatch'
+                <div style={{ maxWidth: '150px' }}>
+                  <strong>{pokemon.name}</strong>
+                  <div>Route: {pokemon.route}</div>
+                  {pokemon.isDead ? (
+                    <div style={{ color: 'var(--mantine-color-red-6)' }}>
+                      Dead
+                    </div>
+                  ) : pokemon.linkGroup ? (
+                    <>
+                      {pokemon.isLinked ? (
+                        <div style={{ color: 'var(--mantine-color-green-6)' }}>
+                          Linked with other players
+                        </div>
+                      ) : (
+                        <div style={{ color: 'var(--mantine-color-yellow-6)' }}>
+                          Waiting for other players to catch on this route
+                        </div>
+                      )}
+                      {pokemon.inTeam && !pokemon.validTeamLink && (
+                        <div style={{ color: 'var(--mantine-color-orange-6)' }}>
+                          Missing team link - other players must add linked
+                          Pokemon to team
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    <div>No link information</div>
+                  )}
+                </div>
               }
               withArrow
-              openDelay={1000}
+              openDelay={500}
+              multiline
             >
               <div
                 draggable
                 onDragStart={(e) => handleDragStart(e, pokemon)}
                 onDragEnd={handleDragEnd}
+                onContextMenu={(e) =>
+                  onContextMenu && onContextMenu(pokemon, e)
+                }
                 style={{ cursor: 'grab' }}
               >
                 <Image
@@ -221,7 +276,13 @@ export function PokemonGrid({
                 }}
                 onClick={() => {
                   if (onEmptySlotClick && draggedPokemon === null) {
-                    onEmptySlotClick(isTeam, isTeam ? index : undefined);
+                    // For team slots, pass the position. For box, only pass undefined for the last slot
+                    const position = isTeam
+                      ? index
+                      : index >= pokemons.length
+                        ? undefined
+                        : index;
+                    onEmptySlotClick(isTeam, position);
                   }
                 }}
               >
