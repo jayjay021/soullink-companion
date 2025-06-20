@@ -94,7 +94,9 @@ export class SessionService {
         },
         data: {
           ...(data.name !== undefined && { name: data.name }),
-          ...(data.description !== undefined && { description: data.description }),
+          ...(data.description !== undefined && {
+            description: data.description,
+          }),
           ...(data.started !== undefined && { started: data.started }),
         },
         include: {
@@ -188,7 +190,10 @@ export class SessionService {
       // Return updated session with players
       return await this.getSessionById(sessionId);
     } catch (error) {
-      if (error instanceof Error && error.message === 'Player already in session') {
+      if (
+        error instanceof Error &&
+        error.message === 'Player already in session'
+      ) {
         throw error;
       }
       log('Error joining session:', error);

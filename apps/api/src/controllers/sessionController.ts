@@ -53,10 +53,10 @@ export const createSession = async (
 ) => {
   try {
     const createSessionRequest = req.body;
-    
+
     // Validate the request body against the CreateSessionBody schema
     schemas.createSession_Body.parse(createSessionRequest);
-    
+
     const session = await sessionService.createSession({
       name: createSessionRequest.name,
       description: createSessionRequest.description,
@@ -92,7 +92,7 @@ export const getSession = async (
     sessionIdSchema.parse(sessionId);
 
     const session = await sessionService.getSessionById(sessionId);
-    
+
     if (!session) {
       return res.status(404).json({
         success: false,
@@ -134,8 +134,11 @@ export const updateSession = async (
     sessionIdSchema.parse(sessionId);
     schemas.updateSession_Body.parse(updateSessionRequest);
 
-    const session = await sessionService.updateSession(sessionId, updateSessionRequest);
-    
+    const session = await sessionService.updateSession(
+      sessionId,
+      updateSessionRequest
+    );
+
     if (!session) {
       return res.status(404).json({
         success: false,
@@ -176,7 +179,7 @@ export const deleteSession = async (
     sessionIdSchema.parse(sessionId);
 
     const result = await sessionService.deleteSession(sessionId);
-    
+
     if (!result) {
       return res.status(404).json({
         success: false,
@@ -231,9 +234,12 @@ export const joinSession = async (
     // Now validate the request body
     const joinSessionRequest = req.body;
     schemas.joinSession_Body.parse(joinSessionRequest);
-    
+
     // Additional validation for player data
-    if (!joinSessionRequest.player?.id?.trim() || !joinSessionRequest.player?.name?.trim()) {
+    if (
+      !joinSessionRequest.player?.id?.trim() ||
+      !joinSessionRequest.player?.name?.trim()
+    ) {
       return res.status(400).json({
         success: false,
         error: {
@@ -243,8 +249,11 @@ export const joinSession = async (
       } as any);
     }
 
-    const session = await sessionService.joinSession(sessionId, joinSessionRequest.player);
-    
+    const session = await sessionService.joinSession(
+      sessionId,
+      joinSessionRequest.player
+    );
+
     if (!session) {
       return res.status(404).json({
         success: false,
@@ -267,7 +276,10 @@ export const joinSession = async (
         },
       } as any);
     }
-    if (error instanceof Error && error.message === 'Player already in session') {
+    if (
+      error instanceof Error &&
+      error.message === 'Player already in session'
+    ) {
       return res.status(400).json({
         success: false,
         error: {
