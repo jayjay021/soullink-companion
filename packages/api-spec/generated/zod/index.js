@@ -108,6 +108,35 @@ const PokedexPokemon = zod_1.z
 const PokedexPokemonResponse = zod_1.z
     .object({ pokemon: zod_1.z.array(PokedexPokemon) })
     .passthrough();
+const PokemonStatus = zod_1.z.enum(["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]);
+const AddPokemonRequest = zod_1.z
+    .object({
+    playerId: zod_1.z.string(),
+    pokemonId: zod_1.z.string(),
+    status: PokemonStatus,
+    routeName: zod_1.z.string(),
+})
+    .passthrough();
+const Pokemon = zod_1.z
+    .object({
+    id: zod_1.z.string(),
+    playerId: zod_1.z.string(),
+    sessionId: zod_1.z.string(),
+    pokemonId: zod_1.z.string(),
+    status: PokemonStatus,
+    routeName: zod_1.z.string(),
+})
+    .passthrough();
+const PokemonListResponse = zod_1.z
+    .object({ pokemon: zod_1.z.array(Pokemon) })
+    .passthrough();
+const UpdatePokemonRequest = zod_1.z
+    .object({ status: PokemonStatus, routeName: zod_1.z.string() })
+    .partial()
+    .passthrough();
+const RouteListResponse = zod_1.z
+    .object({ routes: zod_1.z.array(zod_1.z.string()) })
+    .passthrough();
 exports.schemas = {
     HealthResponse,
     Error,
@@ -126,6 +155,12 @@ exports.schemas = {
     PokedexPokemonImage,
     PokedexPokemon,
     PokedexPokemonResponse,
+    PokemonStatus,
+    AddPokemonRequest,
+    Pokemon,
+    PokemonListResponse,
+    UpdatePokemonRequest,
+    RouteListResponse,
 };
 const endpoints = (0, core_1.makeApi)([
     {
@@ -176,6 +211,151 @@ const endpoints = (0, core_1.makeApi)([
             {
                 status: 500,
                 description: `Internal server error`,
+                schema: Error,
+            },
+        ],
+    },
+    {
+        method: "post",
+        path: "/pokemon/:sessionId",
+        alias: "addPokemon",
+        description: `Add a Pokémon for a player in a session`,
+        requestFormat: "json",
+        parameters: [
+            {
+                name: "body",
+                type: "Body",
+                schema: AddPokemonRequest,
+            },
+            {
+                name: "sessionId",
+                type: "Path",
+                schema: zod_1.z.string(),
+            },
+        ],
+        response: Pokemon,
+        errors: [
+            {
+                status: 400,
+                description: `Bad request`,
+                schema: Error,
+            },
+            {
+                status: 404,
+                description: `Resource not found`,
+                schema: Error,
+            },
+        ],
+    },
+    {
+        method: "get",
+        path: "/pokemon/:sessionId",
+        alias: "listPokemon",
+        description: `List or filter Pokémon for a session/player`,
+        requestFormat: "json",
+        parameters: [
+            {
+                name: "sessionId",
+                type: "Path",
+                schema: zod_1.z.string(),
+            },
+            {
+                name: "playerId",
+                type: "Query",
+                schema: zod_1.z.string().optional(),
+            },
+            {
+                name: "routeName",
+                type: "Query",
+                schema: zod_1.z.string().optional(),
+            },
+            {
+                name: "status",
+                type: "Query",
+                schema: zod_1.z
+                    .enum(["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"])
+                    .optional(),
+            },
+        ],
+        response: PokemonListResponse,
+        errors: [
+            {
+                status: 400,
+                description: `Bad request`,
+                schema: Error,
+            },
+            {
+                status: 404,
+                description: `Resource not found`,
+                schema: Error,
+            },
+        ],
+    },
+    {
+        method: "patch",
+        path: "/pokemon/:sessionId/:pokemonId",
+        alias: "updatePokemon",
+        description: `Update a Pokémon’s status, location, or properties`,
+        requestFormat: "json",
+        parameters: [
+            {
+                name: "body",
+                type: "Body",
+                schema: UpdatePokemonRequest,
+            },
+            {
+                name: "sessionId",
+                type: "Path",
+                schema: zod_1.z.string(),
+            },
+            {
+                name: "pokemonId",
+                type: "Path",
+                schema: zod_1.z.string(),
+            },
+        ],
+        response: Pokemon,
+        errors: [
+            {
+                status: 400,
+                description: `Bad request`,
+                schema: Error,
+            },
+            {
+                status: 404,
+                description: `Resource not found`,
+                schema: Error,
+            },
+        ],
+    },
+    {
+        method: "get",
+        path: "/pokemon/:sessionId/routes",
+        alias: "getPokemonRoutes",
+        description: `Get unique routes for a session/player`,
+        requestFormat: "json",
+        parameters: [
+            {
+                name: "sessionId",
+                type: "Path",
+                schema: zod_1.z.string(),
+            },
+            {
+                name: "playerId",
+                type: "Query",
+                schema: zod_1.z.string().optional(),
+            },
+        ],
+        response: RouteListResponse,
+        errors: [
+            {
+                status: 400,
+                description: `Bad request`,
+                schema: Error,
+            },
+            {
+                status: 404,
+                description: `Resource not found`,
                 schema: Error,
             },
         ],

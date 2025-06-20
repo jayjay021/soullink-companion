@@ -118,6 +118,70 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/pokemon/{sessionId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List/filter Pokémon
+         * @description List or filter Pokémon for a session/player
+         */
+        get: operations["listPokemon"];
+        put?: never;
+        /**
+         * Add a Pokémon encounter
+         * @description Add a Pokémon for a player in a session
+         */
+        post: operations["addPokemon"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/pokemon/{sessionId}/{pokemonId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update a Pokémon
+         * @description Update a Pokémon’s status, location, or properties
+         */
+        patch: operations["updatePokemon"];
+        trace?: never;
+    };
+    "/pokemon/{sessionId}/routes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get unique routes
+         * @description Get unique routes for a session/player
+         */
+        get: operations["getPokemonRoutes"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -420,6 +484,80 @@ export interface components {
              */
             hires?: string;
         };
+        /** @example {
+         *       "playerId": "player-1",
+         *       "pokemonId": "1",
+         *       "status": "CAUGHT",
+         *       "routeName": "Route 1"
+         *     } */
+        AddPokemonRequest: {
+            playerId: string;
+            pokemonId: string;
+            status: components["schemas"]["PokemonStatus"];
+            routeName: string;
+        };
+        /** @example {
+         *       "status": "FAINTED",
+         *       "routeName": "Route 1"
+         *     } */
+        UpdatePokemonRequest: {
+            status?: components["schemas"]["PokemonStatus"];
+            routeName?: string;
+        };
+        /**
+         * @description The status of a Pokémon in a session
+         * @example CAUGHT
+         * @enum {string}
+         */
+        PokemonStatus: "CAUGHT" | "FAINTED" | "IN_BATTLE" | "RUNNING";
+        /** @example {
+         *       "id": "pokemon-1",
+         *       "playerId": "player-1",
+         *       "sessionId": "session-123",
+         *       "pokemonId": "1",
+         *       "status": "CAUGHT",
+         *       "routeName": "Route 1"
+         *     } */
+        Pokemon: {
+            id: string;
+            playerId: string;
+            sessionId: string;
+            pokemonId: string;
+            status: components["schemas"]["PokemonStatus"];
+            routeName: string;
+        };
+        /** @example {
+         *       "pokemon": [
+         *         {
+         *           "id": "pokemon-1",
+         *           "playerId": "player-1",
+         *           "sessionId": "session-123",
+         *           "pokemonId": "1",
+         *           "status": "CAUGHT",
+         *           "routeName": "Route 1"
+         *         },
+         *         {
+         *           "id": "pokemon-2",
+         *           "playerId": "player-1",
+         *           "sessionId": "session-123",
+         *           "pokemonId": "4",
+         *           "status": "FAINTED",
+         *           "routeName": "Route 1"
+         *         }
+         *       ]
+         *     } */
+        PokemonListResponse: {
+            pokemon: components["schemas"]["Pokemon"][];
+        };
+        /** @example {
+         *       "routes": [
+         *         "Route 1",
+         *         "Route 2"
+         *       ]
+         *     } */
+        RouteListResponse: {
+            routes: string[];
+        };
     };
     responses: {
         /** @description Bad request */
@@ -667,6 +805,117 @@ export interface operations {
             };
             400: components["responses"]["BadRequest"];
             500: components["responses"]["InternalServerError"];
+        };
+    };
+    listPokemon: {
+        parameters: {
+            query?: {
+                playerId?: string;
+                routeName?: string;
+                status?: components["schemas"]["PokemonStatus"];
+            };
+            header?: never;
+            path: {
+                sessionId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description List of Pokémon */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PokemonListResponse"];
+                };
+            };
+            400: components["responses"]["BadRequest"];
+            404: components["responses"]["NotFound"];
+        };
+    };
+    addPokemon: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                sessionId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AddPokemonRequest"];
+            };
+        };
+        responses: {
+            /** @description Pokémon added */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Pokemon"];
+                };
+            };
+            400: components["responses"]["BadRequest"];
+            404: components["responses"]["NotFound"];
+        };
+    };
+    updatePokemon: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                sessionId: string;
+                pokemonId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdatePokemonRequest"];
+            };
+        };
+        responses: {
+            /** @description Pokémon updated */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Pokemon"];
+                };
+            };
+            400: components["responses"]["BadRequest"];
+            404: components["responses"]["NotFound"];
+        };
+    };
+    getPokemonRoutes: {
+        parameters: {
+            query?: {
+                playerId?: string;
+            };
+            header?: never;
+            path: {
+                sessionId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description List of unique routes */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RouteListResponse"];
+                };
+            };
+            400: components["responses"]["BadRequest"];
+            404: components["responses"]["NotFound"];
         };
     };
 }

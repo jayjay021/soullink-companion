@@ -225,6 +225,140 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '500':
           $ref: '#/components/responses/InternalServerError'
+  /pokemon/{sessionId}:
+    post:
+      summary: Add a Pokémon encounter
+      description: Add a Pokémon for a player in a session
+      operationId: addPokemon
+      tags:
+        - Pokemon
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddPokemonRequest'
+      responses:
+        '201':
+          description: Pokémon added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pokemon'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    get:
+      summary: List/filter Pokémon
+      description: List or filter Pokémon for a session/player
+      operationId: listPokemon
+      tags:
+        - Pokemon
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: playerId
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: routeName
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: status
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/PokemonStatus'
+      responses:
+        '200':
+          description: List of Pokémon
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PokemonListResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /pokemon/{sessionId}/{pokemonId}:
+    patch:
+      summary: Update a Pokémon
+      description: Update a Pokémon’s status, location, or properties
+      operationId: updatePokemon
+      tags:
+        - Pokemon
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: pokemonId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePokemonRequest'
+      responses:
+        '200':
+          description: Pokémon updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pokemon'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /pokemon/{sessionId}/routes:
+    get:
+      summary: Get unique routes
+      description: Get unique routes for a session/player
+      operationId: getPokemonRoutes
+      tags:
+        - Pokemon
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: playerId
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of unique routes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RouteListResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+# Add schemas for AddPokemonRequest, UpdatePokemonRequest, Pokemon, PokemonListResponse, RouteListResponse, PokemonStatus, PokemonLocation below in components/schemas
 components:
   schemas:
     HealthResponse:
@@ -614,6 +748,117 @@ components:
           format: uri
           description: High resolution image URL
 
+    AddPokemonRequest:
+      type: object
+      required:
+        - playerId
+        - pokemonId
+        - status
+        - routeName
+      properties:
+        playerId:
+          type: string
+        pokemonId:
+          type: string
+        status:
+          $ref: '#/components/schemas/PokemonStatus'
+        routeName:
+          type: string
+      example:
+        playerId: "player-1"
+        pokemonId: "1"
+        status: "CAUGHT"
+        routeName: "Route 1"
+
+    UpdatePokemonRequest:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/PokemonStatus'
+        routeName:
+          type: string
+      example:
+        status: "FAINTED"
+        routeName: "Route 1"
+
+    PokemonStatus:
+      type: string
+      enum:
+        - CAUGHT
+        - FAINTED
+        - IN_BATTLE
+        - RUNNING
+      description: The status of a Pokémon in a session
+      example: "CAUGHT"
+
+    Pokemon:
+      type: object
+      required:
+        - id
+        - playerId
+        - sessionId
+        - pokemonId
+        - status
+        - routeName
+      properties:
+        id:
+          type: string
+        playerId:
+          type: string
+        sessionId:
+          type: string
+        pokemonId:
+          type: string
+        status:
+          $ref: '#/components/schemas/PokemonStatus'
+        routeName:
+          type: string
+      example:
+        id: "pokemon-1"
+        playerId: "player-1"
+        sessionId: "session-123"
+        pokemonId: "1"
+        status: "CAUGHT"
+        routeName: "Route 1"
+
+    PokemonListResponse:
+      type: object
+      required:
+        - pokemon
+      properties:
+        pokemon:
+          type: array
+          items:
+            $ref: '#/components/schemas/Pokemon'
+      example:
+        pokemon:
+          - id: "pokemon-1"
+            playerId: "player-1"
+            sessionId: "session-123"
+            pokemonId: "1"
+            status: "CAUGHT"
+            routeName: "Route 1"
+          - id: "pokemon-2"
+            playerId: "player-1"
+            sessionId: "session-123"
+            pokemonId: "4"
+            status: "FAINTED"
+            routeName: "Route 1"
+
+    RouteListResponse:
+      type: object
+      required:
+        - routes
+      properties:
+        routes:
+          type: array
+          items:
+            type: string
+      example:
+        routes:
+          - "Route 1"
+          - "Route 2"
+
   responses:
     BadRequest:
       description: Bad request
@@ -641,3 +886,5 @@ tags:
     description: Game management endpoints
   - name: Pokedex
     description: Static Pokédex reference data endpoints
+  - name: Pokemon
+    description: Pokémon management endpoints within a session
