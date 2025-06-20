@@ -21,13 +21,14 @@ const Error = z
       .passthrough(),
   })
   .passthrough();
+const SessionStatus = z.enum(["WAITING", "STARTED", "FINISHED"]);
 const SessionListItem = z
   .object({
     id: z.string(),
     name: z.string(),
     description: z.string(),
-    creationDate: z.string().datetime({ offset: true }),
-    started: z.boolean(),
+    createdAt: z.string().datetime({ offset: true }),
+    status: SessionStatus,
   })
   .passthrough();
 const SessionsResponse = z
@@ -42,13 +43,13 @@ const Session = z
     id: z.string(),
     name: z.string(),
     description: z.string(),
-    creationDate: z.string().datetime({ offset: true }),
-    started: z.boolean(),
+    createdAt: z.string().datetime({ offset: true }),
+    status: SessionStatus,
     players: z.array(Player),
   })
   .passthrough();
 const updateSession_Body = z
-  .object({ name: z.string(), description: z.string(), started: z.boolean() })
+  .object({ name: z.string(), description: z.string(), status: SessionStatus })
   .partial()
   .passthrough();
 const joinSession_Body = z.object({ player: Player }).passthrough();
@@ -108,6 +109,7 @@ const PokedexPokemonResponse = z
 export const schemas = {
   HealthResponse,
   Error,
+  SessionStatus,
   SessionListItem,
   SessionsResponse,
   createSession_Body,
@@ -260,7 +262,7 @@ const endpoints = makeApi([
     method: "put",
     path: "/session/:sessionId",
     alias: "updateSession",
-    description: `Update session name, description, or started status`,
+    description: `Update session name, description, or status`,
     requestFormat: "json",
     parameters: [
       {

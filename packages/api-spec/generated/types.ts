@@ -64,7 +64,7 @@ export interface paths {
         get: operations["getSession"];
         /**
          * Update session
-         * @description Update session name, description, or started status
+         * @description Update session name, description, or status
          */
         put: operations["updateSession"];
         post?: never;
@@ -163,12 +163,18 @@ export interface components {
                 details?: Record<string, never>;
             };
         };
+        /**
+         * @description The status of a session
+         * @example WAITING
+         * @enum {string}
+         */
+        SessionStatus: "WAITING" | "STARTED" | "FINISHED";
         /** @example {
          *       "id": "session-123",
          *       "name": "My Session",
          *       "description": "A fun session",
-         *       "creationDate": "2025-06-20T09:00:00.000Z",
-         *       "started": false,
+         *       "createdAt": "2025-06-20T09:00:00.000Z",
+         *       "status": "WAITING",
          *       "players": [
          *         {
          *           "id": "player-1",
@@ -185,8 +191,8 @@ export interface components {
             name: string;
             description: string;
             /** Format: date-time */
-            creationDate: string;
-            started: boolean;
+            createdAt: string;
+            status: components["schemas"]["SessionStatus"];
             players: components["schemas"]["Player"][];
         };
         /** @example {
@@ -195,15 +201,15 @@ export interface components {
          *           "id": "session-123",
          *           "name": "My Session",
          *           "description": "A fun session",
-         *           "creationDate": "2025-06-20T09:00:00.000Z",
-         *           "started": false
+         *           "createdAt": "2025-06-20T09:00:00.000Z",
+         *           "status": "WAITING"
          *         },
          *         {
          *           "id": "session-456",
          *           "name": "Another Session",
          *           "description": "Another fun session",
-         *           "creationDate": "2025-06-20T10:00:00.000Z",
-         *           "started": true
+         *           "createdAt": "2025-06-20T10:00:00.000Z",
+         *           "status": "STARTED"
          *         }
          *       ]
          *     } */
@@ -214,16 +220,16 @@ export interface components {
          *       "id": "session-123",
          *       "name": "My Session",
          *       "description": "A fun session",
-         *       "creationDate": "2025-06-20T09:00:00.000Z",
-         *       "started": false
+         *       "createdAt": "2025-06-20T09:00:00.000Z",
+         *       "status": "WAITING"
          *     } */
         SessionListItem: {
             id: string;
             name: string;
             description: string;
             /** Format: date-time */
-            creationDate: string;
-            started: boolean;
+            createdAt: string;
+            status: components["schemas"]["SessionStatus"];
         };
         /** @example {
          *       "id": "player-1",
@@ -563,7 +569,7 @@ export interface operations {
                 "application/json": {
                     name?: string;
                     description?: string;
-                    started?: boolean;
+                    status?: components["schemas"]["SessionStatus"];
                 };
             };
         };

@@ -208,7 +208,7 @@ describe('Session API ', () => {
         .send({
           name: 'Started Session',
           description: 'This session is now started',
-          started: true, // Assuming 'started' is a boolean field to indicate session start
+          status: 'STARTED', // Using the new status enum instead of boolean
         })
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
@@ -219,7 +219,7 @@ describe('Session API ', () => {
       // Check if the session was updated correctly
       expect(response.body.name).toBe('Started Session');
       expect(response.body.description).toBe('This session is now started');
-      expect(response.body.started).toBe(true); // Check if the session is marked as started
+      expect(response.body.status).toBe('STARTED'); // Check if the session status is STARTED
     });
 
     it('should return 404 Not Found for invalid sessionId', async () => {

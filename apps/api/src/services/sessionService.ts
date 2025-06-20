@@ -1,21 +1,17 @@
 import { prisma } from '../lib/prisma';
 import { log } from '@repo/logger';
+import { paths } from '@repo/api-spec/types';
 
-export interface CreateSessionData {
-  name: string;
-  description: string;
-}
+type CreateSessionData =
+  paths['/session']['post']['requestBody']['content']['application/json'];
 
-export interface UpdateSessionData {
-  name?: string;
-  description?: string;
-  started?: boolean;
-}
+type UpdateSessionData =
+  paths['/session/{sessionId}']['put']['requestBody']['content']['application/json'];
 
-export interface PlayerData {
+type PlayerData = {
   id: string;
   name: string;
-}
+};
 
 export class SessionService {
   async listSessions() {
@@ -25,18 +21,24 @@ export class SessionService {
           id: true,
           name: true,
           description: true,
-          creationDate: true,
-          started: true,
+          createdAt: true,
+          status: true,
+          playerSessions: {
+            select: {
+              player: {
+                select: { id: true, name: true },
+              },
+            },
+          },
         },
         orderBy: {
-          creationDate: 'desc',
+          createdAt: 'desc',
         },
       });
-
-      // Transform Date objects to ISO strings to match API spec
       return sessions.map((session) => ({
         ...session,
-        creationDate: session.creationDate.toISOString(),
+        createdAt: session.createdAt.toISOString(),
+        players: session.playerSessions.map((ps) => ps.player),
       }));
     } catch (error) {
       log('Error listing sessions:', error);
@@ -51,26 +53,11 @@ export class SessionService {
           name: data.name,
           description: data.description,
         },
-        include: {
-          players: true,
-        },
       });
-
-      // Transform Date objects to ISO strings and player objects to match API spec
       return {
         ...session,
-        creationDate: session.creationDate.toISOString(),
-        players: session.players.map(
-          (player: {
-            id: string;
-            name: string;
-            createdAt: Date;
-            updatedAt: Date;
-          }) => ({
-            id: player.id,
-            name: player.name,
-          })
-        ),
+        createdAt: session.createdAt.toISOString(),
+        players: [],
       };
     } catch (error) {
       log('Error creating session:', error);
@@ -81,31 +68,27 @@ export class SessionService {
   async getSessionById(sessionId: string) {
     try {
       const session = await prisma.session.findUnique({
-        where: {
-          id: sessionId,
-        },
-        include: {
-          players: true,
+        where: { id: sessionId },
+        select: {
+          id: true,
+          name: true,
+          description: true,
+          createdAt: true,
+          status: true,
+          playerSessions: {
+            select: {
+              player: {
+                select: { id: true, name: true },
+              },
+            },
+          },
         },
       });
-
       if (!session) return null;
-
-      // Transform Date objects to ISO strings and player objects to match API spec
       return {
         ...session,
-        creationDate: session.creationDate.toISOString(),
-        players: session.players.map(
-          (player: {
-            id: string;
-            name: string;
-            createdAt: Date;
-            updatedAt: Date;
-          }) => ({
-            id: player.id,
-            name: player.name,
-          })
-        ),
+        createdAt: session.createdAt.toISOString(),
+        players: session.playerSessions.map((ps) => ps.player),
       };
     } catch (error) {
       log('Error getting session:', error);
@@ -115,46 +98,38 @@ export class SessionService {
 
   async updateSession(sessionId: string, data: UpdateSessionData) {
     try {
-      // First check if session exists
       const existingSession = await prisma.session.findUnique({
         where: { id: sessionId },
       });
-
       if (!existingSession) {
-        return null; // Session not found
+        return null;
       }
-
       const session = await prisma.session.update({
-        where: {
-          id: sessionId,
-        },
+        where: { id: sessionId },
         data: {
           ...(data.name !== undefined && { name: data.name }),
-          ...(data.description !== undefined && {
-            description: data.description,
-          }),
-          ...(data.started !== undefined && { started: data.started }),
+          ...(data.description !== undefined && { description: data.description }),
+          ...(data.status !== undefined && { status: data.status }),
         },
-        include: {
-          players: true,
+        select: {
+          id: true,
+          name: true,
+          description: true,
+          createdAt: true,
+          status: true,
+          playerSessions: {
+            select: {
+              player: {
+                select: { id: true, name: true },
+              },
+            },
+          },
         },
       });
-
-      // Transform Date objects to ISO strings and player objects to match API spec
       return {
         ...session,
-        creationDate: session.creationDate.toISOString(),
-        players: session.players.map(
-          (player: {
-            id: string;
-            name: string;
-            createdAt: Date;
-            updatedAt: Date;
-          }) => ({
-            id: player.id,
-            name: player.name,
-          })
-        ),
+        createdAt: session.createdAt.toISOString(),
+        players: session.playerSessions.map((ps) => ps.player),
       };
     } catch (error) {
       log('Error updating session:', error);
@@ -164,21 +139,15 @@ export class SessionService {
 
   async deleteSession(sessionId: string) {
     try {
-      // First check if session exists
       const existingSession = await prisma.session.findUnique({
         where: { id: sessionId },
       });
-
       if (!existingSession) {
-        return null; // Session not found
+        return null;
       }
-
       await prisma.session.delete({
-        where: {
-          id: sessionId,
-        },
+        where: { id: sessionId },
       });
-
       return true;
     } catch (error) {
       log('Error deleting session:', error);
@@ -188,63 +157,27 @@ export class SessionService {
 
   async joinSession(sessionId: string, playerData: PlayerData) {
     try {
-      // Check if session exists
-      const existingSession = await prisma.session.findUnique({
-        where: { id: sessionId },
-      });
-
-      if (!existingSession) {
-        return null; // Session not found
-      }
-
-      // Check if player already exists in this session
-      const existingSessionWithPlayer = await prisma.session.findFirst({
-        where: {
-          id: sessionId,
-          players: {
-            some: {
-              id: playerData.id,
-            },
-          },
-        },
-      });
-
-      if (existingSessionWithPlayer) {
-        // Player already exists in this session, throw error
-        throw new Error('Player already in session');
-      }
-
-      // Create or update player and connect to session
+      // Ensure session exists
+      const session = await prisma.session.findUnique({ where: { id: sessionId } });
+      if (!session) return null;
+      // Upsert player
       await prisma.player.upsert({
-        where: {
-          id: playerData.id,
-        },
-        update: {
-          name: playerData.name,
-          sessions: {
-            connect: {
-              id: sessionId,
-            },
-          },
-        },
-        create: {
-          id: playerData.id,
-          name: playerData.name,
-          sessions: {
-            connect: {
-              id: sessionId,
-            },
-          },
-        },
+        where: { id: playerData.id },
+        update: { name: playerData.name },
+        create: { id: playerData.id, name: playerData.name },
       });
-
-      // Return updated session with players
-      return await this.getSessionById(sessionId);
+      // Check if already joined
+      const alreadyJoined = await prisma.playerSession.findUnique({
+        where: { playerId_sessionId: { playerId: playerData.id, sessionId } },
+      });
+      if (alreadyJoined) throw new Error('Player already in session');
+      // Add to session
+      await prisma.playerSession.create({
+        data: { playerId: playerData.id, sessionId },
+      });
+      return this.getSessionById(sessionId);
     } catch (error) {
-      if (
-        error instanceof Error &&
-        error.message === 'Player already in session'
-      ) {
+      if (error instanceof Error && error.message === 'Player already in session') {
         throw error;
       }
       log('Error joining session:', error);
@@ -254,20 +187,10 @@ export class SessionService {
 
   async removePlayerFromSession(sessionId: string, playerId: string) {
     try {
-      await prisma.session.update({
-        where: {
-          id: sessionId,
-        },
-        data: {
-          players: {
-            disconnect: {
-              id: playerId,
-            },
-          },
-        },
+      await prisma.playerSession.delete({
+        where: { playerId_sessionId: { playerId, sessionId } },
       });
-
-      return await this.getSessionById(sessionId);
+      return this.getSessionById(sessionId);
     } catch (error) {
       log('Error removing player from session:', error);
       throw new Error('Failed to remove player from session');
@@ -276,20 +199,12 @@ export class SessionService {
 
   async getPlayersInSession(sessionId: string) {
     try {
-      const session = await prisma.session.findUnique({
-        where: {
-          id: sessionId,
-        },
-        include: {
-          players: {
-            orderBy: {
-              createdAt: 'asc',
-            },
-          },
-        },
+      const playerSessions = await prisma.playerSession.findMany({
+        where: { sessionId },
+        include: { player: { select: { id: true, name: true } } },
+        orderBy: { joinedAt: 'asc' },
       });
-
-      return session?.players || [];
+      return playerSessions.map((ps) => ps.player);
     } catch (error) {
       log('Error getting players in session:', error);
       throw new Error('Failed to get players in session');

@@ -63,84 +63,85 @@ export declare const schemas: {
             details: z.ZodOptional<z.ZodObject<{}, "passthrough", z.ZodTypeAny, z.objectOutputType<{}, z.ZodTypeAny, "passthrough">, z.objectInputType<{}, z.ZodTypeAny, "passthrough">>>;
         }, z.ZodTypeAny, "passthrough">>;
     }, z.ZodTypeAny, "passthrough">>;
+    SessionStatus: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
     SessionListItem: z.ZodObject<{
         id: z.ZodString;
         name: z.ZodString;
         description: z.ZodString;
-        creationDate: z.ZodString;
-        started: z.ZodBoolean;
+        createdAt: z.ZodString;
+        status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
     }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
         id: z.ZodString;
         name: z.ZodString;
         description: z.ZodString;
-        creationDate: z.ZodString;
-        started: z.ZodBoolean;
+        createdAt: z.ZodString;
+        status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
     }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
         id: z.ZodString;
         name: z.ZodString;
         description: z.ZodString;
-        creationDate: z.ZodString;
-        started: z.ZodBoolean;
+        createdAt: z.ZodString;
+        status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
     }, z.ZodTypeAny, "passthrough">>;
     SessionsResponse: z.ZodObject<{
         sessions: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
             name: z.ZodString;
             description: z.ZodString;
-            creationDate: z.ZodString;
-            started: z.ZodBoolean;
+            createdAt: z.ZodString;
+            status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
         }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
             id: z.ZodString;
             name: z.ZodString;
             description: z.ZodString;
-            creationDate: z.ZodString;
-            started: z.ZodBoolean;
+            createdAt: z.ZodString;
+            status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
         }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
             id: z.ZodString;
             name: z.ZodString;
             description: z.ZodString;
-            creationDate: z.ZodString;
-            started: z.ZodBoolean;
+            createdAt: z.ZodString;
+            status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
         }, z.ZodTypeAny, "passthrough">>, "many">;
     }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
         sessions: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
             name: z.ZodString;
             description: z.ZodString;
-            creationDate: z.ZodString;
-            started: z.ZodBoolean;
+            createdAt: z.ZodString;
+            status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
         }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
             id: z.ZodString;
             name: z.ZodString;
             description: z.ZodString;
-            creationDate: z.ZodString;
-            started: z.ZodBoolean;
+            createdAt: z.ZodString;
+            status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
         }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
             id: z.ZodString;
             name: z.ZodString;
             description: z.ZodString;
-            creationDate: z.ZodString;
-            started: z.ZodBoolean;
+            createdAt: z.ZodString;
+            status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
         }, z.ZodTypeAny, "passthrough">>, "many">;
     }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
         sessions: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
             name: z.ZodString;
             description: z.ZodString;
-            creationDate: z.ZodString;
-            started: z.ZodBoolean;
+            createdAt: z.ZodString;
+            status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
         }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
             id: z.ZodString;
             name: z.ZodString;
             description: z.ZodString;
-            creationDate: z.ZodString;
-            started: z.ZodBoolean;
+            createdAt: z.ZodString;
+            status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
         }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
             id: z.ZodString;
             name: z.ZodString;
             description: z.ZodString;
-            creationDate: z.ZodString;
-            started: z.ZodBoolean;
+            createdAt: z.ZodString;
+            status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
         }, z.ZodTypeAny, "passthrough">>, "many">;
     }, z.ZodTypeAny, "passthrough">>;
     createSession_Body: z.ZodObject<{
@@ -167,8 +168,8 @@ export declare const schemas: {
         id: z.ZodString;
         name: z.ZodString;
         description: z.ZodString;
-        creationDate: z.ZodString;
-        started: z.ZodBoolean;
+        createdAt: z.ZodString;
+        status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
         players: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
             name: z.ZodString;
@@ -183,8 +184,8 @@ export declare const schemas: {
         id: z.ZodString;
         name: z.ZodString;
         description: z.ZodString;
-        creationDate: z.ZodString;
-        started: z.ZodBoolean;
+        createdAt: z.ZodString;
+        status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
         players: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
             name: z.ZodString;
@@ -199,8 +200,8 @@ export declare const schemas: {
         id: z.ZodString;
         name: z.ZodString;
         description: z.ZodString;
-        creationDate: z.ZodString;
-        started: z.ZodBoolean;
+        createdAt: z.ZodString;
+        status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
         players: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
             name: z.ZodString;
@@ -215,15 +216,15 @@ export declare const schemas: {
     updateSession_Body: z.ZodObject<{
         name: z.ZodOptional<z.ZodString>;
         description: z.ZodOptional<z.ZodString>;
-        started: z.ZodOptional<z.ZodBoolean>;
+        status: z.ZodOptional<z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>>;
     }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
         name: z.ZodOptional<z.ZodString>;
         description: z.ZodOptional<z.ZodString>;
-        started: z.ZodOptional<z.ZodBoolean>;
+        status: z.ZodOptional<z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>>;
     }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
         name: z.ZodOptional<z.ZodString>;
         description: z.ZodOptional<z.ZodString>;
-        started: z.ZodOptional<z.ZodBoolean>;
+        status: z.ZodOptional<z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>>;
     }, z.ZodTypeAny, "passthrough">>;
     joinSession_Body: z.ZodObject<{
         player: z.ZodObject<{
@@ -2320,60 +2321,60 @@ export declare const api: import("@zodios/core").ZodiosInstance<[{
             id: z.ZodString;
             name: z.ZodString;
             description: z.ZodString;
-            creationDate: z.ZodString;
-            started: z.ZodBoolean;
+            createdAt: z.ZodString;
+            status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
         }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
             id: z.ZodString;
             name: z.ZodString;
             description: z.ZodString;
-            creationDate: z.ZodString;
-            started: z.ZodBoolean;
+            createdAt: z.ZodString;
+            status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
         }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
             id: z.ZodString;
             name: z.ZodString;
             description: z.ZodString;
-            creationDate: z.ZodString;
-            started: z.ZodBoolean;
+            createdAt: z.ZodString;
+            status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
         }, z.ZodTypeAny, "passthrough">>, "many">;
     }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
         sessions: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
             name: z.ZodString;
             description: z.ZodString;
-            creationDate: z.ZodString;
-            started: z.ZodBoolean;
+            createdAt: z.ZodString;
+            status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
         }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
             id: z.ZodString;
             name: z.ZodString;
             description: z.ZodString;
-            creationDate: z.ZodString;
-            started: z.ZodBoolean;
+            createdAt: z.ZodString;
+            status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
         }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
             id: z.ZodString;
             name: z.ZodString;
             description: z.ZodString;
-            creationDate: z.ZodString;
-            started: z.ZodBoolean;
+            createdAt: z.ZodString;
+            status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
         }, z.ZodTypeAny, "passthrough">>, "many">;
     }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
         sessions: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
             name: z.ZodString;
             description: z.ZodString;
-            creationDate: z.ZodString;
-            started: z.ZodBoolean;
+            createdAt: z.ZodString;
+            status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
         }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
             id: z.ZodString;
             name: z.ZodString;
             description: z.ZodString;
-            creationDate: z.ZodString;
-            started: z.ZodBoolean;
+            createdAt: z.ZodString;
+            status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
         }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
             id: z.ZodString;
             name: z.ZodString;
             description: z.ZodString;
-            creationDate: z.ZodString;
-            started: z.ZodBoolean;
+            createdAt: z.ZodString;
+            status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
         }, z.ZodTypeAny, "passthrough">>, "many">;
     }, z.ZodTypeAny, "passthrough">>;
     errors: [{
@@ -2499,8 +2500,8 @@ export declare const api: import("@zodios/core").ZodiosInstance<[{
         id: z.ZodString;
         name: z.ZodString;
         description: z.ZodString;
-        creationDate: z.ZodString;
-        started: z.ZodBoolean;
+        createdAt: z.ZodString;
+        status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
         players: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
             name: z.ZodString;
@@ -2515,8 +2516,8 @@ export declare const api: import("@zodios/core").ZodiosInstance<[{
         id: z.ZodString;
         name: z.ZodString;
         description: z.ZodString;
-        creationDate: z.ZodString;
-        started: z.ZodBoolean;
+        createdAt: z.ZodString;
+        status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
         players: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
             name: z.ZodString;
@@ -2531,8 +2532,8 @@ export declare const api: import("@zodios/core").ZodiosInstance<[{
         id: z.ZodString;
         name: z.ZodString;
         description: z.ZodString;
-        creationDate: z.ZodString;
-        started: z.ZodBoolean;
+        createdAt: z.ZodString;
+        status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
         players: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
             name: z.ZodString;
@@ -2658,8 +2659,8 @@ export declare const api: import("@zodios/core").ZodiosInstance<[{
         id: z.ZodString;
         name: z.ZodString;
         description: z.ZodString;
-        creationDate: z.ZodString;
-        started: z.ZodBoolean;
+        createdAt: z.ZodString;
+        status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
         players: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
             name: z.ZodString;
@@ -2674,8 +2675,8 @@ export declare const api: import("@zodios/core").ZodiosInstance<[{
         id: z.ZodString;
         name: z.ZodString;
         description: z.ZodString;
-        creationDate: z.ZodString;
-        started: z.ZodBoolean;
+        createdAt: z.ZodString;
+        status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
         players: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
             name: z.ZodString;
@@ -2690,8 +2691,8 @@ export declare const api: import("@zodios/core").ZodiosInstance<[{
         id: z.ZodString;
         name: z.ZodString;
         description: z.ZodString;
-        creationDate: z.ZodString;
-        started: z.ZodBoolean;
+        createdAt: z.ZodString;
+        status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
         players: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
             name: z.ZodString;
@@ -2855,7 +2856,7 @@ export declare const api: import("@zodios/core").ZodiosInstance<[{
     method: "put";
     path: "/session/:sessionId";
     alias: "updateSession";
-    description: "Update session name, description, or started status";
+    description: "Update session name, description, or status";
     requestFormat: "json";
     parameters: [{
         name: "body";
@@ -2863,15 +2864,15 @@ export declare const api: import("@zodios/core").ZodiosInstance<[{
         schema: z.ZodObject<{
             name: z.ZodOptional<z.ZodString>;
             description: z.ZodOptional<z.ZodString>;
-            started: z.ZodOptional<z.ZodBoolean>;
+            status: z.ZodOptional<z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>>;
         }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
             name: z.ZodOptional<z.ZodString>;
             description: z.ZodOptional<z.ZodString>;
-            started: z.ZodOptional<z.ZodBoolean>;
+            status: z.ZodOptional<z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>>;
         }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
             name: z.ZodOptional<z.ZodString>;
             description: z.ZodOptional<z.ZodString>;
-            started: z.ZodOptional<z.ZodBoolean>;
+            status: z.ZodOptional<z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>>;
         }, z.ZodTypeAny, "passthrough">>;
     }, {
         name: "sessionId";
@@ -2882,8 +2883,8 @@ export declare const api: import("@zodios/core").ZodiosInstance<[{
         id: z.ZodString;
         name: z.ZodString;
         description: z.ZodString;
-        creationDate: z.ZodString;
-        started: z.ZodBoolean;
+        createdAt: z.ZodString;
+        status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
         players: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
             name: z.ZodString;
@@ -2898,8 +2899,8 @@ export declare const api: import("@zodios/core").ZodiosInstance<[{
         id: z.ZodString;
         name: z.ZodString;
         description: z.ZodString;
-        creationDate: z.ZodString;
-        started: z.ZodBoolean;
+        createdAt: z.ZodString;
+        status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
         players: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
             name: z.ZodString;
@@ -2914,8 +2915,8 @@ export declare const api: import("@zodios/core").ZodiosInstance<[{
         id: z.ZodString;
         name: z.ZodString;
         description: z.ZodString;
-        creationDate: z.ZodString;
-        started: z.ZodBoolean;
+        createdAt: z.ZodString;
+        status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
         players: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
             name: z.ZodString;
@@ -3287,8 +3288,8 @@ export declare const api: import("@zodios/core").ZodiosInstance<[{
         id: z.ZodString;
         name: z.ZodString;
         description: z.ZodString;
-        creationDate: z.ZodString;
-        started: z.ZodBoolean;
+        createdAt: z.ZodString;
+        status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
         players: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
             name: z.ZodString;
@@ -3303,8 +3304,8 @@ export declare const api: import("@zodios/core").ZodiosInstance<[{
         id: z.ZodString;
         name: z.ZodString;
         description: z.ZodString;
-        creationDate: z.ZodString;
-        started: z.ZodBoolean;
+        createdAt: z.ZodString;
+        status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
         players: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
             name: z.ZodString;
@@ -3319,8 +3320,8 @@ export declare const api: import("@zodios/core").ZodiosInstance<[{
         id: z.ZodString;
         name: z.ZodString;
         description: z.ZodString;
-        creationDate: z.ZodString;
-        started: z.ZodBoolean;
+        createdAt: z.ZodString;
+        status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
         players: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
             name: z.ZodString;
@@ -4472,60 +4473,60 @@ export declare function createApiClient(baseUrl: string, options?: ZodiosOptions
             id: z.ZodString;
             name: z.ZodString;
             description: z.ZodString;
-            creationDate: z.ZodString;
-            started: z.ZodBoolean;
+            createdAt: z.ZodString;
+            status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
         }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
             id: z.ZodString;
             name: z.ZodString;
             description: z.ZodString;
-            creationDate: z.ZodString;
-            started: z.ZodBoolean;
+            createdAt: z.ZodString;
+            status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
         }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
             id: z.ZodString;
             name: z.ZodString;
             description: z.ZodString;
-            creationDate: z.ZodString;
-            started: z.ZodBoolean;
+            createdAt: z.ZodString;
+            status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
         }, z.ZodTypeAny, "passthrough">>, "many">;
     }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
         sessions: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
             name: z.ZodString;
             description: z.ZodString;
-            creationDate: z.ZodString;
-            started: z.ZodBoolean;
+            createdAt: z.ZodString;
+            status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
         }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
             id: z.ZodString;
             name: z.ZodString;
             description: z.ZodString;
-            creationDate: z.ZodString;
-            started: z.ZodBoolean;
+            createdAt: z.ZodString;
+            status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
         }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
             id: z.ZodString;
             name: z.ZodString;
             description: z.ZodString;
-            creationDate: z.ZodString;
-            started: z.ZodBoolean;
+            createdAt: z.ZodString;
+            status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
         }, z.ZodTypeAny, "passthrough">>, "many">;
     }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
         sessions: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
             name: z.ZodString;
             description: z.ZodString;
-            creationDate: z.ZodString;
-            started: z.ZodBoolean;
+            createdAt: z.ZodString;
+            status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
         }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
             id: z.ZodString;
             name: z.ZodString;
             description: z.ZodString;
-            creationDate: z.ZodString;
-            started: z.ZodBoolean;
+            createdAt: z.ZodString;
+            status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
         }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
             id: z.ZodString;
             name: z.ZodString;
             description: z.ZodString;
-            creationDate: z.ZodString;
-            started: z.ZodBoolean;
+            createdAt: z.ZodString;
+            status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
         }, z.ZodTypeAny, "passthrough">>, "many">;
     }, z.ZodTypeAny, "passthrough">>;
     errors: [{
@@ -4651,8 +4652,8 @@ export declare function createApiClient(baseUrl: string, options?: ZodiosOptions
         id: z.ZodString;
         name: z.ZodString;
         description: z.ZodString;
-        creationDate: z.ZodString;
-        started: z.ZodBoolean;
+        createdAt: z.ZodString;
+        status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
         players: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
             name: z.ZodString;
@@ -4667,8 +4668,8 @@ export declare function createApiClient(baseUrl: string, options?: ZodiosOptions
         id: z.ZodString;
         name: z.ZodString;
         description: z.ZodString;
-        creationDate: z.ZodString;
-        started: z.ZodBoolean;
+        createdAt: z.ZodString;
+        status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
         players: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
             name: z.ZodString;
@@ -4683,8 +4684,8 @@ export declare function createApiClient(baseUrl: string, options?: ZodiosOptions
         id: z.ZodString;
         name: z.ZodString;
         description: z.ZodString;
-        creationDate: z.ZodString;
-        started: z.ZodBoolean;
+        createdAt: z.ZodString;
+        status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
         players: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
             name: z.ZodString;
@@ -4810,8 +4811,8 @@ export declare function createApiClient(baseUrl: string, options?: ZodiosOptions
         id: z.ZodString;
         name: z.ZodString;
         description: z.ZodString;
-        creationDate: z.ZodString;
-        started: z.ZodBoolean;
+        createdAt: z.ZodString;
+        status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
         players: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
             name: z.ZodString;
@@ -4826,8 +4827,8 @@ export declare function createApiClient(baseUrl: string, options?: ZodiosOptions
         id: z.ZodString;
         name: z.ZodString;
         description: z.ZodString;
-        creationDate: z.ZodString;
-        started: z.ZodBoolean;
+        createdAt: z.ZodString;
+        status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
         players: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
             name: z.ZodString;
@@ -4842,8 +4843,8 @@ export declare function createApiClient(baseUrl: string, options?: ZodiosOptions
         id: z.ZodString;
         name: z.ZodString;
         description: z.ZodString;
-        creationDate: z.ZodString;
-        started: z.ZodBoolean;
+        createdAt: z.ZodString;
+        status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
         players: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
             name: z.ZodString;
@@ -5007,7 +5008,7 @@ export declare function createApiClient(baseUrl: string, options?: ZodiosOptions
     method: "put";
     path: "/session/:sessionId";
     alias: "updateSession";
-    description: "Update session name, description, or started status";
+    description: "Update session name, description, or status";
     requestFormat: "json";
     parameters: [{
         name: "body";
@@ -5015,15 +5016,15 @@ export declare function createApiClient(baseUrl: string, options?: ZodiosOptions
         schema: z.ZodObject<{
             name: z.ZodOptional<z.ZodString>;
             description: z.ZodOptional<z.ZodString>;
-            started: z.ZodOptional<z.ZodBoolean>;
+            status: z.ZodOptional<z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>>;
         }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
             name: z.ZodOptional<z.ZodString>;
             description: z.ZodOptional<z.ZodString>;
-            started: z.ZodOptional<z.ZodBoolean>;
+            status: z.ZodOptional<z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>>;
         }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
             name: z.ZodOptional<z.ZodString>;
             description: z.ZodOptional<z.ZodString>;
-            started: z.ZodOptional<z.ZodBoolean>;
+            status: z.ZodOptional<z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>>;
         }, z.ZodTypeAny, "passthrough">>;
     }, {
         name: "sessionId";
@@ -5034,8 +5035,8 @@ export declare function createApiClient(baseUrl: string, options?: ZodiosOptions
         id: z.ZodString;
         name: z.ZodString;
         description: z.ZodString;
-        creationDate: z.ZodString;
-        started: z.ZodBoolean;
+        createdAt: z.ZodString;
+        status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
         players: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
             name: z.ZodString;
@@ -5050,8 +5051,8 @@ export declare function createApiClient(baseUrl: string, options?: ZodiosOptions
         id: z.ZodString;
         name: z.ZodString;
         description: z.ZodString;
-        creationDate: z.ZodString;
-        started: z.ZodBoolean;
+        createdAt: z.ZodString;
+        status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
         players: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
             name: z.ZodString;
@@ -5066,8 +5067,8 @@ export declare function createApiClient(baseUrl: string, options?: ZodiosOptions
         id: z.ZodString;
         name: z.ZodString;
         description: z.ZodString;
-        creationDate: z.ZodString;
-        started: z.ZodBoolean;
+        createdAt: z.ZodString;
+        status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
         players: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
             name: z.ZodString;
@@ -5439,8 +5440,8 @@ export declare function createApiClient(baseUrl: string, options?: ZodiosOptions
         id: z.ZodString;
         name: z.ZodString;
         description: z.ZodString;
-        creationDate: z.ZodString;
-        started: z.ZodBoolean;
+        createdAt: z.ZodString;
+        status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
         players: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
             name: z.ZodString;
@@ -5455,8 +5456,8 @@ export declare function createApiClient(baseUrl: string, options?: ZodiosOptions
         id: z.ZodString;
         name: z.ZodString;
         description: z.ZodString;
-        creationDate: z.ZodString;
-        started: z.ZodBoolean;
+        createdAt: z.ZodString;
+        status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
         players: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
             name: z.ZodString;
@@ -5471,8 +5472,8 @@ export declare function createApiClient(baseUrl: string, options?: ZodiosOptions
         id: z.ZodString;
         name: z.ZodString;
         description: z.ZodString;
-        creationDate: z.ZodString;
-        started: z.ZodBoolean;
+        createdAt: z.ZodString;
+        status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
         players: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
             name: z.ZodString;

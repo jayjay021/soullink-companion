@@ -170,7 +170,7 @@
       },
       "put": {
         "summary": "Update session",
-        "description": "Update session name, description, or started status",
+        "description": "Update session name, description, or status",
         "operationId": "updateSession",
         "tags": [
           "Session"
@@ -188,8 +188,8 @@
                   "description": {
                     "type": "string"
                   },
-                  "started": {
-                    "type": "boolean"
+                  "status": {
+                    "$ref": "#/components/schemas/SessionStatus"
                   }
                 }
               }
@@ -433,14 +433,24 @@
           }
         }
       },
+      "SessionStatus": {
+        "type": "string",
+        "enum": [
+          "WAITING",
+          "STARTED",
+          "FINISHED"
+        ],
+        "description": "The status of a session",
+        "example": "WAITING"
+      },
       "Session": {
         "type": "object",
         "required": [
           "id",
           "name",
           "description",
-          "creationDate",
-          "started",
+          "createdAt",
+          "status",
           "players"
         ],
         "properties": {
@@ -453,12 +463,12 @@
           "description": {
             "type": "string"
           },
-          "creationDate": {
+          "createdAt": {
             "type": "string",
             "format": "date-time"
           },
-          "started": {
-            "type": "boolean"
+          "status": {
+            "$ref": "#/components/schemas/SessionStatus"
           },
           "players": {
             "type": "array",
@@ -471,8 +481,8 @@
           "id": "session-123",
           "name": "My Session",
           "description": "A fun session",
-          "creationDate": "2025-06-20T09:00:00.000Z",
-          "started": false,
+          "createdAt": "2025-06-20T09:00:00.000Z",
+          "status": "WAITING",
           "players": [
             {
               "id": "player-1",
@@ -504,15 +514,15 @@
               "id": "session-123",
               "name": "My Session",
               "description": "A fun session",
-              "creationDate": "2025-06-20T09:00:00.000Z",
-              "started": false
+              "createdAt": "2025-06-20T09:00:00.000Z",
+              "status": "WAITING"
             },
             {
               "id": "session-456",
               "name": "Another Session",
               "description": "Another fun session",
-              "creationDate": "2025-06-20T10:00:00.000Z",
-              "started": true
+              "createdAt": "2025-06-20T10:00:00.000Z",
+              "status": "STARTED"
             }
           ]
         }
@@ -523,8 +533,8 @@
           "id",
           "name",
           "description",
-          "creationDate",
-          "started"
+          "createdAt",
+          "status"
         ],
         "properties": {
           "id": {
@@ -536,20 +546,20 @@
           "description": {
             "type": "string"
           },
-          "creationDate": {
+          "createdAt": {
             "type": "string",
             "format": "date-time"
           },
-          "started": {
-            "type": "boolean"
+          "status": {
+            "$ref": "#/components/schemas/SessionStatus"
           }
         },
         "example": {
           "id": "session-123",
           "name": "My Session",
           "description": "A fun session",
-          "creationDate": "2025-06-20T09:00:00.000Z",
-          "started": false
+          "createdAt": "2025-06-20T09:00:00.000Z",
+          "status": "WAITING"
         }
       },
       "Player": {

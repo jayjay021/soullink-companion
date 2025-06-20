@@ -24,13 +24,14 @@ const Error = zod_1.z
         .passthrough(),
 })
     .passthrough();
+const SessionStatus = zod_1.z.enum(["WAITING", "STARTED", "FINISHED"]);
 const SessionListItem = zod_1.z
     .object({
     id: zod_1.z.string(),
     name: zod_1.z.string(),
     description: zod_1.z.string(),
-    creationDate: zod_1.z.string().datetime({ offset: true }),
-    started: zod_1.z.boolean(),
+    createdAt: zod_1.z.string().datetime({ offset: true }),
+    status: SessionStatus,
 })
     .passthrough();
 const SessionsResponse = zod_1.z
@@ -45,13 +46,13 @@ const Session = zod_1.z
     id: zod_1.z.string(),
     name: zod_1.z.string(),
     description: zod_1.z.string(),
-    creationDate: zod_1.z.string().datetime({ offset: true }),
-    started: zod_1.z.boolean(),
+    createdAt: zod_1.z.string().datetime({ offset: true }),
+    status: SessionStatus,
     players: zod_1.z.array(Player),
 })
     .passthrough();
 const updateSession_Body = zod_1.z
-    .object({ name: zod_1.z.string(), description: zod_1.z.string(), started: zod_1.z.boolean() })
+    .object({ name: zod_1.z.string(), description: zod_1.z.string(), status: SessionStatus })
     .partial()
     .passthrough();
 const joinSession_Body = zod_1.z.object({ player: Player }).passthrough();
@@ -110,6 +111,7 @@ const PokedexPokemonResponse = zod_1.z
 exports.schemas = {
     HealthResponse,
     Error,
+    SessionStatus,
     SessionListItem,
     SessionsResponse,
     createSession_Body,
@@ -261,7 +263,7 @@ const endpoints = (0, core_1.makeApi)([
         method: "put",
         path: "/session/:sessionId",
         alias: "updateSession",
-        description: `Update session name, description, or started status`,
+        description: `Update session name, description, or status`,
         requestFormat: "json",
         parameters: [
             {
