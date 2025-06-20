@@ -1,0 +1,28 @@
+{
+    "extends": [
+        "//"
+    ],
+    "tasks": {
+        "build": {
+            "dependsOn": [
+                "^build"
+            ],
+            "outputs": [
+                "generated/**"
+            ]
+        },
+        "generate": {
+            "inputs": [
+                "specs/**"
+            ],
+            "outputs": [
+                "generated/**"
+            ]
+        },
+        "validate": {
+            "inputs": [
+                "specs/**"
+            ]
+        }
+    }
+}

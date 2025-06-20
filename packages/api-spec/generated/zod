@@ -1,0 +1,210 @@
+import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
+import { z } from "zod";
+
+const HealthResponse = z
+  .object({
+    status: z.enum(["ok", "error"]),
+    timestamp: z.string().datetime({ offset: true }),
+    uptime: z.number(),
+    version: z.string().optional(),
+  })
+  .passthrough();
+const Game = z
+  .object({
+    id: z.string().uuid(),
+    name: z.string().min(1).max(100),
+    createdAt: z.string().datetime({ offset: true }),
+  })
+  .passthrough();
+const GameList = z
+  .object({ games: z.array(Game), total: z.number().int() })
+  .passthrough();
+const Error = z
+  .object({
+    success: z.literal(false),
+    error: z
+      .object({
+        message: z.string(),
+        code: z.string().optional(),
+        details: z.object({}).partial().passthrough().optional(),
+      })
+      .passthrough(),
+  })
+  .passthrough();
+const CreateGameRequest = z
+  .object({ name: z.string().min(1).max(100) })
+  .passthrough();
+const UpdateGameRequest = z
+  .object({ name: z.string().min(1).max(100) })
+  .partial()
+  .passthrough();
+
+export const schemas = {
+  HealthResponse,
+  Game,
+  GameList,
+  Error,
+  CreateGameRequest,
+  UpdateGameRequest,
+};
+
+const endpoints = makeApi([
+  {
+    method: "get",
+    path: "/events",
+    alias: "getEvents",
+    description: `Establishes SSE connection for real-time updates`,
+    requestFormat: "json",
+    response: z.void(),
+  },
+  {
+    method: "get",
+    path: "/games",
+    alias: "getGames",
+    description: `Retrieve a list of all games`,
+    requestFormat: "json",
+    response: GameList,
+    errors: [
+      {
+        status: 500,
+        description: `Internal server error`,
+        schema: Error,
+      },
+    ],
+  },
+  {
+    method: "post",
+    path: "/games",
+    alias: "createGame",
+    description: `Create a new game with the provided data`,
+    requestFormat: "json",
+    parameters: [
+      {
+        name: "body",
+        type: "Body",
+        schema: z.object({ name: z.string().min(1).max(100) }).passthrough(),
+      },
+    ],
+    response: Game,
+    errors: [
+      {
+        status: 400,
+        description: `Bad request`,
+        schema: Error,
+      },
+      {
+        status: 500,
+        description: `Internal server error`,
+        schema: Error,
+      },
+    ],
+  },
+  {
+    method: "get",
+    path: "/games/:id",
+    alias: "getGameById",
+    description: `Retrieve a specific game by its ID`,
+    requestFormat: "json",
+    parameters: [
+      {
+        name: "id",
+        type: "Path",
+        schema: z.string().uuid(),
+      },
+    ],
+    response: Game,
+    errors: [
+      {
+        status: 404,
+        description: `Resource not found`,
+        schema: Error,
+      },
+      {
+        status: 500,
+        description: `Internal server error`,
+        schema: Error,
+      },
+    ],
+  },
+  {
+    method: "put",
+    path: "/games/:id",
+    alias: "updateGame",
+    description: `Update an existing game with new data`,
+    requestFormat: "json",
+    parameters: [
+      {
+        name: "body",
+        type: "Body",
+        schema: z
+          .object({ name: z.string().min(1).max(100) })
+          .partial()
+          .passthrough(),
+      },
+      {
+        name: "id",
+        type: "Path",
+        schema: z.string().uuid(),
+      },
+    ],
+    response: Game,
+    errors: [
+      {
+        status: 400,
+        description: `Bad request`,
+        schema: Error,
+      },
+      {
+        status: 404,
+        description: `Resource not found`,
+        schema: Error,
+      },
+      {
+        status: 500,
+        description: `Internal server error`,
+        schema: Error,
+      },
+    ],
+  },
+  {
+    method: "delete",
+    path: "/games/:id",
+    alias: "deleteGame",
+    description: `Delete a game by its ID`,
+    requestFormat: "json",
+    parameters: [
+      {
+        name: "id",
+        type: "Path",
+        schema: z.string().uuid(),
+      },
+    ],
+    response: z.void(),
+    errors: [
+      {
+        status: 404,
+        description: `Resource not found`,
+        schema: Error,
+      },
+      {
+        status: 500,
+        description: `Internal server error`,
+        schema: Error,
+      },
+    ],
+  },
+  {
+    method: "get",
+    path: "/health",
+    alias: "getHealth",
+    description: `Returns the health status of the API`,
+    requestFormat: "json",
+    response: HealthResponse,
+  },
+]);
+
+export const api = new Zodios(endpoints);
+
+export function createApiClient(baseUrl: string, options?: ZodiosOptions) {
+  return new Zodios(baseUrl, endpoints, options);
+}

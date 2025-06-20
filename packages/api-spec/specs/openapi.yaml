@@ -1,0 +1,325 @@
+openapi: 3.0.3
+info:
+  title: SoulLink Companion API
+  description: API for the SoulLink Companion application
+  version: 1.0.0
+  contact:
+    name: API Support
+    email: support@soullink.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: http://localhost:5001/api/v1
+    description: Development server
+  - url: https://api.soullink.com/v1
+    description: Production server
+
+paths:
+  /health:
+    get:
+      summary: Health check endpoint
+      description: Returns the health status of the API
+      operationId: getHealth
+      tags:
+        - System
+      responses:
+        '200':
+          description: Health status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+
+  /events:
+    get:
+      summary: Server-Sent Events endpoint
+      description: Establishes SSE connection for real-time updates
+      operationId: getEvents
+      tags:
+        - Events
+      responses:
+        '200':
+          description: SSE stream established
+          content:
+            text/event-stream:
+              schema:
+                type: string
+  /games:
+    get:
+      summary: Get all games
+      description: Retrieve a list of all games
+      operationId: getGames
+      tags:
+        - Games
+      responses:
+        '200':
+          description: List of games
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameList'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    
+    post:
+      summary: Create a new game
+      description: Create a new game with the provided data
+      operationId: createGame
+      tags:
+        - Games
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateGameRequest'
+      responses:
+        '201':
+          description: Game created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Game'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /games/{id}:
+    get:
+      summary: Get a game by ID
+      description: Retrieve a specific game by its ID
+      operationId: getGameById
+      tags:
+        - Games
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Game ID
+      responses:
+        '200':
+          description: Game details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Game'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    
+    put:
+      summary: Update a game
+      description: Update an existing game with new data
+      operationId: updateGame
+      tags:
+        - Games
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Game ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateGameRequest'
+      responses:
+        '200':
+          description: Game updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Game'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    
+    delete:
+      summary: Delete a game
+      description: Delete a game by its ID
+      operationId: deleteGame
+      tags:
+        - Games
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Game ID
+      responses:
+        '204':
+          description: Game deleted successfully
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+components:
+  schemas:
+    HealthResponse:
+      type: object
+      required:
+        - status
+        - timestamp
+        - uptime
+      properties:
+        status:
+          type: string
+          enum: [ok, error]
+          description: Health status
+        timestamp:
+          type: string
+          format: date-time
+          description: Current server timestamp
+        uptime:
+          type: number
+          description: Server uptime in seconds
+        version:
+          type: string
+          description: API version
+      example:
+        status: ok
+        timestamp: "2025-06-20T08:59:34.496Z"
+        uptime: 20.243046746
+        version: "1.0.0"
+
+    Error:
+      type: object
+      required:
+        - success
+        - error
+      properties:
+        success:
+          type: boolean
+          enum: [false]
+        error:
+          type: object
+          required:
+            - message
+          properties:
+            message:
+              type: string
+              description: Error message
+            code:
+              type: string
+              description: Error code
+            details:
+              type: object
+              description: Additional error details
+      example:
+        success: false
+        error:
+          message: "Resource not found"
+          code: "NOT_FOUND"
+    Game:
+      type: object
+      required:
+        - id
+        - name
+        - createdAt
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the game
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+          description: Name of the game
+        createdAt:
+          type: string
+          format: date-time
+          description: When the game was created
+      example:
+        id: "123e4567-e89b-12d3-a456-426614174000"
+        name: "My Awesome Game"
+        createdAt: "2025-06-20T10:30:00.000Z"
+
+    CreateGameRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+          description: Name of the game
+      example:
+        name: "My Awesome Game"
+
+    UpdateGameRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+          description: Name of the game
+      example:
+        name: "Updated Game Name"
+
+    GameList:
+      type: object
+      required:
+        - games
+        - total
+      properties:
+        games:
+          type: array
+          items:
+            $ref: '#/components/schemas/Game'
+        total:
+          type: integer
+          description: Total number of games
+      example:
+        games:
+          - id: "123e4567-e89b-12d3-a456-426614174000"
+            name: "Game 1"
+            createdAt: "2025-06-20T10:30:00.000Z"
+        total: 1
+  responses:
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+tags:
+  - name: System
+    description: System health and monitoring endpoints
+  - name: Events
+    description: Real-time event streaming endpoints
+  - name: Games
+    description: Game management endpoints
