@@ -189,6 +189,39 @@ describe('Session API ', () => {
       expect(response.body.description).toBe(updateRequestBody.description);
     });
 
+    it('should return 200 OK for starting a session', async () => {
+      // First, create a session to get a valid sessionId
+      const createResponse = await supertest(app)
+        .post('/api/v1/session')
+        .send({
+          name: 'Session for Start Test',
+          description: 'This session is created for testing starting a session',
+        })
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(201);
+      const session = schemas.Session.parse(createResponse.body);
+      const sessionId = session.id;
+      // Now, update the session to start it
+      const response = await supertest(app)
+        .put(`/api/v1/session/${sessionId}`)
+        .send({
+          name: 'Started Session',
+          description: 'This session is now started',
+          started: true, // Assuming 'started' is a boolean field to indicate session start
+        })
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(200);
+      // Validate the response using Zod schema
+      const validation = schemas.Session.safeParse(response.body);
+      expect(validation.success).toBe(true);
+      // Check if the session was updated correctly
+      expect(response.body.name).toBe('Started Session');
+      expect(response.body.description).toBe('This session is now started');
+      expect(response.body.started).toBe(true); // Check if the session is marked as started
+    });
+
     it('should return 404 Not Found for invalid sessionId', async () => {
       await supertest(app)
         .put('/api/v1/session/invalid-session-id')
