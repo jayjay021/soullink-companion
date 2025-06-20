@@ -4,12 +4,16 @@
     "private": true,
     "scripts": {
         "generate": "npm-run-all generate:*",
-        "generate:zod": "openapi-zod-client ./specs/openapi.yaml -o ./generated/zod --export-schemas",
+        "generate:zod": "openapi-zod-client ./specs/openapi.yaml -o ./generated/zod/index.ts --export-schemas",
         "generate:types": "openapi-typescript ./specs/openapi.yaml -o ./generated/types.ts",
         "generate:json": "node -e \"const YAML = require('yamljs'); const fs = require('fs'); const spec = YAML.load('./specs/openapi.yaml'); fs.writeFileSync('./generated/openapi.json', JSON.stringify(spec, null, 2));\"",
         "validate": "echo 'Validation placeholder'",
         "build": "pnpm generate",
         "dev": "echo 'API spec watching is handled by dependent packages'"
+    },
+    "dependencies": {
+        "zod": "^3.22.4",
+        "@zodios/core": "^10.9.6"
     },
     "devDependencies": {
         "openapi-typescript": "^7.4.0",

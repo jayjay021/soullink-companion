@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import sessionRoutes from './session';
 
 const router: Router = Router();
 
@@ -8,7 +9,6 @@ router.get('/', (req, res) => {
     message: 'SoulLink Companion API v1',
     version: '1.0.0',
     endpoints: {
-      health: '/api/health',
       docs: '/api-docs',
     },
   });
@@ -16,5 +16,6 @@ router.get('/', (req, res) => {
 
 // Future resource routes will be mounted here
 // Example: router.use('/games', gameRoutes);
+router.use('/session', sessionRoutes);
 
 export default router;

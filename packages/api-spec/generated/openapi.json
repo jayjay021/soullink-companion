@@ -42,50 +42,37 @@
                 }
               }
             }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
           }
         }
       }
     },
-    "/events": {
+    "/session": {
       "get": {
-        "summary": "Server-Sent Events endpoint",
-        "description": "Establishes SSE connection for real-time updates",
-        "operationId": "getEvents",
+        "summary": "List sessions",
+        "description": "Returns a list of all sessions",
+        "operationId": "listSessions",
         "tags": [
-          "Events"
+          "Session"
         ],
         "responses": {
           "200": {
-            "description": "SSE stream established",
-            "content": {
-              "text/event-stream": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/games": {
-      "get": {
-        "summary": "Get all games",
-        "description": "Retrieve a list of all games",
-        "operationId": "getGames",
-        "tags": [
-          "Games"
-        ],
-        "responses": {
-          "200": {
-            "description": "List of games",
+            "description": "List of sessions",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GameList"
+                  "$ref": "#/components/schemas/SessionsResponse"
                 }
               }
             }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
           },
           "500": {
             "$ref": "#/components/responses/InternalServerError"
@@ -93,29 +80,41 @@
         }
       },
       "post": {
-        "summary": "Create a new game",
-        "description": "Create a new game with the provided data",
-        "operationId": "createGame",
+        "summary": "Create a new session",
+        "description": "Creates a new session",
+        "operationId": "createSession",
         "tags": [
-          "Games"
+          "Session"
         ],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateGameRequest"
+                "type": "object",
+                "required": [
+                  "name",
+                  "description"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
+                }
               }
             }
           }
         },
         "responses": {
           "201": {
-            "description": "Game created successfully",
+            "description": "Session created",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Game"
+                  "$ref": "#/components/schemas/Session"
                 }
               }
             }
@@ -129,36 +128,37 @@
         }
       }
     },
-    "/games/{id}": {
-      "get": {
-        "summary": "Get a game by ID",
-        "description": "Retrieve a specific game by its ID",
-        "operationId": "getGameById",
-        "tags": [
-          "Games"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "description": "Game ID"
+    "/session/{sessionId}": {
+      "parameters": [
+        {
+          "name": "sessionId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
           }
+        }
+      ],
+      "get": {
+        "summary": "Get session by ID",
+        "description": "Returns a session by its ID",
+        "operationId": "getSession",
+        "tags": [
+          "Session"
         ],
         "responses": {
           "200": {
-            "description": "Game details",
+            "description": "Session found",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Game"
+                  "$ref": "#/components/schemas/Session"
                 }
               }
             }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
@@ -169,41 +169,40 @@
         }
       },
       "put": {
-        "summary": "Update a game",
-        "description": "Update an existing game with new data",
-        "operationId": "updateGame",
+        "summary": "Update session",
+        "description": "Update session name, description, or started status",
+        "operationId": "updateSession",
         "tags": [
-          "Games"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "description": "Game ID"
-          }
+          "Session"
         ],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateGameRequest"
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "started": {
+                    "type": "boolean"
+                  }
+                }
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Game updated successfully",
+            "description": "Session updated",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Game"
+                  "$ref": "#/components/schemas/Session"
                 }
               }
             }
@@ -220,27 +219,77 @@
         }
       },
       "delete": {
-        "summary": "Delete a game",
-        "description": "Delete a game by its ID",
-        "operationId": "deleteGame",
+        "summary": "Delete session",
+        "description": "Deletes a session by its ID",
+        "operationId": "deleteSession",
         "tags": [
-          "Games"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "description": "Game ID"
-          }
+          "Session"
         ],
         "responses": {
           "204": {
-            "description": "Game deleted successfully"
+            "description": "Session deleted"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/session/{sessionId}/join": {
+      "post": {
+        "summary": "Join session",
+        "description": "Join a session as a player",
+        "operationId": "joinSession",
+        "tags": [
+          "Session"
+        ],
+        "parameters": [
+          {
+            "name": "sessionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "player"
+                ],
+                "properties": {
+                  "player": {
+                    "$ref": "#/components/schemas/Player"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Player joined session",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Session"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
@@ -333,101 +382,148 @@
           }
         }
       },
-      "Game": {
+      "Session": {
         "type": "object",
         "required": [
           "id",
           "name",
-          "createdAt"
+          "description",
+          "creationDate",
+          "started",
+          "players"
         ],
         "properties": {
           "id": {
-            "type": "string",
-            "format": "uuid",
-            "description": "Unique identifier for the game"
+            "type": "string"
           },
           "name": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 100,
-            "description": "Name of the game"
+            "type": "string"
           },
-          "createdAt": {
+          "description": {
+            "type": "string"
+          },
+          "creationDate": {
             "type": "string",
-            "format": "date-time",
-            "description": "When the game was created"
+            "format": "date-time"
+          },
+          "started": {
+            "type": "boolean"
+          },
+          "players": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Player"
+            }
           }
         },
         "example": {
-          "id": "123e4567-e89b-12d3-a456-426614174000",
-          "name": "My Awesome Game",
-          "createdAt": "2025-06-20T10:30:00.000Z"
+          "id": "session-123",
+          "name": "My Session",
+          "description": "A fun session",
+          "creationDate": "2025-06-20T09:00:00.000Z",
+          "started": false,
+          "players": [
+            {
+              "id": "player-1",
+              "name": "Alice"
+            },
+            {
+              "id": "player-2",
+              "name": "Bob"
+            }
+          ]
         }
       },
-      "CreateGameRequest": {
+      "SessionsResponse": {
         "type": "object",
         "required": [
+          "sessions"
+        ],
+        "properties": {
+          "sessions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SessionListItem"
+            }
+          }
+        },
+        "example": {
+          "sessions": [
+            {
+              "id": "session-123",
+              "name": "My Session",
+              "description": "A fun session",
+              "creationDate": "2025-06-20T09:00:00.000Z",
+              "started": false
+            },
+            {
+              "id": "session-456",
+              "name": "Another Session",
+              "description": "Another fun session",
+              "creationDate": "2025-06-20T10:00:00.000Z",
+              "started": true
+            }
+          ]
+        }
+      },
+      "SessionListItem": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "description",
+          "creationDate",
+          "started"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "creationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "started": {
+            "type": "boolean"
+          }
+        },
+        "example": {
+          "id": "session-123",
+          "name": "My Session",
+          "description": "A fun session",
+          "creationDate": "2025-06-20T09:00:00.000Z",
+          "started": false
+        }
+      },
+      "Player": {
+        "type": "object",
+        "required": [
+          "id",
           "name"
         ],
         "properties": {
-          "name": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 100,
-            "description": "Name of the game"
-          }
-        },
-        "example": {
-          "name": "My Awesome Game"
-        }
-      },
-      "UpdateGameRequest": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 100,
-            "description": "Name of the game"
-          }
-        },
-        "example": {
-          "name": "Updated Game Name"
-        }
-      },
-      "GameList": {
-        "type": "object",
-        "required": [
-          "games",
-          "total"
-        ],
-        "properties": {
-          "games": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Game"
-            }
+          "id": {
+            "type": "string"
           },
-          "total": {
-            "type": "integer",
-            "description": "Total number of games"
+          "name": {
+            "type": "string"
           }
         },
         "example": {
-          "games": [
-            {
-              "id": "123e4567-e89b-12d3-a456-426614174000",
-              "name": "Game 1",
-              "createdAt": "2025-06-20T10:30:00.000Z"
-            }
-          ],
-          "total": 1
+          "id": "player-1",
+          "name": "Alice"
         }
       }
     },
     "responses": {
-      "NotFound": {
-        "description": "Resource not found",
+      "BadRequest": {
+        "description": "Bad request",
         "content": {
           "application/json": {
             "schema": {
@@ -436,8 +532,8 @@
           }
         }
       },
-      "BadRequest": {
-        "description": "Bad request",
+      "NotFound": {
+        "description": "Resource not found",
         "content": {
           "application/json": {
             "schema": {
@@ -464,11 +560,7 @@
       "description": "System health and monitoring endpoints"
     },
     {
-      "name": "Events",
-      "description": "Real-time event streaming endpoints"
-    },
-    {
-      "name": "Games",
+      "name": "Session",
       "description": "Game management endpoints"
     }
   ]

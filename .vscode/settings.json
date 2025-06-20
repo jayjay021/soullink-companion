@@ -10,5 +10,11 @@
     "**/*.sass",
     "**/*.less",
     "node_modules/@mantine/core/styles.css"
-  ]
+  ],
+  "yaml.schemas": {
+    "kubernetes": [
+      "infra/k8s/*"
+    ],
+    "swaggerviewer:openapi": "file:///home/holt034/Development/soullink-companion/packages/api-spec/specs/openapi.yaml"
+  }
 }

@@ -24,7 +24,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/events": {
+    "/session": {
         parameters: {
             query?: never;
             header?: never;
@@ -32,65 +32,67 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Server-Sent Events endpoint
-         * @description Establishes SSE connection for real-time updates
+         * List sessions
+         * @description Returns a list of all sessions
          */
-        get: operations["getEvents"];
+        get: operations["listSessions"];
         put?: never;
-        post?: never;
+        /**
+         * Create a new session
+         * @description Creates a new session
+         */
+        post: operations["createSession"];
         delete?: never;
         options?: never;
         head?: never;
         patch?: never;
         trace?: never;
     };
-    "/games": {
+    "/session/{sessionId}": {
         parameters: {
             query?: never;
             header?: never;
-            path?: never;
+            path: {
+                sessionId: string;
+            };
             cookie?: never;
         };
         /**
-         * Get all games
-         * @description Retrieve a list of all games
+         * Get session by ID
+         * @description Returns a session by its ID
          */
-        get: operations["getGames"];
-        put?: never;
+        get: operations["getSession"];
         /**
-         * Create a new game
-         * @description Create a new game with the provided data
+         * Update session
+         * @description Update session name, description, or started status
          */
-        post: operations["createGame"];
-        delete?: never;
+        put: operations["updateSession"];
+        post?: never;
+        /**
+         * Delete session
+         * @description Deletes a session by its ID
+         */
+        delete: operations["deleteSession"];
         options?: never;
         head?: never;
         patch?: never;
         trace?: never;
     };
-    "/games/{id}": {
+    "/session/{sessionId}/join": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
+        get?: never;
+        put?: never;
         /**
-         * Get a game by ID
-         * @description Retrieve a specific game by its ID
+         * Join session
+         * @description Join a session as a player
          */
-        get: operations["getGameById"];
-        /**
-         * Update a game
-         * @description Update an existing game with new data
-         */
-        put: operations["updateGame"];
-        post?: never;
-        /**
-         * Delete a game
-         * @description Delete a game by its ID
-         */
-        delete: operations["deleteGame"];
+        post: operations["joinSession"];
+        delete?: never;
         options?: never;
         head?: never;
         patch?: never;
@@ -142,57 +144,79 @@ export interface components {
             };
         };
         /** @example {
-         *       "id": "123e4567-e89b-12d3-a456-426614174000",
-         *       "name": "My Awesome Game",
-         *       "createdAt": "2025-06-20T10:30:00.000Z"
-         *     } */
-        Game: {
-            /**
-             * Format: uuid
-             * @description Unique identifier for the game
-             */
-            id: string;
-            /** @description Name of the game */
-            name: string;
-            /**
-             * Format: date-time
-             * @description When the game was created
-             */
-            createdAt: string;
-        };
-        /** @example {
-         *       "name": "My Awesome Game"
-         *     } */
-        CreateGameRequest: {
-            /** @description Name of the game */
-            name: string;
-        };
-        /** @example {
-         *       "name": "Updated Game Name"
-         *     } */
-        UpdateGameRequest: {
-            /** @description Name of the game */
-            name?: string;
-        };
-        /** @example {
-         *       "games": [
+         *       "id": "session-123",
+         *       "name": "My Session",
+         *       "description": "A fun session",
+         *       "creationDate": "2025-06-20T09:00:00.000Z",
+         *       "started": false,
+         *       "players": [
          *         {
-         *           "id": "123e4567-e89b-12d3-a456-426614174000",
-         *           "name": "Game 1",
-         *           "createdAt": "2025-06-20T10:30:00.000Z"
+         *           "id": "player-1",
+         *           "name": "Alice"
+         *         },
+         *         {
+         *           "id": "player-2",
+         *           "name": "Bob"
          *         }
-         *       ],
-         *       "total": 1
+         *       ]
          *     } */
-        GameList: {
-            games: components["schemas"]["Game"][];
-            /** @description Total number of games */
-            total: number;
+        Session: {
+            id: string;
+            name: string;
+            description: string;
+            /** Format: date-time */
+            creationDate: string;
+            started: boolean;
+            players: components["schemas"]["Player"][];
+        };
+        /** @example {
+         *       "sessions": [
+         *         {
+         *           "id": "session-123",
+         *           "name": "My Session",
+         *           "description": "A fun session",
+         *           "creationDate": "2025-06-20T09:00:00.000Z",
+         *           "started": false
+         *         },
+         *         {
+         *           "id": "session-456",
+         *           "name": "Another Session",
+         *           "description": "Another fun session",
+         *           "creationDate": "2025-06-20T10:00:00.000Z",
+         *           "started": true
+         *         }
+         *       ]
+         *     } */
+        SessionsResponse: {
+            sessions: components["schemas"]["SessionListItem"][];
+        };
+        /** @example {
+         *       "id": "session-123",
+         *       "name": "My Session",
+         *       "description": "A fun session",
+         *       "creationDate": "2025-06-20T09:00:00.000Z",
+         *       "started": false
+         *     } */
+        SessionListItem: {
+            id: string;
+            name: string;
+            description: string;
+            /** Format: date-time */
+            creationDate: string;
+            started: boolean;
+        };
+        /** @example {
+         *       "id": "player-1",
+         *       "name": "Alice"
+         *     } */
+        Player: {
+            id: string;
+            name: string;
         };
     };
     responses: {
-        /** @description Resource not found */
-        NotFound: {
+        /** @description Bad request */
+        BadRequest: {
             headers: {
                 [name: string]: unknown;
             };
@@ -200,8 +224,8 @@ export interface components {
                 "application/json": components["schemas"]["Error"];
             };
         };
-        /** @description Bad request */
-        BadRequest: {
+        /** @description Resource not found */
+        NotFound: {
             headers: {
                 [name: string]: unknown;
             };
@@ -244,50 +268,33 @@ export interface operations {
                     "application/json": components["schemas"]["HealthResponse"];
                 };
             };
-        };
-    };
-    getEvents: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description SSE stream established */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "text/event-stream": string;
-                };
-            };
-        };
-    };
-    getGames: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description List of games */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["GameList"];
-                };
-            };
+            400: components["responses"]["BadRequest"];
             500: components["responses"]["InternalServerError"];
         };
     };
-    createGame: {
+    listSessions: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description List of sessions */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SessionsResponse"];
+                };
+            };
+            400: components["responses"]["BadRequest"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    createSession: {
         parameters: {
             query?: never;
             header?: never;
@@ -296,71 +303,77 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["CreateGameRequest"];
+                "application/json": {
+                    name: string;
+                    description: string;
+                };
             };
         };
         responses: {
-            /** @description Game created successfully */
+            /** @description Session created */
             201: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["Game"];
+                    "application/json": components["schemas"]["Session"];
                 };
             };
             400: components["responses"]["BadRequest"];
             500: components["responses"]["InternalServerError"];
         };
     };
-    getGameById: {
+    getSession: {
         parameters: {
             query?: never;
             header?: never;
             path: {
-                /** @description Game ID */
-                id: string;
+                sessionId: string;
             };
             cookie?: never;
         };
         requestBody?: never;
         responses: {
-            /** @description Game details */
+            /** @description Session found */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["Game"];
+                    "application/json": components["schemas"]["Session"];
                 };
             };
+            400: components["responses"]["BadRequest"];
             404: components["responses"]["NotFound"];
             500: components["responses"]["InternalServerError"];
         };
     };
-    updateGame: {
+    updateSession: {
         parameters: {
             query?: never;
             header?: never;
             path: {
-                /** @description Game ID */
-                id: string;
+                sessionId: string;
             };
             cookie?: never;
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["UpdateGameRequest"];
+                "application/json": {
+                    name?: string;
+                    description?: string;
+                    started?: boolean;
+                };
             };
         };
         responses: {
-            /** @description Game updated successfully */
+            /** @description Session updated */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["Game"];
+                    "application/json": components["schemas"]["Session"];
                 };
             };
             400: components["responses"]["BadRequest"];
@@ -368,25 +381,56 @@ export interface operations {
             500: components["responses"]["InternalServerError"];
         };
     };
-    deleteGame: {
+    deleteSession: {
         parameters: {
             query?: never;
             header?: never;
             path: {
-                /** @description Game ID */
-                id: string;
+                sessionId: string;
             };
             cookie?: never;
         };
         requestBody?: never;
         responses: {
-            /** @description Game deleted successfully */
+            /** @description Session deleted */
             204: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content?: never;
             };
+            400: components["responses"]["BadRequest"];
+            404: components["responses"]["NotFound"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    joinSession: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                sessionId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    player: components["schemas"]["Player"];
+                };
+            };
+        };
+        responses: {
+            /** @description Player joined session */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Session"];
+                };
+            };
+            400: components["responses"]["BadRequest"];
             404: components["responses"]["NotFound"];
             500: components["responses"]["InternalServerError"];
         };

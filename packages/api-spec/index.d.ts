@@ -25,4 +25,7 @@ declare const openApiSpec: {
   }>;
 };
 
+// Import the schemas from the generated Zod file
+export { schemas } from './generated/zod';
+
 export default openApiSpec;

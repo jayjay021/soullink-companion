@@ -20,3 +20,28 @@ model Game {
 
   @@map("games")
 }
+
+model Session {
+  id           String   @id @default(cuid())
+  name         String
+  description  String
+  creationDate DateTime @default(now())
+  started      Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  players Player[]
+
+  @@map("sessions")
+}
+
+model Player {
+  id        String   @id @default(cuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  sessions Session[]
+
+  @@map("players")
+}
