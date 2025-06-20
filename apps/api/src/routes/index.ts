@@ -8,10 +8,10 @@ router.use('/v1', v1Routes);
 
 // Health check endpoint (not versioned)
 router.get('/health', (req, res) => {
-  res.json({ 
-    status: 'OK', 
+  res.json({
+    status: 'OK',
     timestamp: new Date().toISOString(),
-    version: '1.0.0'
+    version: '1.0.0',
   });
 });
 
