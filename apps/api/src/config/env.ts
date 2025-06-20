@@ -9,13 +9,31 @@ const envSchema = z.object({
     .enum(['development', 'production', 'test'])
     .default('development'),
   PORT: z.string().transform(Number).default('5001'),
-  DATABASE_URL: z.string().optional().transform((val) => {
-    if (val) return val;
-    // Default SQLite database location in development
-    const defaultDbPath = path.join(process.cwd(), 'prisma', 'dev.db');
-    return `file:${defaultDbPath}`;
-  }),
+  DATABASE_URL: z.string().optional(),
   CORS_ORIGIN: z.string().default('*'),
 });
 
-export const env = envSchema.parse(process.env);
+const parsedEnv = envSchema.parse(process.env);
+
+// Auto-configure DATABASE_URL based on environment if not provided
+let databaseUrl = parsedEnv.DATABASE_URL;
+
+if (!databaseUrl) {
+  const dbPath = path.resolve(process.cwd(), 'prisma');
+
+  switch (parsedEnv.NODE_ENV) {
+    case 'test':
+      // Use separate test database
+      databaseUrl = `file:${dbPath}/test.db`;
+      break;
+    case 'development':
+    default:
+      databaseUrl = `file:${dbPath}/dev.db`;
+      break;
+  }
+}
+
+export const env = {
+  ...parsedEnv,
+  DATABASE_URL: databaseUrl,
+};

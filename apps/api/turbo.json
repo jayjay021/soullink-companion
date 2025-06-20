@@ -1,9 +1,23 @@
 {
-  "extends": ["//"],
+  "extends": [
+    "//"
+  ],
   "tasks": {
     "build": {
-      "env": ["PORT"],
-      "outputs": ["dist/**"]
+      "dependsOn": [
+        "@repo/api-spec#build"
+      ],
+      "env": [
+        "PORT"
+      ],
+      "outputs": [
+        "dist/**"
+      ]
+    },
+    "dev": {
+      "dependsOn": [
+        "@repo/api-spec#build"
+      ]
     }
   }
 }
