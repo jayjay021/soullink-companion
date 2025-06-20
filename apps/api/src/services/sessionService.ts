@@ -108,7 +108,9 @@ export class SessionService {
         where: { id: sessionId },
         data: {
           ...(data.name !== undefined && { name: data.name }),
-          ...(data.description !== undefined && { description: data.description }),
+          ...(data.description !== undefined && {
+            description: data.description,
+          }),
           ...(data.status !== undefined && { status: data.status }),
         },
         select: {
@@ -158,7 +160,9 @@ export class SessionService {
   async joinSession(sessionId: string, playerData: PlayerData) {
     try {
       // Ensure session exists
-      const session = await prisma.session.findUnique({ where: { id: sessionId } });
+      const session = await prisma.session.findUnique({
+        where: { id: sessionId },
+      });
       if (!session) return null;
       // Upsert player
       await prisma.player.upsert({
@@ -177,7 +181,10 @@ export class SessionService {
       });
       return this.getSessionById(sessionId);
     } catch (error) {
-      if (error instanceof Error && error.message === 'Player already in session') {
+      if (
+        error instanceof Error &&
+        error.message === 'Player already in session'
+      ) {
         throw error;
       }
       log('Error joining session:', error);
