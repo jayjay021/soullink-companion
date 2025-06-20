@@ -33,7 +33,11 @@ export class SessionService {
         },
       });
 
-      return sessions;
+      // Transform Date objects to ISO strings to match API spec
+      return sessions.map(session => ({
+        ...session,
+        creationDate: session.creationDate.toISOString(),
+      }));
     } catch (error) {
       log('Error listing sessions:', error);
       throw new Error('Failed to list sessions');
@@ -52,7 +56,15 @@ export class SessionService {
         },
       });
 
-      return session;
+      // Transform Date objects to ISO strings and player objects to match API spec
+      return {
+        ...session,
+        creationDate: session.creationDate.toISOString(),
+        players: session.players.map((player: { id: string; name: string; createdAt: Date; updatedAt: Date }) => ({
+          id: player.id,
+          name: player.name,
+        })),
+      };
     } catch (error) {
       log('Error creating session:', error);
       throw new Error('Failed to create session');
@@ -70,7 +82,17 @@ export class SessionService {
         },
       });
 
-      return session; // Return null if not found, let the controller handle it
+      if (!session) return null;
+
+      // Transform Date objects to ISO strings and player objects to match API spec
+      return {
+        ...session,
+        creationDate: session.creationDate.toISOString(),
+        players: session.players.map((player: { id: string; name: string; createdAt: Date; updatedAt: Date }) => ({
+          id: player.id,
+          name: player.name,
+        })),
+      };
     } catch (error) {
       log('Error getting session:', error);
       throw new Error('Failed to get session');
@@ -104,7 +126,15 @@ export class SessionService {
         },
       });
 
-      return session;
+      // Transform Date objects to ISO strings and player objects to match API spec
+      return {
+        ...session,
+        creationDate: session.creationDate.toISOString(),
+        players: session.players.map((player: { id: string; name: string; createdAt: Date; updatedAt: Date }) => ({
+          id: player.id,
+          name: player.name,
+        })),
+      };
     } catch (error) {
       log('Error updating session:', error);
       throw new Error('Failed to update session');
