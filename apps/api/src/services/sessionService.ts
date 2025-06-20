@@ -34,7 +34,7 @@ export class SessionService {
       });
 
       // Transform Date objects to ISO strings to match API spec
-      return sessions.map(session => ({
+      return sessions.map((session) => ({
         ...session,
         creationDate: session.creationDate.toISOString(),
       }));
@@ -60,10 +60,17 @@ export class SessionService {
       return {
         ...session,
         creationDate: session.creationDate.toISOString(),
-        players: session.players.map((player: { id: string; name: string; createdAt: Date; updatedAt: Date }) => ({
-          id: player.id,
-          name: player.name,
-        })),
+        players: session.players.map(
+          (player: {
+            id: string;
+            name: string;
+            createdAt: Date;
+            updatedAt: Date;
+          }) => ({
+            id: player.id,
+            name: player.name,
+          })
+        ),
       };
     } catch (error) {
       log('Error creating session:', error);
@@ -88,10 +95,17 @@ export class SessionService {
       return {
         ...session,
         creationDate: session.creationDate.toISOString(),
-        players: session.players.map((player: { id: string; name: string; createdAt: Date; updatedAt: Date }) => ({
-          id: player.id,
-          name: player.name,
-        })),
+        players: session.players.map(
+          (player: {
+            id: string;
+            name: string;
+            createdAt: Date;
+            updatedAt: Date;
+          }) => ({
+            id: player.id,
+            name: player.name,
+          })
+        ),
       };
     } catch (error) {
       log('Error getting session:', error);
@@ -130,10 +144,17 @@ export class SessionService {
       return {
         ...session,
         creationDate: session.creationDate.toISOString(),
-        players: session.players.map((player: { id: string; name: string; createdAt: Date; updatedAt: Date }) => ({
-          id: player.id,
-          name: player.name,
-        })),
+        players: session.players.map(
+          (player: {
+            id: string;
+            name: string;
+            createdAt: Date;
+            updatedAt: Date;
+          }) => ({
+            id: player.id,
+            name: player.name,
+          })
+        ),
       };
     } catch (error) {
       log('Error updating session:', error);
