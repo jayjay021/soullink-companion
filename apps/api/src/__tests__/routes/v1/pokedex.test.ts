@@ -24,12 +24,17 @@ describe('Pokédex API', () => {
       expect(response.body).toHaveProperty('pokemon');
       expect(Array.isArray(response.body.pokemon)).toBe(true);
       expect(response.body.pokemon.length).toBeGreaterThan(0);
-      
+
       // Validate the response structure
-      const validationResult = schemas.PokedexPokemonResponse.safeParse(response.body);
+      const validationResult = schemas.PokedexPokemonResponse.safeParse(
+        response.body
+      );
       if (!validationResult.success) {
         console.log('Validation errors:', validationResult.error.errors);
-        console.log('First Pokemon sample:', JSON.stringify(response.body.pokemon[0], null, 2));
+        console.log(
+          'First Pokemon sample:',
+          JSON.stringify(response.body.pokemon[0], null, 2)
+        );
       }
       expect(validationResult.success).toBe(true);
     });
@@ -45,8 +50,8 @@ describe('Pokédex API', () => {
       expect(response.body.pokemon[0]).toMatchObject({
         id: 1,
         name: {
-          english: 'Bulbasaur'
-        }
+          english: 'Bulbasaur',
+        },
       });
     });
 
@@ -61,8 +66,8 @@ describe('Pokédex API', () => {
       expect(response.body.pokemon[0]).toMatchObject({
         id: 1,
         name: {
-          english: 'Bulbasaur'
-        }
+          english: 'Bulbasaur',
+        },
       });
     });
 
@@ -86,7 +91,9 @@ describe('Pokédex API', () => {
 
       expect(response.body.pokemon.length).toBeGreaterThan(1);
       // Should include Pikachu, Raichu, etc.
-      const names = response.body.pokemon.map((p: { name: { english: string } }) => p.name.english);
+      const names = response.body.pokemon.map(
+        (p: { name: { english: string } }) => p.name.english
+      );
       expect(names.some((name: string) => name.includes('chu'))).toBe(true);
     });
 
@@ -117,7 +124,7 @@ describe('Pokédex API', () => {
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .expect(200);
-      
+
       expect(response1.body.pokemon).toHaveLength(0);
 
       // Test with ID too low
@@ -153,7 +160,7 @@ describe('Pokédex API', () => {
 
       expect(response.body.pokemon).toHaveLength(1);
       const pokemon = response.body.pokemon[0];
-      
+
       // Check all required properties
       expect(pokemon).toHaveProperty('id');
       expect(pokemon).toHaveProperty('name');
@@ -168,11 +175,11 @@ describe('Pokédex API', () => {
       expect(pokemon.name).toHaveProperty('english');
       expect(pokemon.name).toHaveProperty('japanese');
       expect(pokemon.name).toHaveProperty('german');
-      
+
       expect(pokemon.base).toHaveProperty('HP');
       expect(pokemon.base).toHaveProperty('Attack');
       expect(pokemon.base).toHaveProperty('Defense');
-      
+
       expect(pokemon.image).toHaveProperty('sprite');
       expect(pokemon.image).toHaveProperty('thumbnail');
       expect(pokemon.image).toHaveProperty('hires');
@@ -189,8 +196,8 @@ describe('Pokédex API', () => {
       expect(response.body.pokemon[0]).toMatchObject({
         id: 1,
         name: {
-          english: 'Bulbasaur'
-        }
+          english: 'Bulbasaur',
+        },
       });
     });
   });

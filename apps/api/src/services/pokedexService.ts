@@ -34,8 +34,10 @@ class PokedexService {
     try {
       this.pokemonData = pokemonData as PokedexPokemon[];
       this.isLoaded = true;
-      
-      console.log(`✅ Loaded ${this.pokemonData.length} Pokémon from Pokédex data`);
+
+      console.log(
+        `✅ Loaded ${this.pokemonData.length} Pokémon from Pokédex data`
+      );
     } catch (error) {
       console.error('❌ Failed to load Pokédex data:', error);
       throw new Error('Failed to initialize Pokédex service');
@@ -54,16 +56,19 @@ class PokedexService {
 
     // Filter by ID if provided
     if (params.id !== undefined) {
-      filteredPokemon = filteredPokemon.filter(pokemon => pokemon.id === params.id);
+      filteredPokemon = filteredPokemon.filter(
+        (pokemon) => pokemon.id === params.id
+      );
     }
 
     // Filter by name if provided (case-insensitive partial match)
     if (params.name !== undefined) {
       const searchName = params.name.toLowerCase();
-      filteredPokemon = filteredPokemon.filter(pokemon => 
-        pokemon.name.english.toLowerCase().includes(searchName) ||
-        pokemon.name.japanese.toLowerCase().includes(searchName) ||
-        pokemon.name.german.toLowerCase().includes(searchName)
+      filteredPokemon = filteredPokemon.filter(
+        (pokemon) =>
+          pokemon.name.english.toLowerCase().includes(searchName) ||
+          pokemon.name.japanese.toLowerCase().includes(searchName) ||
+          pokemon.name.german.toLowerCase().includes(searchName)
       );
     }
 

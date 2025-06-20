@@ -1,6 +1,6 @@
-import { log } from "@repo/logger";
-import { createServer } from "./server";
-import { pokedexService } from "./services/pokedexService";
+import { log } from '@repo/logger';
+import { createServer } from './server';
+import { pokedexService } from './services/pokedexService';
 
 const port = process.env.PORT || 5001;
 
@@ -8,9 +8,9 @@ async function startServer() {
   try {
     // Initialize Pokédex data on startup
     await pokedexService.loadData();
-    
+
     const server = createServer();
-    
+
     server.listen(port, () => {
       log(`api running on ${port}`);
     });

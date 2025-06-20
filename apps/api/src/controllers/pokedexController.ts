@@ -15,20 +15,24 @@ export const pokedexController = {
    * GET /api/v1/pokedex/pokemon
    * Query Pokédex Pokémon with optional filters
    */
-  getPokemon: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  getPokemon: async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
     try {
       const { id, name } = req.query as PokedexQueryParams;
-      
+
       // Get Pokémon data from service
       const pokemon = pokedexService.getPokemon({ id, name });
-      
+
       const response: PokedexPokemonResponse = {
-        pokemon
+        pokemon,
       };
-      
+
       res.json(response);
     } catch (error) {
       next(error);
     }
-  }
+  },
 };
