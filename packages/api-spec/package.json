@@ -7,18 +7,20 @@
         "generate:zod": "openapi-zod-client ./specs/openapi.yaml -o ./generated/zod/index.ts --export-schemas",
         "generate:types": "openapi-typescript ./specs/openapi.yaml -o ./generated/types.ts",
         "generate:json": "node -e \"const YAML = require('yamljs'); const fs = require('fs'); const spec = YAML.load('./specs/openapi.yaml'); fs.writeFileSync('./generated/openapi.json', JSON.stringify(spec, null, 2));\"",
+        "compile": "tsc generated/zod/index.ts --target es2020 --module commonjs --moduleResolution node --outDir generated/zod --declaration",
         "validate": "echo 'Validation placeholder'",
-        "build": "pnpm generate",
+        "build": "pnpm generate && pnpm compile",
         "dev": "echo 'API spec watching is handled by dependent packages'"
     },
     "dependencies": {
-        "zod": "^3.22.4",
-        "@zodios/core": "^10.9.6"
+        "@zodios/core": "^10.9.6",
+        "zod": "^3.22.4"
     },
     "devDependencies": {
+        "npm-run-all": "^4.1.5",
         "openapi-typescript": "^7.4.0",
         "openapi-zod-client": "^1.18.0",
-        "npm-run-all": "^4.1.5",
+        "typescript": "^5.8.3",
         "yamljs": "^0.3.0"
     },
     "main": "index.js",
@@ -28,6 +30,6 @@
         "./spec": "./specs/openapi.yaml",
         "./spec-json": "./generated/openapi.json",
         "./types": "./generated/types.ts",
-        "./zod": "./generated/zod/index.ts"
+        "./zod": "./generated/zod/index.js"
     }
 }

@@ -52,6 +52,58 @@ const updateSession_Body = z
   .partial()
   .passthrough();
 const joinSession_Body = z.object({ player: Player }).passthrough();
+const PokedexPokemonName = z
+  .object({ english: z.string(), japanese: z.string(), german: z.string() })
+  .passthrough();
+const PokedexPokemonStats = z
+  .object({
+    HP: z.number().int().gte(1),
+    Attack: z.number().int().gte(1),
+    Defense: z.number().int().gte(1),
+    "Sp. Attack": z.number().int().gte(1),
+    "Sp. Defense": z.number().int().gte(1),
+    Speed: z.number().int().gte(1),
+  })
+  .passthrough();
+const PokedexPokemonEvolution = z
+  .object({
+    prev: z.array(z.string()).min(2).max(2),
+    next: z.array(z.array(z.string()).min(2).max(2)),
+  })
+  .partial()
+  .passthrough();
+const PokedexPokemonProfile = z
+  .object({
+    height: z.string(),
+    weight: z.string(),
+    egg: z.array(z.string()),
+    ability: z.array(z.array(z.string()).min(2).max(2)),
+    gender: z.string(),
+  })
+  .passthrough();
+const PokedexPokemonImage = z
+  .object({
+    sprite: z.string().url(),
+    thumbnail: z.string().url().optional(),
+    hires: z.string().url().optional(),
+  })
+  .passthrough();
+const PokedexPokemon = z
+  .object({
+    id: z.number().int().gte(1).lte(1025),
+    name: PokedexPokemonName,
+    type: z.array(z.string()).min(1).max(2),
+    base: PokedexPokemonStats,
+    species: z.string(),
+    description: z.string(),
+    evolution: PokedexPokemonEvolution.optional(),
+    profile: PokedexPokemonProfile,
+    image: PokedexPokemonImage,
+  })
+  .passthrough();
+const PokedexPokemonResponse = z
+  .object({ pokemon: z.array(PokedexPokemon) })
+  .passthrough();
 
 export const schemas = {
   HealthResponse,
@@ -63,6 +115,13 @@ export const schemas = {
   Session,
   updateSession_Body,
   joinSession_Body,
+  PokedexPokemonName,
+  PokedexPokemonStats,
+  PokedexPokemonEvolution,
+  PokedexPokemonProfile,
+  PokedexPokemonImage,
+  PokedexPokemon,
+  PokedexPokemonResponse,
 };
 
 const endpoints = makeApi([
@@ -73,6 +132,38 @@ const endpoints = makeApi([
     description: `Returns the health status of the API`,
     requestFormat: "json",
     response: HealthResponse,
+    errors: [
+      {
+        status: 400,
+        description: `Bad request`,
+        schema: Error,
+      },
+      {
+        status: 500,
+        description: `Internal server error`,
+        schema: Error,
+      },
+    ],
+  },
+  {
+    method: "get",
+    path: "/pokedex/pokemon",
+    alias: "getPokedexPokemon",
+    description: `Returns a list of Pokémon from the Pokédex with optional filters`,
+    requestFormat: "json",
+    parameters: [
+      {
+        name: "id",
+        type: "Query",
+        schema: z.number().int().gte(1).lte(1025).optional(),
+      },
+      {
+        name: "name",
+        type: "Query",
+        schema: z.string().min(1).optional(),
+      },
+    ],
+    response: PokedexPokemonResponse,
     errors: [
       {
         status: 400,

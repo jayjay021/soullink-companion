@@ -98,6 +98,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/pokedex/pokemon": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Query Pokédex Pokémon
+         * @description Returns a list of Pokémon from the Pokédex with optional filters
+         */
+        get: operations["getPokedexPokemon"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -212,6 +232,187 @@ export interface components {
         Player: {
             id: string;
             name: string;
+        };
+        /** @example {
+         *       "pokemon": [
+         *         {
+         *           "id": 1,
+         *           "name": {
+         *             "english": "Bulbasaur",
+         *             "japanese": "フシギダネ",
+         *             "german": "Bisasam"
+         *           },
+         *           "type": [
+         *             "Grass",
+         *             "Poison"
+         *           ],
+         *           "base": {
+         *             "HP": 45,
+         *             "Attack": 49,
+         *             "Defense": 49,
+         *             "Sp. Attack": 65,
+         *             "Sp. Defense": 65,
+         *             "Speed": 45
+         *           },
+         *           "species": "Seed Pokémon",
+         *           "description": "Bulbasaur can be seen napping in bright sunlight. There is a seed on its back. By soaking up the sun's rays, the seed grows progressively larger.",
+         *           "evolution": {
+         *             "next": [
+         *               [
+         *                 "2",
+         *                 "Level 16"
+         *               ]
+         *             ]
+         *           },
+         *           "profile": {
+         *             "height": "0.7 m",
+         *             "weight": "6.9 kg",
+         *             "egg": [
+         *               "Monster",
+         *               "Grass"
+         *             ],
+         *             "ability": [
+         *               [
+         *                 "Overgrow",
+         *                 "false"
+         *               ],
+         *               [
+         *                 "Chlorophyll",
+         *                 "true"
+         *               ]
+         *             ],
+         *             "gender": "87.5:12.5"
+         *           },
+         *           "image": {
+         *             "sprite": "https://raw.githubusercontent.com/Purukitto/pokemon-data.json/master/images/pokedex/sprites/001.png",
+         *             "thumbnail": "https://raw.githubusercontent.com/Purukitto/pokemon-data.json/master/images/pokedex/thumbnails/001.png",
+         *             "hires": "https://raw.githubusercontent.com/Purukitto/pokemon-data.json/master/images/pokedex/hires/001.png"
+         *           }
+         *         }
+         *       ]
+         *     } */
+        PokedexPokemonResponse: {
+            pokemon: components["schemas"]["PokedexPokemon"][];
+        };
+        /** @example {
+         *       "id": 1,
+         *       "name": {
+         *         "english": "Bulbasaur",
+         *         "japanese": "フシギダネ",
+         *         "german": "Bisasam"
+         *       },
+         *       "type": [
+         *         "Grass",
+         *         "Poison"
+         *       ],
+         *       "base": {
+         *         "HP": 45,
+         *         "Attack": 49,
+         *         "Defense": 49,
+         *         "Sp. Attack": 65,
+         *         "Sp. Defense": 65,
+         *         "Speed": 45
+         *       },
+         *       "species": "Seed Pokémon",
+         *       "description": "Bulbasaur can be seen napping in bright sunlight. There is a seed on its back. By soaking up the sun's rays, the seed grows progressively larger.",
+         *       "evolution": {
+         *         "next": [
+         *           [
+         *             "2",
+         *             "Level 16"
+         *           ]
+         *         ]
+         *       },
+         *       "profile": {
+         *         "height": "0.7 m",
+         *         "weight": "6.9 kg",
+         *         "egg": [
+         *           "Monster",
+         *           "Grass"
+         *         ],
+         *         "ability": [
+         *           [
+         *             "Overgrow",
+         *             "false"
+         *           ],
+         *           [
+         *             "Chlorophyll",
+         *             "true"
+         *           ]
+         *         ],
+         *         "gender": "87.5:12.5"
+         *       },
+         *       "image": {
+         *         "sprite": "https://raw.githubusercontent.com/Purukitto/pokemon-data.json/master/images/pokedex/sprites/001.png",
+         *         "thumbnail": "https://raw.githubusercontent.com/Purukitto/pokemon-data.json/master/images/pokedex/thumbnails/001.png",
+         *         "hires": "https://raw.githubusercontent.com/Purukitto/pokemon-data.json/master/images/pokedex/hires/001.png"
+         *       }
+         *     } */
+        PokedexPokemon: {
+            /** @description Pokémon National Dex number */
+            id: number;
+            name: components["schemas"]["PokedexPokemonName"];
+            /** @description Pokémon types */
+            type: string[];
+            base: components["schemas"]["PokedexPokemonStats"];
+            /** @description Pokémon species classification */
+            species: string;
+            /** @description Pokémon description */
+            description: string;
+            evolution?: components["schemas"]["PokedexPokemonEvolution"];
+            profile: components["schemas"]["PokedexPokemonProfile"];
+            image: components["schemas"]["PokedexPokemonImage"];
+        };
+        PokedexPokemonName: {
+            /** @description English name */
+            english: string;
+            /** @description Japanese name */
+            japanese: string;
+            /** @description German name */
+            german: string;
+        };
+        PokedexPokemonStats: {
+            HP: number;
+            Attack: number;
+            Defense: number;
+            "Sp. Attack": number;
+            "Sp. Defense": number;
+            Speed: number;
+        };
+        PokedexPokemonEvolution: {
+            /** @description Previous evolution [id, method] */
+            prev?: string[];
+            /** @description Next evolution options [[id, method], ...] */
+            next?: string[][];
+        };
+        PokedexPokemonProfile: {
+            /** @description Pokémon height */
+            height: string;
+            /** @description Pokémon weight */
+            weight: string;
+            /** @description Egg groups */
+            egg: string[];
+            /** @description Abilities [name, isHidden] */
+            ability: string[][];
+            /** @description Gender ratio */
+            gender: string;
+        };
+        PokedexPokemonImage: {
+            /**
+             * Format: uri
+             * @description Sprite image URL
+             */
+            sprite: string;
+            /**
+             * Format: uri
+             * @description Thumbnail image URL
+             */
+            thumbnail?: string;
+            /**
+             * Format: uri
+             * @description High resolution image URL
+             */
+            hires?: string;
         };
     };
     responses: {
@@ -432,6 +633,33 @@ export interface operations {
             };
             400: components["responses"]["BadRequest"];
             404: components["responses"]["NotFound"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    getPokedexPokemon: {
+        parameters: {
+            query?: {
+                /** @description Filter by Pokémon ID */
+                id?: number;
+                /** @description Filter by Pokémon name (case-insensitive, partial match) */
+                name?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description List of Pokédex Pokémon */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PokedexPokemonResponse"];
+                };
+            };
+            400: components["responses"]["BadRequest"];
             500: components["responses"]["InternalServerError"];
         };
     };

@@ -191,6 +191,40 @@ paths:
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
+  /pokedex/pokemon:
+    get:
+      summary: Query Pokédex Pokémon
+      description: Returns a list of Pokémon from the Pokédex with optional filters
+      operationId: getPokedexPokemon
+      tags:
+        - Pokedex
+      parameters:
+        - name: id
+          in: query
+          description: Filter by Pokémon ID
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1025
+        - name: name
+          in: query
+          description: Filter by Pokémon name (case-insensitive, partial match)
+          required: false
+          schema:
+            type: string
+            minLength: 1
+      responses:
+        '200':
+          description: List of Pokédex Pokémon
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PokedexPokemonResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
 components:
   schemas:
     HealthResponse:
@@ -346,6 +380,231 @@ components:
         id: "player-1"
         name: "Alice"
 
+    PokedexPokemonResponse:
+      type: object
+      required:
+        - pokemon
+      properties:
+        pokemon:
+          type: array
+          items:
+            $ref: '#/components/schemas/PokedexPokemon'
+      example:
+        pokemon:
+          - id: 1
+            name:
+              english: "Bulbasaur"
+              japanese: "フシギダネ"
+              german: "Bisasam"
+            type: ["Grass", "Poison"]
+            base:
+              HP: 45
+              Attack: 49
+              Defense: 49
+              "Sp. Attack": 65
+              "Sp. Defense": 65
+              Speed: 45
+            species: "Seed Pokémon"
+            description: "Bulbasaur can be seen napping in bright sunlight. There is a seed on its back. By soaking up the sun's rays, the seed grows progressively larger."
+            evolution:
+              next: [["2", "Level 16"]]
+            profile:
+              height: "0.7 m"
+              weight: "6.9 kg"
+              egg: ["Monster", "Grass"]
+              ability: [["Overgrow", "false"], ["Chlorophyll", "true"]]
+              gender: "87.5:12.5"
+            image:
+              sprite: "https://raw.githubusercontent.com/Purukitto/pokemon-data.json/master/images/pokedex/sprites/001.png"
+              thumbnail: "https://raw.githubusercontent.com/Purukitto/pokemon-data.json/master/images/pokedex/thumbnails/001.png"
+              hires: "https://raw.githubusercontent.com/Purukitto/pokemon-data.json/master/images/pokedex/hires/001.png"
+
+    PokedexPokemon:
+      type: object
+      required:
+        - id
+        - name
+        - type
+        - base
+        - species
+        - description
+        - profile
+        - image
+      properties:
+        id:
+          type: integer
+          description: Pokémon National Dex number
+          minimum: 1
+          maximum: 1025
+        name:
+          $ref: '#/components/schemas/PokedexPokemonName'
+        type:
+          type: array
+          items:
+            type: string
+          description: Pokémon types
+          minItems: 1
+          maxItems: 2
+        base:
+          $ref: '#/components/schemas/PokedexPokemonStats'
+        species:
+          type: string
+          description: Pokémon species classification
+        description:
+          type: string
+          description: Pokémon description
+        evolution:
+          $ref: '#/components/schemas/PokedexPokemonEvolution'
+        profile:
+          $ref: '#/components/schemas/PokedexPokemonProfile'
+        image:
+          $ref: '#/components/schemas/PokedexPokemonImage'
+      example:
+        id: 1
+        name:
+          english: "Bulbasaur"
+          japanese: "フシギダネ"
+          german: "Bisasam"
+        type: ["Grass", "Poison"]
+        base:
+          HP: 45
+          Attack: 49
+          Defense: 49
+          "Sp. Attack": 65
+          "Sp. Defense": 65
+          Speed: 45
+        species: "Seed Pokémon"
+        description: "Bulbasaur can be seen napping in bright sunlight. There is a seed on its back. By soaking up the sun's rays, the seed grows progressively larger."
+        evolution:
+          next: [["2", "Level 16"]]
+        profile:
+          height: "0.7 m"
+          weight: "6.9 kg"
+          egg: ["Monster", "Grass"]
+          ability: [["Overgrow", "false"], ["Chlorophyll", "true"]]
+          gender: "87.5:12.5"
+        image:
+          sprite: "https://raw.githubusercontent.com/Purukitto/pokemon-data.json/master/images/pokedex/sprites/001.png"
+          thumbnail: "https://raw.githubusercontent.com/Purukitto/pokemon-data.json/master/images/pokedex/thumbnails/001.png"
+          hires: "https://raw.githubusercontent.com/Purukitto/pokemon-data.json/master/images/pokedex/hires/001.png"
+
+    PokedexPokemonName:
+      type: object
+      required:
+        - english
+        - japanese
+        - german
+      properties:
+        english:
+          type: string
+          description: English name
+        japanese:
+          type: string
+          description: Japanese name
+        german:
+          type: string
+          description: German name
+
+    PokedexPokemonStats:
+      type: object
+      required:
+        - HP
+        - Attack
+        - Defense
+        - "Sp. Attack"
+        - "Sp. Defense"
+        - Speed
+      properties:
+        HP:
+          type: integer
+          minimum: 1
+        Attack:
+          type: integer
+          minimum: 1
+        Defense:
+          type: integer
+          minimum: 1
+        "Sp. Attack":
+          type: integer
+          minimum: 1
+        "Sp. Defense":
+          type: integer
+          minimum: 1
+        Speed:
+          type: integer
+          minimum: 1
+
+    PokedexPokemonEvolution:
+      type: object
+      properties:
+        prev:
+          type: array
+          items:
+            type: string
+          minItems: 2
+          maxItems: 2
+          description: Previous evolution [id, method]
+        next:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+            minItems: 2
+            maxItems: 2
+          description: Next evolution options [[id, method], ...]
+
+    PokedexPokemonProfile:
+      type: object
+      required:
+        - height
+        - weight
+        - egg
+        - ability
+        - gender
+      properties:
+        height:
+          type: string
+          description: Pokémon height
+        weight:
+          type: string
+          description: Pokémon weight
+        egg:
+          type: array
+          items:
+            type: string
+          description: Egg groups
+        ability:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+            minItems: 2
+            maxItems: 2
+          description: Abilities [name, isHidden]
+        gender:
+          type: string
+          description: Gender ratio
+
+    PokedexPokemonImage:
+      type: object
+      required:
+        - sprite
+      properties:
+        sprite:
+          type: string
+          format: uri
+          description: Sprite image URL
+        thumbnail:
+          type: string
+          format: uri
+          description: Thumbnail image URL
+        hires:
+          type: string
+          format: uri
+          description: High resolution image URL
+
   responses:
     BadRequest:
       description: Bad request
@@ -371,3 +630,5 @@ tags:
     description: System health and monitoring endpoints
   - name: Session
     description: Game management endpoints
+  - name: Pokedex
+    description: Static Pokédex reference data endpoints

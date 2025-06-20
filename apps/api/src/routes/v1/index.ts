@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import sessionRoutes from './session';
+import pokedexRoutes from './pokedex';
 
 const router: Router = Router();
 
@@ -14,8 +15,8 @@ router.get('/', (req, res) => {
   });
 });
 
-// Future resource routes will be mounted here
-// Example: router.use('/games', gameRoutes);
+// Resource routes
 router.use('/session', sessionRoutes);
+router.use('/pokedex', pokedexRoutes);
 
 export default router;
