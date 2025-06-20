@@ -65,14 +65,14 @@ export const createSession = async (
     res.status(201).json(session);
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return res.status(400).json({
+      return (res as Response<unknown>).status(400).json({
         success: false,
         error: {
           message: 'Invalid request data',
           code: 'VALIDATION_ERROR',
           details: error.errors,
         },
-      } as any);
+      });
     }
     next(error);
   }
@@ -94,26 +94,26 @@ export const getSession = async (
     const session = await sessionService.getSessionById(sessionId);
 
     if (!session) {
-      return res.status(404).json({
+      return (res as Response<unknown>).status(404).json({
         success: false,
         error: {
           message: 'Session not found',
           code: 'NOT_FOUND',
         },
-      } as any);
+      });
     }
 
     res.status(200).json(session);
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return res.status(400).json({
+      return (res as Response<unknown>).status(400).json({
         success: false,
         error: {
           message: 'Invalid session ID',
           code: 'VALIDATION_ERROR',
           details: error.errors,
         },
-      } as any);
+      });
     }
     next(error);
   }
@@ -140,26 +140,26 @@ export const updateSession = async (
     );
 
     if (!session) {
-      return res.status(404).json({
+      return (res as Response<unknown>).status(404).json({
         success: false,
         error: {
           message: 'Session not found',
           code: 'NOT_FOUND',
         },
-      } as any);
+      });
     }
 
     res.status(200).json(session);
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return res.status(400).json({
+      return (res as Response<unknown>).status(400).json({
         success: false,
         error: {
           message: 'Invalid request data',
           code: 'VALIDATION_ERROR',
           details: error.errors,
         },
-      } as any);
+      });
     }
     next(error);
   }
@@ -181,26 +181,26 @@ export const deleteSession = async (
     const result = await sessionService.deleteSession(sessionId);
 
     if (!result) {
-      return res.status(404).json({
+      return (res as Response<unknown>).status(404).json({
         success: false,
         error: {
           message: 'Session not found',
           code: 'NOT_FOUND',
         },
-      } as any);
+      });
     }
 
     res.status(204).send();
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return res.status(400).json({
+      return (res as Response<unknown>).status(400).json({
         success: false,
         error: {
           message: 'Invalid session ID',
           code: 'VALIDATION_ERROR',
           details: error.errors,
         },
-      } as any);
+      });
     }
     next(error);
   }
@@ -222,13 +222,13 @@ export const joinSession = async (
     // Check if session exists before validating request body
     const existingSession = await sessionService.getSessionById(sessionId);
     if (!existingSession) {
-      return res.status(404).json({
+      return (res as Response<unknown>).status(404).json({
         success: false,
         error: {
           message: 'Session not found',
           code: 'NOT_FOUND',
         },
-      } as any);
+      });
     }
 
     // Now validate the request body
@@ -240,13 +240,13 @@ export const joinSession = async (
       !joinSessionRequest.player?.id?.trim() ||
       !joinSessionRequest.player?.name?.trim()
     ) {
-      return res.status(400).json({
+      return (res as Response<unknown>).status(400).json({
         success: false,
         error: {
           message: 'Player id and name cannot be empty',
           code: 'VALIDATION_ERROR',
         },
-      } as any);
+      });
     }
 
     const session = await sessionService.joinSession(
@@ -255,38 +255,38 @@ export const joinSession = async (
     );
 
     if (!session) {
-      return res.status(404).json({
+      return (res as Response<unknown>).status(404).json({
         success: false,
         error: {
           message: 'Session not found',
           code: 'NOT_FOUND',
         },
-      } as any);
+      });
     }
 
     res.status(200).json(session);
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return res.status(400).json({
+      return (res as Response<unknown>).status(400).json({
         success: false,
         error: {
           message: 'Invalid request data',
           code: 'VALIDATION_ERROR',
           details: error.errors,
         },
-      } as any);
+      });
     }
     if (
       error instanceof Error &&
       error.message === 'Player already in session'
     ) {
-      return res.status(400).json({
+      return (res as Response<unknown>).status(400).json({
         success: false,
         error: {
           message: 'Player is already in this session',
           code: 'PLAYER_ALREADY_JOINED',
         },
-      } as any);
+      });
     }
     next(error);
   }

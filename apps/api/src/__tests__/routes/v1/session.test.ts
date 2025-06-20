@@ -275,7 +275,9 @@ describe('Session API ', () => {
       // Check if the player was added to the session
       expect(response.body.players).toBeDefined();
       expect(
-        response.body.players.some((p: any) => p.id === 'test-player-id')
+        response.body.players.some(
+          (p: { id: string; name: string }) => p.id === 'test-player-id'
+        )
       ).toBe(true);
     });
 
@@ -365,7 +367,9 @@ describe('Session API ', () => {
       // Check if the player was added to the session
       expect(joinResponse.body.players).toBeDefined();
       expect(
-        joinResponse.body.players.some((p: any) => p.id === player1.id)
+        joinResponse.body.players.some(
+          (p: { id: string; name: string }) => p.id === player1.id
+        )
       ).toBe(true);
 
       // Now, create another session to get a different sessionId
@@ -392,9 +396,11 @@ describe('Session API ', () => {
       expect(validation2.success).toBe(true);
       // Check if the player was added to the second session
       expect(response2.body.players).toBeDefined();
-      expect(response2.body.players.some((p: any) => p.id === player1.id)).toBe(
-        true
-      );
+      expect(
+        response2.body.players.some(
+          (p: { id: string; name: string }) => p.id === player1.id
+        )
+      ).toBe(true);
 
       // Check that the player still exists in the first session
       const getResponse = await supertest(app)
@@ -404,7 +410,9 @@ describe('Session API ', () => {
         .expect(200);
       expect(getResponse.body.players).toBeDefined();
       expect(
-        getResponse.body.players.some((p: any) => p.id === player1.id)
+        getResponse.body.players.some(
+          (p: { id: string; name: string }) => p.id === player1.id
+        )
       ).toBe(true);
     });
 
