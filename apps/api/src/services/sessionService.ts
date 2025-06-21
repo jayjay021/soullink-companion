@@ -1,6 +1,7 @@
 import { prisma } from '../lib/prisma';
 import { log } from '@repo/logger';
 import { paths } from '@repo/api-spec/types';
+import { Prisma } from '@prisma/client';
 
 type CreateSessionData =
   paths['/session']['post']['requestBody']['content']['application/json'];
@@ -12,6 +13,37 @@ type PlayerData = {
   id: string;
   name: string;
 };
+
+type Session =
+  paths['/session/{sessionId}']['get']['responses']['200']['content']['application/json'];
+
+type PrismaSessionWithPlayers = Prisma.SessionGetPayload<{
+  select: {
+    id: true;
+    name: true;
+    description: true;
+    createdAt: true;
+    status: true;
+    playerSessions: {
+      select: {
+        player: {
+          select: { id: true; name: true };
+        };
+      };
+    };
+  };
+}>;
+
+function toSessionApi(session: PrismaSessionWithPlayers): Session {
+  return {
+    id: session.id,
+    name: session.name,
+    description: session.description ?? '',
+    createdAt: session.createdAt.toISOString(),
+    status: session.status,
+    players: session.playerSessions.map((ps) => ps.player),
+  };
+}
 
 export class SessionService {
   async listSessions() {
@@ -35,11 +67,7 @@ export class SessionService {
           createdAt: 'desc',
         },
       });
-      return sessions.map((session) => ({
-        ...session,
-        createdAt: session.createdAt.toISOString(),
-        players: session.playerSessions.map((ps) => ps.player),
-      }));
+      return sessions.map(toSessionApi);
     } catch (error) {
       log('Error listing sessions:', error);
       throw new Error('Failed to list sessions');
@@ -53,12 +81,22 @@ export class SessionService {
           name: data.name,
           description: data.description,
         },
+        select: {
+          id: true,
+          name: true,
+          description: true,
+          createdAt: true,
+          status: true,
+          playerSessions: {
+            select: {
+              player: {
+                select: { id: true, name: true },
+              },
+            },
+          },
+        },
       });
-      return {
-        ...session,
-        createdAt: session.createdAt.toISOString(),
-        players: [],
-      };
+      return toSessionApi(session);
     } catch (error) {
       log('Error creating session:', error);
       throw new Error('Failed to create session');
@@ -85,11 +123,7 @@ export class SessionService {
         },
       });
       if (!session) return null;
-      return {
-        ...session,
-        createdAt: session.createdAt.toISOString(),
-        players: session.playerSessions.map((ps) => ps.player),
-      };
+      return toSessionApi(session);
     } catch (error) {
       log('Error getting session:', error);
       throw new Error('Failed to get session');
@@ -128,11 +162,7 @@ export class SessionService {
           },
         },
       });
-      return {
-        ...session,
-        createdAt: session.createdAt.toISOString(),
-        players: session.playerSessions.map((ps) => ps.player),
-      };
+      return toSessionApi(session);
     } catch (error) {
       log('Error updating session:', error);
       throw new Error('Failed to update session');
@@ -179,7 +209,25 @@ export class SessionService {
       await prisma.playerSession.create({
         data: { playerId: playerData.id, sessionId },
       });
-      return this.getSessionById(sessionId);
+      // Return updated session with players
+      const updatedSession = await prisma.session.findUnique({
+        where: { id: sessionId },
+        select: {
+          id: true,
+          name: true,
+          description: true,
+          createdAt: true,
+          status: true,
+          playerSessions: {
+            select: {
+              player: {
+                select: { id: true, name: true },
+              },
+            },
+          },
+        },
+      });
+      return updatedSession ? toSessionApi(updatedSession) : null;
     } catch (error) {
       if (
         error instanceof Error &&

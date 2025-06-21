@@ -1329,124 +1329,161 @@ export declare const schemas: {
             }, z.ZodTypeAny, "passthrough">>;
         }, z.ZodTypeAny, "passthrough">>, "many">;
     }, z.ZodTypeAny, "passthrough">>;
-    PokemonStatus: z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>;
+    PokemonStatus: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
+    PokemonLocation: z.ZodEnum<["TEAM", "BOX"]>;
     AddPokemonRequest: z.ZodObject<{
         playerId: z.ZodString;
-        pokemonId: z.ZodString;
-        status: z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>;
+        pokemonId: z.ZodNumber;
+        status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
         routeName: z.ZodString;
+        location: z.ZodEnum<["TEAM", "BOX"]>;
+        position: z.ZodNumber;
     }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
         playerId: z.ZodString;
-        pokemonId: z.ZodString;
-        status: z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>;
+        pokemonId: z.ZodNumber;
+        status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
         routeName: z.ZodString;
+        location: z.ZodEnum<["TEAM", "BOX"]>;
+        position: z.ZodNumber;
     }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
         playerId: z.ZodString;
-        pokemonId: z.ZodString;
-        status: z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>;
+        pokemonId: z.ZodNumber;
+        status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
         routeName: z.ZodString;
+        location: z.ZodEnum<["TEAM", "BOX"]>;
+        position: z.ZodNumber;
     }, z.ZodTypeAny, "passthrough">>;
     Pokemon: z.ZodObject<{
         id: z.ZodString;
         playerId: z.ZodString;
         sessionId: z.ZodString;
-        pokemonId: z.ZodString;
-        status: z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>;
+        pokemonId: z.ZodNumber;
+        status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
         routeName: z.ZodString;
+        location: z.ZodEnum<["TEAM", "BOX"]>;
+        position: z.ZodNumber;
     }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
         id: z.ZodString;
         playerId: z.ZodString;
         sessionId: z.ZodString;
-        pokemonId: z.ZodString;
-        status: z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>;
+        pokemonId: z.ZodNumber;
+        status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
         routeName: z.ZodString;
+        location: z.ZodEnum<["TEAM", "BOX"]>;
+        position: z.ZodNumber;
     }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
         id: z.ZodString;
         playerId: z.ZodString;
         sessionId: z.ZodString;
-        pokemonId: z.ZodString;
-        status: z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>;
+        pokemonId: z.ZodNumber;
+        status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
         routeName: z.ZodString;
+        location: z.ZodEnum<["TEAM", "BOX"]>;
+        position: z.ZodNumber;
     }, z.ZodTypeAny, "passthrough">>;
     PokemonListResponse: z.ZodObject<{
         pokemon: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
             playerId: z.ZodString;
             sessionId: z.ZodString;
-            pokemonId: z.ZodString;
-            status: z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>;
+            pokemonId: z.ZodNumber;
+            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
             routeName: z.ZodString;
+            location: z.ZodEnum<["TEAM", "BOX"]>;
+            position: z.ZodNumber;
         }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
             id: z.ZodString;
             playerId: z.ZodString;
             sessionId: z.ZodString;
-            pokemonId: z.ZodString;
-            status: z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>;
+            pokemonId: z.ZodNumber;
+            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
             routeName: z.ZodString;
+            location: z.ZodEnum<["TEAM", "BOX"]>;
+            position: z.ZodNumber;
         }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
             id: z.ZodString;
             playerId: z.ZodString;
             sessionId: z.ZodString;
-            pokemonId: z.ZodString;
-            status: z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>;
+            pokemonId: z.ZodNumber;
+            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
             routeName: z.ZodString;
+            location: z.ZodEnum<["TEAM", "BOX"]>;
+            position: z.ZodNumber;
         }, z.ZodTypeAny, "passthrough">>, "many">;
     }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
         pokemon: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
             playerId: z.ZodString;
             sessionId: z.ZodString;
-            pokemonId: z.ZodString;
-            status: z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>;
+            pokemonId: z.ZodNumber;
+            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
             routeName: z.ZodString;
+            location: z.ZodEnum<["TEAM", "BOX"]>;
+            position: z.ZodNumber;
         }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
             id: z.ZodString;
             playerId: z.ZodString;
             sessionId: z.ZodString;
-            pokemonId: z.ZodString;
-            status: z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>;
+            pokemonId: z.ZodNumber;
+            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
             routeName: z.ZodString;
+            location: z.ZodEnum<["TEAM", "BOX"]>;
+            position: z.ZodNumber;
         }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
             id: z.ZodString;
             playerId: z.ZodString;
             sessionId: z.ZodString;
-            pokemonId: z.ZodString;
-            status: z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>;
+            pokemonId: z.ZodNumber;
+            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
             routeName: z.ZodString;
+            location: z.ZodEnum<["TEAM", "BOX"]>;
+            position: z.ZodNumber;
         }, z.ZodTypeAny, "passthrough">>, "many">;
     }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
         pokemon: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
             playerId: z.ZodString;
             sessionId: z.ZodString;
-            pokemonId: z.ZodString;
-            status: z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>;
+            pokemonId: z.ZodNumber;
+            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
             routeName: z.ZodString;
+            location: z.ZodEnum<["TEAM", "BOX"]>;
+            position: z.ZodNumber;
         }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
             id: z.ZodString;
             playerId: z.ZodString;
             sessionId: z.ZodString;
-            pokemonId: z.ZodString;
-            status: z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>;
+            pokemonId: z.ZodNumber;
+            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
             routeName: z.ZodString;
+            location: z.ZodEnum<["TEAM", "BOX"]>;
+            position: z.ZodNumber;
         }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
             id: z.ZodString;
             playerId: z.ZodString;
             sessionId: z.ZodString;
-            pokemonId: z.ZodString;
-            status: z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>;
+            pokemonId: z.ZodNumber;
+            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
             routeName: z.ZodString;
+            location: z.ZodEnum<["TEAM", "BOX"]>;
+            position: z.ZodNumber;
         }, z.ZodTypeAny, "passthrough">>, "many">;
     }, z.ZodTypeAny, "passthrough">>;
     UpdatePokemonRequest: z.ZodObject<{
-        status: z.ZodOptional<z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>>;
+        status: z.ZodOptional<z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>>;
         routeName: z.ZodOptional<z.ZodString>;
+        location: z.ZodOptional<z.ZodEnum<["TEAM", "BOX"]>>;
+        position: z.ZodOptional<z.ZodNumber>;
     }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-        status: z.ZodOptional<z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>>;
+        status: z.ZodOptional<z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>>;
         routeName: z.ZodOptional<z.ZodString>;
+        location: z.ZodOptional<z.ZodEnum<["TEAM", "BOX"]>>;
+        position: z.ZodOptional<z.ZodNumber>;
     }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-        status: z.ZodOptional<z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>>;
+        status: z.ZodOptional<z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>>;
         routeName: z.ZodOptional<z.ZodString>;
+        location: z.ZodOptional<z.ZodEnum<["TEAM", "BOX"]>>;
+        position: z.ZodOptional<z.ZodNumber>;
     }, z.ZodTypeAny, "passthrough">>;
     RouteListResponse: z.ZodObject<{
         routes: z.ZodArray<z.ZodString, "many">;
@@ -2447,19 +2484,25 @@ export declare const api: import("@zodios/core").ZodiosInstance<[{
         type: "Body";
         schema: z.ZodObject<{
             playerId: z.ZodString;
-            pokemonId: z.ZodString;
-            status: z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>;
+            pokemonId: z.ZodNumber;
+            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
             routeName: z.ZodString;
+            location: z.ZodEnum<["TEAM", "BOX"]>;
+            position: z.ZodNumber;
         }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
             playerId: z.ZodString;
-            pokemonId: z.ZodString;
-            status: z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>;
+            pokemonId: z.ZodNumber;
+            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
             routeName: z.ZodString;
+            location: z.ZodEnum<["TEAM", "BOX"]>;
+            position: z.ZodNumber;
         }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
             playerId: z.ZodString;
-            pokemonId: z.ZodString;
-            status: z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>;
+            pokemonId: z.ZodNumber;
+            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
             routeName: z.ZodString;
+            location: z.ZodEnum<["TEAM", "BOX"]>;
+            position: z.ZodNumber;
         }, z.ZodTypeAny, "passthrough">>;
     }, {
         name: "sessionId";
@@ -2470,23 +2513,29 @@ export declare const api: import("@zodios/core").ZodiosInstance<[{
         id: z.ZodString;
         playerId: z.ZodString;
         sessionId: z.ZodString;
-        pokemonId: z.ZodString;
-        status: z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>;
+        pokemonId: z.ZodNumber;
+        status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
         routeName: z.ZodString;
+        location: z.ZodEnum<["TEAM", "BOX"]>;
+        position: z.ZodNumber;
     }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
         id: z.ZodString;
         playerId: z.ZodString;
         sessionId: z.ZodString;
-        pokemonId: z.ZodString;
-        status: z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>;
+        pokemonId: z.ZodNumber;
+        status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
         routeName: z.ZodString;
+        location: z.ZodEnum<["TEAM", "BOX"]>;
+        position: z.ZodNumber;
     }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
         id: z.ZodString;
         playerId: z.ZodString;
         sessionId: z.ZodString;
-        pokemonId: z.ZodString;
-        status: z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>;
+        pokemonId: z.ZodNumber;
+        status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
         routeName: z.ZodString;
+        location: z.ZodEnum<["TEAM", "BOX"]>;
+        position: z.ZodNumber;
     }, z.ZodTypeAny, "passthrough">>;
     errors: [{
         status: 400;
@@ -2608,76 +2657,94 @@ export declare const api: import("@zodios/core").ZodiosInstance<[{
     }, {
         name: "status";
         type: "Query";
-        schema: z.ZodOptional<z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>>;
+        schema: z.ZodOptional<z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>>;
     }];
     response: z.ZodObject<{
         pokemon: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
             playerId: z.ZodString;
             sessionId: z.ZodString;
-            pokemonId: z.ZodString;
-            status: z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>;
+            pokemonId: z.ZodNumber;
+            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
             routeName: z.ZodString;
+            location: z.ZodEnum<["TEAM", "BOX"]>;
+            position: z.ZodNumber;
         }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
             id: z.ZodString;
             playerId: z.ZodString;
             sessionId: z.ZodString;
-            pokemonId: z.ZodString;
-            status: z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>;
+            pokemonId: z.ZodNumber;
+            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
             routeName: z.ZodString;
+            location: z.ZodEnum<["TEAM", "BOX"]>;
+            position: z.ZodNumber;
         }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
             id: z.ZodString;
             playerId: z.ZodString;
             sessionId: z.ZodString;
-            pokemonId: z.ZodString;
-            status: z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>;
+            pokemonId: z.ZodNumber;
+            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
             routeName: z.ZodString;
+            location: z.ZodEnum<["TEAM", "BOX"]>;
+            position: z.ZodNumber;
         }, z.ZodTypeAny, "passthrough">>, "many">;
     }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
         pokemon: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
             playerId: z.ZodString;
             sessionId: z.ZodString;
-            pokemonId: z.ZodString;
-            status: z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>;
+            pokemonId: z.ZodNumber;
+            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
             routeName: z.ZodString;
+            location: z.ZodEnum<["TEAM", "BOX"]>;
+            position: z.ZodNumber;
         }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
             id: z.ZodString;
             playerId: z.ZodString;
             sessionId: z.ZodString;
-            pokemonId: z.ZodString;
-            status: z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>;
+            pokemonId: z.ZodNumber;
+            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
             routeName: z.ZodString;
+            location: z.ZodEnum<["TEAM", "BOX"]>;
+            position: z.ZodNumber;
         }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
             id: z.ZodString;
             playerId: z.ZodString;
             sessionId: z.ZodString;
-            pokemonId: z.ZodString;
-            status: z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>;
+            pokemonId: z.ZodNumber;
+            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
             routeName: z.ZodString;
+            location: z.ZodEnum<["TEAM", "BOX"]>;
+            position: z.ZodNumber;
         }, z.ZodTypeAny, "passthrough">>, "many">;
     }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
         pokemon: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
             playerId: z.ZodString;
             sessionId: z.ZodString;
-            pokemonId: z.ZodString;
-            status: z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>;
+            pokemonId: z.ZodNumber;
+            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
             routeName: z.ZodString;
+            location: z.ZodEnum<["TEAM", "BOX"]>;
+            position: z.ZodNumber;
         }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
             id: z.ZodString;
             playerId: z.ZodString;
             sessionId: z.ZodString;
-            pokemonId: z.ZodString;
-            status: z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>;
+            pokemonId: z.ZodNumber;
+            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
             routeName: z.ZodString;
+            location: z.ZodEnum<["TEAM", "BOX"]>;
+            position: z.ZodNumber;
         }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
             id: z.ZodString;
             playerId: z.ZodString;
             sessionId: z.ZodString;
-            pokemonId: z.ZodString;
-            status: z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>;
+            pokemonId: z.ZodNumber;
+            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
             routeName: z.ZodString;
+            location: z.ZodEnum<["TEAM", "BOX"]>;
+            position: z.ZodNumber;
         }, z.ZodTypeAny, "passthrough">>, "many">;
     }, z.ZodTypeAny, "passthrough">>;
     errors: [{
@@ -2781,7 +2848,7 @@ export declare const api: import("@zodios/core").ZodiosInstance<[{
     }];
 }, {
     method: "patch";
-    path: "/pokemon/:sessionId/:pokemonId";
+    path: "/pokemon/:sessionId/:id";
     alias: "updatePokemon";
     description: "Update a Pokémon’s status, location, or properties";
     requestFormat: "json";
@@ -2789,21 +2856,27 @@ export declare const api: import("@zodios/core").ZodiosInstance<[{
         name: "body";
         type: "Body";
         schema: z.ZodObject<{
-            status: z.ZodOptional<z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>>;
+            status: z.ZodOptional<z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>>;
             routeName: z.ZodOptional<z.ZodString>;
+            location: z.ZodOptional<z.ZodEnum<["TEAM", "BOX"]>>;
+            position: z.ZodOptional<z.ZodNumber>;
         }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            status: z.ZodOptional<z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>>;
+            status: z.ZodOptional<z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>>;
             routeName: z.ZodOptional<z.ZodString>;
+            location: z.ZodOptional<z.ZodEnum<["TEAM", "BOX"]>>;
+            position: z.ZodOptional<z.ZodNumber>;
         }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            status: z.ZodOptional<z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>>;
+            status: z.ZodOptional<z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>>;
             routeName: z.ZodOptional<z.ZodString>;
+            location: z.ZodOptional<z.ZodEnum<["TEAM", "BOX"]>>;
+            position: z.ZodOptional<z.ZodNumber>;
         }, z.ZodTypeAny, "passthrough">>;
     }, {
         name: "sessionId";
         type: "Path";
         schema: z.ZodString;
     }, {
-        name: "pokemonId";
+        name: "id";
         type: "Path";
         schema: z.ZodString;
     }];
@@ -2811,23 +2884,29 @@ export declare const api: import("@zodios/core").ZodiosInstance<[{
         id: z.ZodString;
         playerId: z.ZodString;
         sessionId: z.ZodString;
-        pokemonId: z.ZodString;
-        status: z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>;
+        pokemonId: z.ZodNumber;
+        status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
         routeName: z.ZodString;
+        location: z.ZodEnum<["TEAM", "BOX"]>;
+        position: z.ZodNumber;
     }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
         id: z.ZodString;
         playerId: z.ZodString;
         sessionId: z.ZodString;
-        pokemonId: z.ZodString;
-        status: z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>;
+        pokemonId: z.ZodNumber;
+        status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
         routeName: z.ZodString;
+        location: z.ZodEnum<["TEAM", "BOX"]>;
+        position: z.ZodNumber;
     }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
         id: z.ZodString;
         playerId: z.ZodString;
         sessionId: z.ZodString;
-        pokemonId: z.ZodString;
-        status: z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>;
+        pokemonId: z.ZodNumber;
+        status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
         routeName: z.ZodString;
+        location: z.ZodEnum<["TEAM", "BOX"]>;
+        position: z.ZodNumber;
     }, z.ZodTypeAny, "passthrough">>;
     errors: [{
         status: 400;
@@ -5212,19 +5291,25 @@ export declare function createApiClient(baseUrl: string, options?: ZodiosOptions
         type: "Body";
         schema: z.ZodObject<{
             playerId: z.ZodString;
-            pokemonId: z.ZodString;
-            status: z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>;
+            pokemonId: z.ZodNumber;
+            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
             routeName: z.ZodString;
+            location: z.ZodEnum<["TEAM", "BOX"]>;
+            position: z.ZodNumber;
         }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
             playerId: z.ZodString;
-            pokemonId: z.ZodString;
-            status: z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>;
+            pokemonId: z.ZodNumber;
+            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
             routeName: z.ZodString;
+            location: z.ZodEnum<["TEAM", "BOX"]>;
+            position: z.ZodNumber;
         }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
             playerId: z.ZodString;
-            pokemonId: z.ZodString;
-            status: z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>;
+            pokemonId: z.ZodNumber;
+            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
             routeName: z.ZodString;
+            location: z.ZodEnum<["TEAM", "BOX"]>;
+            position: z.ZodNumber;
         }, z.ZodTypeAny, "passthrough">>;
     }, {
         name: "sessionId";
@@ -5235,23 +5320,29 @@ export declare function createApiClient(baseUrl: string, options?: ZodiosOptions
         id: z.ZodString;
         playerId: z.ZodString;
         sessionId: z.ZodString;
-        pokemonId: z.ZodString;
-        status: z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>;
+        pokemonId: z.ZodNumber;
+        status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
         routeName: z.ZodString;
+        location: z.ZodEnum<["TEAM", "BOX"]>;
+        position: z.ZodNumber;
     }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
         id: z.ZodString;
         playerId: z.ZodString;
         sessionId: z.ZodString;
-        pokemonId: z.ZodString;
-        status: z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>;
+        pokemonId: z.ZodNumber;
+        status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
         routeName: z.ZodString;
+        location: z.ZodEnum<["TEAM", "BOX"]>;
+        position: z.ZodNumber;
     }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
         id: z.ZodString;
         playerId: z.ZodString;
         sessionId: z.ZodString;
-        pokemonId: z.ZodString;
-        status: z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>;
+        pokemonId: z.ZodNumber;
+        status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
         routeName: z.ZodString;
+        location: z.ZodEnum<["TEAM", "BOX"]>;
+        position: z.ZodNumber;
     }, z.ZodTypeAny, "passthrough">>;
     errors: [{
         status: 400;
@@ -5373,76 +5464,94 @@ export declare function createApiClient(baseUrl: string, options?: ZodiosOptions
     }, {
         name: "status";
         type: "Query";
-        schema: z.ZodOptional<z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>>;
+        schema: z.ZodOptional<z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>>;
     }];
     response: z.ZodObject<{
         pokemon: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
             playerId: z.ZodString;
             sessionId: z.ZodString;
-            pokemonId: z.ZodString;
-            status: z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>;
+            pokemonId: z.ZodNumber;
+            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
             routeName: z.ZodString;
+            location: z.ZodEnum<["TEAM", "BOX"]>;
+            position: z.ZodNumber;
         }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
             id: z.ZodString;
             playerId: z.ZodString;
             sessionId: z.ZodString;
-            pokemonId: z.ZodString;
-            status: z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>;
+            pokemonId: z.ZodNumber;
+            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
             routeName: z.ZodString;
+            location: z.ZodEnum<["TEAM", "BOX"]>;
+            position: z.ZodNumber;
         }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
             id: z.ZodString;
             playerId: z.ZodString;
             sessionId: z.ZodString;
-            pokemonId: z.ZodString;
-            status: z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>;
+            pokemonId: z.ZodNumber;
+            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
             routeName: z.ZodString;
+            location: z.ZodEnum<["TEAM", "BOX"]>;
+            position: z.ZodNumber;
         }, z.ZodTypeAny, "passthrough">>, "many">;
     }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
         pokemon: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
             playerId: z.ZodString;
             sessionId: z.ZodString;
-            pokemonId: z.ZodString;
-            status: z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>;
+            pokemonId: z.ZodNumber;
+            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
             routeName: z.ZodString;
+            location: z.ZodEnum<["TEAM", "BOX"]>;
+            position: z.ZodNumber;
         }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
             id: z.ZodString;
             playerId: z.ZodString;
             sessionId: z.ZodString;
-            pokemonId: z.ZodString;
-            status: z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>;
+            pokemonId: z.ZodNumber;
+            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
             routeName: z.ZodString;
+            location: z.ZodEnum<["TEAM", "BOX"]>;
+            position: z.ZodNumber;
         }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
             id: z.ZodString;
             playerId: z.ZodString;
             sessionId: z.ZodString;
-            pokemonId: z.ZodString;
-            status: z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>;
+            pokemonId: z.ZodNumber;
+            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
             routeName: z.ZodString;
+            location: z.ZodEnum<["TEAM", "BOX"]>;
+            position: z.ZodNumber;
         }, z.ZodTypeAny, "passthrough">>, "many">;
     }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
         pokemon: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
             playerId: z.ZodString;
             sessionId: z.ZodString;
-            pokemonId: z.ZodString;
-            status: z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>;
+            pokemonId: z.ZodNumber;
+            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
             routeName: z.ZodString;
+            location: z.ZodEnum<["TEAM", "BOX"]>;
+            position: z.ZodNumber;
         }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
             id: z.ZodString;
             playerId: z.ZodString;
             sessionId: z.ZodString;
-            pokemonId: z.ZodString;
-            status: z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>;
+            pokemonId: z.ZodNumber;
+            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
             routeName: z.ZodString;
+            location: z.ZodEnum<["TEAM", "BOX"]>;
+            position: z.ZodNumber;
         }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
             id: z.ZodString;
             playerId: z.ZodString;
             sessionId: z.ZodString;
-            pokemonId: z.ZodString;
-            status: z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>;
+            pokemonId: z.ZodNumber;
+            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
             routeName: z.ZodString;
+            location: z.ZodEnum<["TEAM", "BOX"]>;
+            position: z.ZodNumber;
         }, z.ZodTypeAny, "passthrough">>, "many">;
     }, z.ZodTypeAny, "passthrough">>;
     errors: [{
@@ -5546,7 +5655,7 @@ export declare function createApiClient(baseUrl: string, options?: ZodiosOptions
     }];
 }, {
     method: "patch";
-    path: "/pokemon/:sessionId/:pokemonId";
+    path: "/pokemon/:sessionId/:id";
     alias: "updatePokemon";
     description: "Update a Pokémon’s status, location, or properties";
     requestFormat: "json";
@@ -5554,21 +5663,27 @@ export declare function createApiClient(baseUrl: string, options?: ZodiosOptions
         name: "body";
         type: "Body";
         schema: z.ZodObject<{
-            status: z.ZodOptional<z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>>;
+            status: z.ZodOptional<z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>>;
             routeName: z.ZodOptional<z.ZodString>;
+            location: z.ZodOptional<z.ZodEnum<["TEAM", "BOX"]>>;
+            position: z.ZodOptional<z.ZodNumber>;
         }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            status: z.ZodOptional<z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>>;
+            status: z.ZodOptional<z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>>;
             routeName: z.ZodOptional<z.ZodString>;
+            location: z.ZodOptional<z.ZodEnum<["TEAM", "BOX"]>>;
+            position: z.ZodOptional<z.ZodNumber>;
         }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            status: z.ZodOptional<z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>>;
+            status: z.ZodOptional<z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>>;
             routeName: z.ZodOptional<z.ZodString>;
+            location: z.ZodOptional<z.ZodEnum<["TEAM", "BOX"]>>;
+            position: z.ZodOptional<z.ZodNumber>;
         }, z.ZodTypeAny, "passthrough">>;
     }, {
         name: "sessionId";
         type: "Path";
         schema: z.ZodString;
     }, {
-        name: "pokemonId";
+        name: "id";
         type: "Path";
         schema: z.ZodString;
     }];
@@ -5576,23 +5691,29 @@ export declare function createApiClient(baseUrl: string, options?: ZodiosOptions
         id: z.ZodString;
         playerId: z.ZodString;
         sessionId: z.ZodString;
-        pokemonId: z.ZodString;
-        status: z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>;
+        pokemonId: z.ZodNumber;
+        status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
         routeName: z.ZodString;
+        location: z.ZodEnum<["TEAM", "BOX"]>;
+        position: z.ZodNumber;
     }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
         id: z.ZodString;
         playerId: z.ZodString;
         sessionId: z.ZodString;
-        pokemonId: z.ZodString;
-        status: z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>;
+        pokemonId: z.ZodNumber;
+        status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
         routeName: z.ZodString;
+        location: z.ZodEnum<["TEAM", "BOX"]>;
+        position: z.ZodNumber;
     }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
         id: z.ZodString;
         playerId: z.ZodString;
         sessionId: z.ZodString;
-        pokemonId: z.ZodString;
-        status: z.ZodEnum<["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]>;
+        pokemonId: z.ZodNumber;
+        status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
         routeName: z.ZodString;
+        location: z.ZodEnum<["TEAM", "BOX"]>;
+        position: z.ZodNumber;
     }, z.ZodTypeAny, "passthrough">>;
     errors: [{
         status: 400;

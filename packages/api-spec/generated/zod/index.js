@@ -108,13 +108,16 @@ const PokedexPokemon = zod_1.z
 const PokedexPokemonResponse = zod_1.z
     .object({ pokemon: zod_1.z.array(PokedexPokemon) })
     .passthrough();
-const PokemonStatus = zod_1.z.enum(["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]);
+const PokemonStatus = zod_1.z.enum(["CAUGHT", "NOT_CAUGHT", "DEAD"]);
+const PokemonLocation = zod_1.z.enum(["TEAM", "BOX"]);
 const AddPokemonRequest = zod_1.z
     .object({
     playerId: zod_1.z.string(),
-    pokemonId: zod_1.z.string(),
+    pokemonId: zod_1.z.number(),
     status: PokemonStatus,
     routeName: zod_1.z.string(),
+    location: PokemonLocation,
+    position: zod_1.z.number().int(),
 })
     .passthrough();
 const Pokemon = zod_1.z
@@ -122,16 +125,23 @@ const Pokemon = zod_1.z
     id: zod_1.z.string(),
     playerId: zod_1.z.string(),
     sessionId: zod_1.z.string(),
-    pokemonId: zod_1.z.string(),
+    pokemonId: zod_1.z.number(),
     status: PokemonStatus,
     routeName: zod_1.z.string(),
+    location: PokemonLocation,
+    position: zod_1.z.number().int(),
 })
     .passthrough();
 const PokemonListResponse = zod_1.z
     .object({ pokemon: zod_1.z.array(Pokemon) })
     .passthrough();
 const UpdatePokemonRequest = zod_1.z
-    .object({ status: PokemonStatus, routeName: zod_1.z.string() })
+    .object({
+    status: PokemonStatus,
+    routeName: zod_1.z.string(),
+    location: PokemonLocation,
+    position: zod_1.z.number().int(),
+})
     .partial()
     .passthrough();
 const RouteListResponse = zod_1.z
@@ -156,6 +166,7 @@ exports.schemas = {
     PokedexPokemon,
     PokedexPokemonResponse,
     PokemonStatus,
+    PokemonLocation,
     AddPokemonRequest,
     Pokemon,
     PokemonListResponse,
@@ -272,9 +283,7 @@ const endpoints = (0, core_1.makeApi)([
             {
                 name: "status",
                 type: "Query",
-                schema: zod_1.z
-                    .enum(["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"])
-                    .optional(),
+                schema: zod_1.z.enum(["CAUGHT", "NOT_CAUGHT", "DEAD"]).optional(),
             },
         ],
         response: PokemonListResponse,
@@ -293,7 +302,7 @@ const endpoints = (0, core_1.makeApi)([
     },
     {
         method: "patch",
-        path: "/pokemon/:sessionId/:pokemonId",
+        path: "/pokemon/:sessionId/:id",
         alias: "updatePokemon",
         description: `Update a Pokémon’s status, location, or properties`,
         requestFormat: "json",
@@ -309,7 +318,7 @@ const endpoints = (0, core_1.makeApi)([
                 schema: zod_1.z.string(),
             },
             {
-                name: "pokemonId",
+                name: "id",
                 type: "Path",
                 schema: zod_1.z.string(),
             },

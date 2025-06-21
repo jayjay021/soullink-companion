@@ -3,7 +3,7 @@ export interface Pokemon {
   id: string;
   playerId: string;
   sessionId: string;
-  speciesId: number;
+  pokemonId: number;
   routeName: string;
   status: 'CAUGHT' | 'NOT_CAUGHT' | 'DEAD';
   location: 'TEAM' | 'BOX';
@@ -52,6 +52,14 @@ export class PokemonPositionManager {
       return { valid: false, adjustedPokemon: [], error: 'Pokemon not found' };
     }
 
+    // If no change, return early
+    if (
+      targetPokemon.location === newLocation &&
+      targetPokemon.position === newPosition
+    ) {
+      return { valid: true, adjustedPokemon: [] };
+    }
+
     // Validate team position
     if (newLocation === 'TEAM') {
       if (newPosition < 1 || newPosition > 6) {
@@ -59,6 +67,44 @@ export class PokemonPositionManager {
           valid: false,
           adjustedPokemon: [],
           error: 'Team position must be between 1 and 6',
+        };
+      }
+      // Check if position is occupied
+      const occupying = pokemon.find(
+        (p) =>
+          p.location === 'TEAM' &&
+          p.position === newPosition &&
+          p.id !== pokemonId
+      );
+      if (occupying) {
+        return {
+          valid: false,
+          adjustedPokemon: [],
+          error: `Team position ${newPosition} is already occupied`,
+        };
+      }
+    }
+
+    if (newLocation === 'BOX') {
+      if (newPosition < 1) {
+        return {
+          valid: false,
+          adjustedPokemon: [],
+          error: 'Box position must be >= 1',
+        };
+      }
+      // Check if position is occupied
+      const occupying = pokemon.find(
+        (p) =>
+          p.location === 'BOX' &&
+          p.position === newPosition &&
+          p.id !== pokemonId
+      );
+      if (occupying) {
+        return {
+          valid: false,
+          adjustedPokemon: [],
+          error: `Box position ${newPosition} is already occupied`,
         };
       }
     }
@@ -162,13 +208,13 @@ export class PokemonValidationManager {
       (p) =>
         p.playerId === playerId &&
         p.sessionId === sessionId &&
-        evolutionLine.includes(p.speciesId) &&
+        evolutionLine.includes(p.pokemonId) &&
         (p.status === 'CAUGHT' || p.status === 'DEAD')
     );
 
     if (alreadyCaught) {
       const caughtSpecies = pokemonData.find(
-        (p) => p.id === alreadyCaught.speciesId
+        (p) => p.id === alreadyCaught.pokemonId
       );
       return {
         canCatch: false,

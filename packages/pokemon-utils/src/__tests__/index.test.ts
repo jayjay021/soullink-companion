@@ -11,7 +11,7 @@ describe('PokemonPositionManager', () => {
       id: '1',
       playerId: 'player1',
       sessionId: 'session1',
-      speciesId: 25, // Pikachu
+      pokemonId: 25, // Pikachu
       routeName: 'Route 1',
       status: 'CAUGHT',
       location: 'TEAM',
@@ -21,7 +21,7 @@ describe('PokemonPositionManager', () => {
       id: '2',
       playerId: 'player1',
       sessionId: 'session1',
-      speciesId: 1, // Bulbasaur
+      pokemonId: 1, // Bulbasaur
       routeName: 'Route 2',
       status: 'CAUGHT',
       location: 'BOX',
@@ -31,7 +31,7 @@ describe('PokemonPositionManager', () => {
       id: '3',
       playerId: 'player1',
       sessionId: 'session1',
-      speciesId: 4, // Charmander
+      pokemonId: 4, // Charmander
       routeName: 'Route 3',
       status: 'CAUGHT',
       location: 'BOX',
@@ -104,6 +104,128 @@ describe('PokemonPositionManager', () => {
       expect(boxPokemon).toHaveLength(3);
       expect(boxPokemon.map((p) => p.position)).toEqual([1, 2, 3]);
     });
+
+    it('should return error for non-existent Pokemon', () => {
+      const result = PokemonPositionManager.validateMove(
+        mockPokemon,
+        '999',
+        'TEAM',
+        1
+      );
+
+      expect(result.valid).toBe(false);
+      expect(result.error).toBe('Pokemon not found');
+    });
+    it('should adjust positions correctly when moving to box', () => {
+      const pokemonToMove = {
+        id: '4',
+        playerId: 'player1',
+        sessionId: 'session1',
+        pokemonId: 25, // Pikachu
+        routeName: 'Route 4',
+        status: 'CAUGHT' as const,
+        location: 'TEAM' as const,
+        position: 2,
+      };
+
+      const result = PokemonPositionManager.validateMove(
+        [...mockPokemon, pokemonToMove],
+        '4',
+        'BOX',
+        4
+      );
+
+      expect(result.valid).toBe(true);
+      const boxPokemon = result.adjustedPokemon.filter(
+        (p) => p.location === 'BOX'
+      );
+      expect(boxPokemon).toHaveLength(3);
+      expect(boxPokemon[2].id).toBe('4');
+    });
+
+    it('should handle moving to same position', () => {
+      const result = PokemonPositionManager.validateMove(
+        mockPokemon,
+        '1',
+        'TEAM',
+        1
+      );
+
+      expect(result.valid).toBe(true);
+      expect(result.adjustedPokemon.length).toBe(0); // No changes needed
+    });
+
+    it('should handle moving to box with existing Pokemon', () => {
+      const pokemonToMove = {
+        id: '4',
+        playerId: 'player1',
+        sessionId: 'session1',
+        pokemonId: 25, // Pikachu
+        routeName: 'Route 4',
+        status: 'CAUGHT' as const,
+        location: 'TEAM' as const,
+        position: 2,
+      };
+
+      const result = PokemonPositionManager.validateMove(
+        [...mockPokemon, pokemonToMove],
+        '4',
+        'BOX',
+        2
+      );
+
+      expect(result.valid).toBe(true);
+      const boxPokemon = result.adjustedPokemon.filter(
+        (p) => p.location === 'BOX'
+      );
+      expect(boxPokemon).toHaveLength(3);
+      expect(boxPokemon[1].position).toBe(2); // New position for moved Pokemon
+    });
+
+    it('should handle moving to occupied team position', () => {
+      const pokemonToMove = {
+        id: '4',
+        playerId: 'player1',
+        sessionId: 'session1',
+        pokemonId: 25, // Pikachu
+        routeName: 'Route 4',
+        status: 'CAUGHT' as const,
+        location: 'TEAM' as const,
+        position: 2,
+      };
+
+      const result = PokemonPositionManager.validateMove(
+        [...mockPokemon, pokemonToMove],
+        '4',
+        'TEAM',
+        1
+      );
+
+      expect(result.valid).toBe(false);
+      expect(result.error).toBe('Team position 1 is already occupied');
+    });
+
+    it('should handle moving to occupied box position', () => {
+      const pokemonToMove = {
+        id: '4',
+        playerId: 'player1',
+        sessionId: 'session1',
+        pokemonId: 25, // Pikachu
+        routeName: 'Route 4',
+        status: 'CAUGHT' as const,
+        location: 'TEAM' as const,
+        position: 2,
+      };
+
+      const result = PokemonPositionManager.validateMove(
+        [...mockPokemon, pokemonToMove],
+        '4',
+        'BOX',
+        1
+      );
+      expect(result.valid).toBe(false);
+      expect(result.error).toBe('Box position 1 is already occupied');
+    });
   });
 
   describe('getNextTeamPosition', () => {
@@ -120,7 +242,7 @@ describe('PokemonPositionManager', () => {
         id: `team${i}`,
         playerId: 'player1',
         sessionId: 'session1',
-        speciesId: i + 1,
+        pokemonId: i + 1,
         routeName: `Route ${i}`,
         status: 'CAUGHT',
         location: 'TEAM',
@@ -170,7 +292,7 @@ describe('PokemonValidationManager', () => {
       id: '1',
       playerId: 'player1',
       sessionId: 'session1',
-      speciesId: 25, // Pikachu
+      pokemonId: 25, // Pikachu
       routeName: 'Route 1',
       status: 'CAUGHT',
       location: 'TEAM',
@@ -180,7 +302,7 @@ describe('PokemonValidationManager', () => {
       id: '2',
       playerId: 'player2',
       sessionId: 'session1',
-      speciesId: 1, // Bulbasaur
+      pokemonId: 1, // Bulbasaur
       routeName: 'Route 1',
       status: 'CAUGHT',
       location: 'TEAM',
@@ -190,7 +312,7 @@ describe('PokemonValidationManager', () => {
       id: '3',
       playerId: 'player1',
       sessionId: 'session1',
-      speciesId: 150, // Mewtwo
+      pokemonId: 150, // Mewtwo
       routeName: 'Route 2',
       status: 'DEAD',
       location: 'BOX',
@@ -200,7 +322,7 @@ describe('PokemonValidationManager', () => {
       id: '4',
       playerId: 'player2',
       sessionId: 'session1',
-      speciesId: 4, // Charmander
+      pokemonId: 4, // Charmander
       routeName: 'Route 2',
       status: 'CAUGHT',
       location: 'BOX',
@@ -308,7 +430,7 @@ describe('PokemonValidationManager', () => {
           id: '7',
           playerId: 'player1',
           sessionId: 'session1',
-          speciesId: 25,
+          pokemonId: 25,
           routeName: 'Route 3',
           status: 'CAUGHT',
           location: 'BOX',
@@ -364,7 +486,7 @@ describe('PokemonValidationManager', () => {
               id: '1',
               playerId: 'player1',
               sessionId: 'session1',
-              speciesId: 1,
+              pokemonId: 1,
               routeName: 'Route 1',
               status: 'CAUGHT',
               location: 'BOX',
@@ -392,7 +514,7 @@ describe('PokemonValidationManager', () => {
               id: '1',
               playerId: 'player1',
               sessionId: 'session1',
-              speciesId: 1,
+              pokemonId: 1,
               routeName: 'Route 1',
               status: 'CAUGHT',
               location: 'BOX',
@@ -553,7 +675,7 @@ describe('PokemonValidationManager', () => {
               id: '1',
               playerId: 'player1',
               sessionId: 'session1',
-              speciesId: 1, // Bulbasaur
+              pokemonId: 1, // Bulbasaur
               routeName: 'Route 1',
               status: 'DEAD', // Dead, not caught
               location: 'BOX',
@@ -579,7 +701,7 @@ describe('PokemonValidationManager', () => {
               id: '1',
               playerId: 'player1',
               sessionId: 'session1',
-              speciesId: 3, // Venusaur
+              pokemonId: 3, // Venusaur
               routeName: 'Route 1',
               status: 'DEAD', // Dead, not caught
               location: 'BOX',
@@ -605,7 +727,7 @@ describe('PokemonValidationManager', () => {
               id: '1',
               playerId: 'player1',
               sessionId: 'session1',
-              speciesId: 1, // Bulbasaur (dead)
+              pokemonId: 1, // Bulbasaur (dead)
               routeName: 'Route 1',
               status: 'DEAD',
               location: 'BOX',

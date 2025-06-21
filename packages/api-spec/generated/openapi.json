@@ -459,7 +459,7 @@
         }
       }
     },
-    "/pokemon/{sessionId}/{pokemonId}": {
+    "/pokemon/{sessionId}/{id}": {
       "patch": {
         "summary": "Update a Pokémon",
         "description": "Update a Pokémon’s status, location, or properties",
@@ -477,7 +477,7 @@
             }
           },
           {
-            "name": "pokemonId",
+            "name": "id",
             "in": "path",
             "required": true,
             "schema": {
@@ -1127,27 +1127,39 @@
           "playerId",
           "pokemonId",
           "status",
-          "routeName"
+          "routeName",
+          "location",
+          "position"
         ],
         "properties": {
           "playerId": {
             "type": "string"
           },
           "pokemonId": {
-            "type": "string"
+            "type": "number",
+            "description": "Pokémon National Dex number"
           },
           "status": {
             "$ref": "#/components/schemas/PokemonStatus"
           },
           "routeName": {
             "type": "string"
+          },
+          "location": {
+            "$ref": "#/components/schemas/PokemonLocation"
+          },
+          "position": {
+            "type": "integer",
+            "description": "Position in the team or box"
           }
         },
         "example": {
           "playerId": "player-1",
-          "pokemonId": "1",
+          "pokemonId": 1,
           "status": "CAUGHT",
-          "routeName": "Route 1"
+          "routeName": "Route 1",
+          "location": "BOX",
+          "position": 1
         }
       },
       "UpdatePokemonRequest": {
@@ -1158,23 +1170,40 @@
           },
           "routeName": {
             "type": "string"
+          },
+          "location": {
+            "$ref": "#/components/schemas/PokemonLocation"
+          },
+          "position": {
+            "type": "integer",
+            "description": "Position in the team or box"
           }
         },
         "example": {
           "status": "FAINTED",
-          "routeName": "Route 1"
+          "routeName": "Route 1",
+          "location": "TEAM",
+          "position": 2
         }
       },
       "PokemonStatus": {
         "type": "string",
         "enum": [
           "CAUGHT",
-          "FAINTED",
-          "IN_BATTLE",
-          "RUNNING"
+          "NOT_CAUGHT",
+          "DEAD"
         ],
         "description": "The status of a Pokémon in a session",
         "example": "CAUGHT"
+      },
+      "PokemonLocation": {
+        "type": "string",
+        "enum": [
+          "TEAM",
+          "BOX"
+        ],
+        "description": "The location of a Pokémon (TEAM or BOX)",
+        "example": "BOX"
       },
       "Pokemon": {
         "type": "object",
@@ -1184,7 +1213,9 @@
           "sessionId",
           "pokemonId",
           "status",
-          "routeName"
+          "routeName",
+          "location",
+          "position"
         ],
         "properties": {
           "id": {
@@ -1197,13 +1228,21 @@
             "type": "string"
           },
           "pokemonId": {
-            "type": "string"
+            "type": "number",
+            "description": "Pokémon National Dex number"
           },
           "status": {
             "$ref": "#/components/schemas/PokemonStatus"
           },
           "routeName": {
             "type": "string"
+          },
+          "location": {
+            "$ref": "#/components/schemas/PokemonLocation"
+          },
+          "position": {
+            "type": "integer",
+            "description": "Position in the team or box"
           }
         },
         "example": {
@@ -1212,7 +1251,9 @@
           "sessionId": "session-123",
           "pokemonId": "1",
           "status": "CAUGHT",
-          "routeName": "Route 1"
+          "routeName": "Route 1",
+          "location": "BOX",
+          "position": 1
         }
       },
       "PokemonListResponse": {

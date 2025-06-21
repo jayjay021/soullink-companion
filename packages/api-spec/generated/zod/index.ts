@@ -105,13 +105,16 @@ const PokedexPokemon = z
 const PokedexPokemonResponse = z
   .object({ pokemon: z.array(PokedexPokemon) })
   .passthrough();
-const PokemonStatus = z.enum(["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"]);
+const PokemonStatus = z.enum(["CAUGHT", "NOT_CAUGHT", "DEAD"]);
+const PokemonLocation = z.enum(["TEAM", "BOX"]);
 const AddPokemonRequest = z
   .object({
     playerId: z.string(),
-    pokemonId: z.string(),
+    pokemonId: z.number(),
     status: PokemonStatus,
     routeName: z.string(),
+    location: PokemonLocation,
+    position: z.number().int(),
   })
   .passthrough();
 const Pokemon = z
@@ -119,16 +122,23 @@ const Pokemon = z
     id: z.string(),
     playerId: z.string(),
     sessionId: z.string(),
-    pokemonId: z.string(),
+    pokemonId: z.number(),
     status: PokemonStatus,
     routeName: z.string(),
+    location: PokemonLocation,
+    position: z.number().int(),
   })
   .passthrough();
 const PokemonListResponse = z
   .object({ pokemon: z.array(Pokemon) })
   .passthrough();
 const UpdatePokemonRequest = z
-  .object({ status: PokemonStatus, routeName: z.string() })
+  .object({
+    status: PokemonStatus,
+    routeName: z.string(),
+    location: PokemonLocation,
+    position: z.number().int(),
+  })
   .partial()
   .passthrough();
 const RouteListResponse = z
@@ -154,6 +164,7 @@ export const schemas = {
   PokedexPokemon,
   PokedexPokemonResponse,
   PokemonStatus,
+  PokemonLocation,
   AddPokemonRequest,
   Pokemon,
   PokemonListResponse,
@@ -271,9 +282,7 @@ const endpoints = makeApi([
       {
         name: "status",
         type: "Query",
-        schema: z
-          .enum(["CAUGHT", "FAINTED", "IN_BATTLE", "RUNNING"])
-          .optional(),
+        schema: z.enum(["CAUGHT", "NOT_CAUGHT", "DEAD"]).optional(),
       },
     ],
     response: PokemonListResponse,
@@ -292,7 +301,7 @@ const endpoints = makeApi([
   },
   {
     method: "patch",
-    path: "/pokemon/:sessionId/:pokemonId",
+    path: "/pokemon/:sessionId/:id",
     alias: "updatePokemon",
     description: `Update a Pokémon’s status, location, or properties`,
     requestFormat: "json",
@@ -308,7 +317,7 @@ const endpoints = makeApi([
         schema: z.string(),
       },
       {
-        name: "pokemonId",
+        name: "id",
         type: "Path",
         schema: z.string(),
       },

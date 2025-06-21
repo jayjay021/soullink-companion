@@ -51,7 +51,7 @@ model Pokemon {
   id        String          @id @default(cuid())
   playerId  String
   sessionId String
-  speciesId Int
+  pokemonId Int
   routeName String
   status    PokemonStatus   @default(CAUGHT)
   location  PokemonLocation @default(BOX)

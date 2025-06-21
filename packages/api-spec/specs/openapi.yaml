@@ -293,7 +293,7 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '404':
           $ref: '#/components/responses/NotFound'
-  /pokemon/{sessionId}/{pokemonId}:
+  /pokemon/{sessionId}/{id}:
     patch:
       summary: Update a Pokémon
       description: Update a Pokémon’s status, location, or properties
@@ -306,7 +306,7 @@ paths:
           required: true
           schema:
             type: string
-        - name: pokemonId
+        - name: id
           in: path
           required: true
           schema:
@@ -755,20 +755,30 @@ components:
         - pokemonId
         - status
         - routeName
+        - location
+        - position
       properties:
         playerId:
           type: string
         pokemonId:
-          type: string
+          type: number
+          description: Pokémon National Dex number
         status:
           $ref: '#/components/schemas/PokemonStatus'
         routeName:
           type: string
+        location:
+          $ref: '#/components/schemas/PokemonLocation'
+        position:
+          type: integer
+          description: Position in the team or box
       example:
         playerId: "player-1"
-        pokemonId: "1"
+        pokemonId: 1
         status: "CAUGHT"
         routeName: "Route 1"
+        location: "BOX"
+        position: 1
 
     UpdatePokemonRequest:
       type: object
@@ -777,19 +787,33 @@ components:
           $ref: '#/components/schemas/PokemonStatus'
         routeName:
           type: string
+        location:
+          $ref: '#/components/schemas/PokemonLocation'
+        position:
+          type: integer
+          description: Position in the team or box
       example:
         status: "FAINTED"
         routeName: "Route 1"
+        location: "TEAM"
+        position: 2
 
     PokemonStatus:
       type: string
       enum:
         - CAUGHT
-        - FAINTED
-        - IN_BATTLE
-        - RUNNING
+        - NOT_CAUGHT
+        - DEAD
       description: The status of a Pokémon in a session
       example: "CAUGHT"
+
+    PokemonLocation:
+      type: string
+      enum:
+        - TEAM
+        - BOX
+      description: The location of a Pokémon (TEAM or BOX)
+      example: "BOX"
 
     Pokemon:
       type: object
@@ -800,6 +824,8 @@ components:
         - pokemonId
         - status
         - routeName
+        - location
+        - position
       properties:
         id:
           type: string
@@ -808,11 +834,17 @@ components:
         sessionId:
           type: string
         pokemonId:
-          type: string
+          type: number
+          description: Pokémon National Dex number
         status:
           $ref: '#/components/schemas/PokemonStatus'
         routeName:
           type: string
+        location:
+          $ref: '#/components/schemas/PokemonLocation'
+        position:
+          type: integer
+          description: Position in the team or box
       example:
         id: "pokemon-1"
         playerId: "player-1"
@@ -820,6 +852,8 @@ components:
         pokemonId: "1"
         status: "CAUGHT"
         routeName: "Route 1"
+        location: "BOX"
+        position: 1
 
     PokemonListResponse:
       type: object

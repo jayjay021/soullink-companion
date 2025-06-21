@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import sessionRoutes from './session';
 import pokedexRoutes from './pokedex';
+import pokemonRoutes from './pokemon';
 
 const router: Router = Router();
 
@@ -18,5 +19,6 @@ router.get('/', (req, res) => {
 // Resource routes
 router.use('/session', sessionRoutes);
 router.use('/pokedex', pokedexRoutes);
+router.use('/pokemon', pokemonRoutes);
 
 export default router;

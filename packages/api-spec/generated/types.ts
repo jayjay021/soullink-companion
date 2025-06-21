@@ -142,7 +142,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/pokemon/{sessionId}/{pokemonId}": {
+    "/pokemon/{sessionId}/{id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -486,45 +486,68 @@ export interface components {
         };
         /** @example {
          *       "playerId": "player-1",
-         *       "pokemonId": "1",
+         *       "pokemonId": 1,
          *       "status": "CAUGHT",
-         *       "routeName": "Route 1"
+         *       "routeName": "Route 1",
+         *       "location": "BOX",
+         *       "position": 1
          *     } */
         AddPokemonRequest: {
             playerId: string;
-            pokemonId: string;
+            /** @description Pokémon National Dex number */
+            pokemonId: number;
             status: components["schemas"]["PokemonStatus"];
             routeName: string;
+            location: components["schemas"]["PokemonLocation"];
+            /** @description Position in the team or box */
+            position: number;
         };
         /** @example {
          *       "status": "FAINTED",
-         *       "routeName": "Route 1"
+         *       "routeName": "Route 1",
+         *       "location": "TEAM",
+         *       "position": 2
          *     } */
         UpdatePokemonRequest: {
             status?: components["schemas"]["PokemonStatus"];
             routeName?: string;
+            location?: components["schemas"]["PokemonLocation"];
+            /** @description Position in the team or box */
+            position?: number;
         };
         /**
          * @description The status of a Pokémon in a session
          * @example CAUGHT
          * @enum {string}
          */
-        PokemonStatus: "CAUGHT" | "FAINTED" | "IN_BATTLE" | "RUNNING";
+        PokemonStatus: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+        /**
+         * @description The location of a Pokémon (TEAM or BOX)
+         * @example BOX
+         * @enum {string}
+         */
+        PokemonLocation: "TEAM" | "BOX";
         /** @example {
          *       "id": "pokemon-1",
          *       "playerId": "player-1",
          *       "sessionId": "session-123",
          *       "pokemonId": "1",
          *       "status": "CAUGHT",
-         *       "routeName": "Route 1"
+         *       "routeName": "Route 1",
+         *       "location": "BOX",
+         *       "position": 1
          *     } */
         Pokemon: {
             id: string;
             playerId: string;
             sessionId: string;
-            pokemonId: string;
+            /** @description Pokémon National Dex number */
+            pokemonId: number;
             status: components["schemas"]["PokemonStatus"];
             routeName: string;
+            location: components["schemas"]["PokemonLocation"];
+            /** @description Position in the team or box */
+            position: number;
         };
         /** @example {
          *       "pokemon": [
@@ -869,7 +892,7 @@ export interface operations {
             header?: never;
             path: {
                 sessionId: string;
-                pokemonId: string;
+                id: string;
             };
             cookie?: never;
         };

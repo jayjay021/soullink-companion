@@ -59,7 +59,7 @@ describe('Session API ', () => {
       expect(createResponse.status).toBe(201);
 
       // Validate the response using Zod schema
-      const createSessionValidation = schemas.Session.safeParse(
+      const createSessionValidation = schemas.Session.strict().safeParse(
         createResponse.body
       );
       expect(createSessionValidation.success).toBe(true);
@@ -98,7 +98,7 @@ describe('Session API ', () => {
       expect(response.body).toBeDefined();
 
       // Validate the response using Zod schema
-      const validation = schemas.Session.safeParse(response.body);
+      const validation = schemas.Session.strict().safeParse(response.body);
       expect(validation.success).toBe(true);
     });
 
@@ -128,7 +128,7 @@ describe('Session API ', () => {
         .expect('Content-Type', /json/)
         .expect(201);
 
-      const session = schemas.Session.parse(createResponse.body);
+      const session = schemas.Session.strict().parse(createResponse.body);
       const sessionId = session.id;
 
       // Now, get the session by ID
@@ -139,7 +139,7 @@ describe('Session API ', () => {
         .expect(200);
 
       // Validate the response using Zod schema
-      const validation = schemas.Session.safeParse(response.body);
+      const validation = schemas.Session.strict().safeParse(response.body);
       expect(validation.success).toBe(true);
     });
 
@@ -164,7 +164,7 @@ describe('Session API ', () => {
         .expect('Content-Type', /json/)
         .expect(201);
 
-      const session = schemas.Session.parse(createResponse.body);
+      const session = schemas.Session.strict().parse(createResponse.body);
       const sessionId = session.id;
 
       // Now, update the session
@@ -181,7 +181,7 @@ describe('Session API ', () => {
         .expect(200);
 
       // Validate the response using Zod schema
-      const validation = schemas.Session.safeParse(response.body);
+      const validation = schemas.Session.strict().safeParse(response.body);
       expect(validation.success).toBe(true);
 
       // Check if the session was updated correctly
@@ -200,7 +200,7 @@ describe('Session API ', () => {
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .expect(201);
-      const session = schemas.Session.parse(createResponse.body);
+      const session = schemas.Session.strict().parse(createResponse.body);
       const sessionId = session.id;
       // Now, update the session to start it
       const response = await supertest(app)
@@ -214,7 +214,7 @@ describe('Session API ', () => {
         .expect('Content-Type', /json/)
         .expect(200);
       // Validate the response using Zod schema
-      const validation = schemas.Session.safeParse(response.body);
+      const validation = schemas.Session.strict().safeParse(response.body);
       expect(validation.success).toBe(true);
       // Check if the session was updated correctly
       expect(response.body.name).toBe('Started Session');
@@ -247,7 +247,7 @@ describe('Session API ', () => {
         .expect('Content-Type', /json/)
         .expect(201);
 
-      const session = schemas.Session.parse(createResponse.body);
+      const session = schemas.Session.strict().parse(createResponse.body);
       const sessionId = session.id;
 
       // Now, delete the session
@@ -285,7 +285,7 @@ describe('Session API ', () => {
         .expect('Content-Type', /json/)
         .expect(201);
 
-      const session = schemas.Session.parse(createResponse.body);
+      const session = schemas.Session.strict().parse(createResponse.body);
       const sessionId = session.id;
 
       // Now, join the session
@@ -302,7 +302,7 @@ describe('Session API ', () => {
         .expect(200);
 
       // Validate the response using Zod schema
-      const validation = schemas.Session.safeParse(response.body);
+      const validation = schemas.Session.strict().safeParse(response.body);
       expect(validation.success).toBe(true);
 
       // Check if the player was added to the session
@@ -325,7 +325,7 @@ describe('Session API ', () => {
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .expect(201);
-      const session = schemas.Session.parse(createResponse.body);
+      const session = schemas.Session.strict().parse(createResponse.body);
       const sessionId = session.id;
       // Now, try to join the session with invalid data
       await supertest(app)
@@ -354,7 +354,7 @@ describe('Session API ', () => {
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .expect(201);
-      const session = schemas.Session.parse(createResponse.body);
+      const session = schemas.Session.strict().parse(createResponse.body);
       const sessionId = session.id;
       // Join the session once
       await supertest(app)
@@ -382,7 +382,7 @@ describe('Session API ', () => {
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .expect(201);
-      const session = schemas.Session.parse(createResponse.body);
+      const session = schemas.Session.strict().parse(createResponse.body);
       const sessionId = session.id;
 
       // Join the first session with a player
@@ -395,7 +395,7 @@ describe('Session API ', () => {
         .expect(200);
 
       // Validate the response using Zod schema
-      const validation = schemas.Session.safeParse(joinResponse.body);
+      const validation = schemas.Session.strict().safeParse(joinResponse.body);
       expect(validation.success).toBe(true);
       // Check if the player was added to the session
       expect(joinResponse.body.players).toBeDefined();
@@ -415,7 +415,7 @@ describe('Session API ', () => {
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .expect(201);
-      const session2 = schemas.Session.parse(createResponse2.body);
+      const session2 = schemas.Session.strict().parse(createResponse2.body);
       const sessionId2 = session2.id;
       // Join the second session with the same player
       const response2 = await supertest(app)
@@ -425,7 +425,7 @@ describe('Session API ', () => {
         .expect('Content-Type', /json/)
         .expect(200);
       // Validate the response using Zod schema
-      const validation2 = schemas.Session.safeParse(response2.body);
+      const validation2 = schemas.Session.strict().safeParse(response2.body);
       expect(validation2.success).toBe(true);
       // Check if the player was added to the second session
       expect(response2.body.players).toBeDefined();
@@ -447,6 +447,9 @@ describe('Session API ', () => {
           (p: { id: string; name: string }) => p.id === player1.id
         )
       ).toBe(true);
+      // Validate the response using Zod schema
+      const validation3 = schemas.Session.strict().safeParse(getResponse.body);
+      expect(validation3.success).toBe(true);
     });
 
     it('should return 404 Not Found for invalid sessionId', async () => {
