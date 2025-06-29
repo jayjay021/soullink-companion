@@ -9,7 +9,7 @@ describe('PokemonPositionManager', () => {
   const mockPokemon: Pokemon[] = [
     {
       id: '1',
-      playerId: 'player1',
+      userId: 'player1',
       sessionId: 'session1',
       pokemonId: 25, // Pikachu
       routeName: 'Route 1',
@@ -19,7 +19,7 @@ describe('PokemonPositionManager', () => {
     },
     {
       id: '2',
-      playerId: 'player1',
+      userId: 'player1',
       sessionId: 'session1',
       pokemonId: 1, // Bulbasaur
       routeName: 'Route 2',
@@ -29,7 +29,7 @@ describe('PokemonPositionManager', () => {
     },
     {
       id: '3',
-      playerId: 'player1',
+      userId: 'player1',
       sessionId: 'session1',
       pokemonId: 4, // Charmander
       routeName: 'Route 3',
@@ -119,7 +119,7 @@ describe('PokemonPositionManager', () => {
     it('should adjust positions correctly when moving to box', () => {
       const pokemonToMove = {
         id: '4',
-        playerId: 'player1',
+        userId: 'player1',
         sessionId: 'session1',
         pokemonId: 25, // Pikachu
         routeName: 'Route 4',
@@ -158,7 +158,7 @@ describe('PokemonPositionManager', () => {
     it('should handle moving to box with existing Pokemon', () => {
       const pokemonToMove = {
         id: '4',
-        playerId: 'player1',
+        userId: 'player1',
         sessionId: 'session1',
         pokemonId: 25, // Pikachu
         routeName: 'Route 4',
@@ -185,7 +185,7 @@ describe('PokemonPositionManager', () => {
     it('should handle moving to occupied team position', () => {
       const pokemonToMove = {
         id: '4',
-        playerId: 'player1',
+        userId: 'player1',
         sessionId: 'session1',
         pokemonId: 25, // Pikachu
         routeName: 'Route 4',
@@ -208,7 +208,7 @@ describe('PokemonPositionManager', () => {
     it('should handle moving to occupied box position', () => {
       const pokemonToMove = {
         id: '4',
-        playerId: 'player1',
+        userId: 'player1',
         sessionId: 'session1',
         pokemonId: 25, // Pikachu
         routeName: 'Route 4',
@@ -240,7 +240,7 @@ describe('PokemonPositionManager', () => {
     it('should return null when team is full', () => {
       const fullTeam: Pokemon[] = Array.from({ length: 6 }, (_, i) => ({
         id: `team${i}`,
-        playerId: 'player1',
+        userId: 'player1',
         sessionId: 'session1',
         pokemonId: i + 1,
         routeName: `Route ${i}`,
@@ -290,7 +290,7 @@ describe('PokemonValidationManager', () => {
   const mockPokemon: Pokemon[] = [
     {
       id: '1',
-      playerId: 'player1',
+      userId: 'player1',
       sessionId: 'session1',
       pokemonId: 25, // Pikachu
       routeName: 'Route 1',
@@ -300,7 +300,7 @@ describe('PokemonValidationManager', () => {
     },
     {
       id: '2',
-      playerId: 'player2',
+      userId: 'player2',
       sessionId: 'session1',
       pokemonId: 1, // Bulbasaur
       routeName: 'Route 1',
@@ -310,7 +310,7 @@ describe('PokemonValidationManager', () => {
     },
     {
       id: '3',
-      playerId: 'player1',
+      userId: 'player1',
       sessionId: 'session1',
       pokemonId: 150, // Mewtwo
       routeName: 'Route 2',
@@ -320,7 +320,7 @@ describe('PokemonValidationManager', () => {
     },
     {
       id: '4',
-      playerId: 'player2',
+      userId: 'player2',
       sessionId: 'session1',
       pokemonId: 4, // Charmander
       routeName: 'Route 2',
@@ -413,11 +413,11 @@ describe('PokemonValidationManager', () => {
     it('should return true when all players have route link and team Pokemon have linked Pokemon in teams', () => {
       // Pokemon 1 and 2 are both on Route 1, both in teams
       const pokemon1 = mockPokemon.find((p) => p.id === '1')!;
-      const sessionPlayerIds = ['player1', 'player2']; // Two players in session
+      const sessionuserIds = ['player1', 'player2']; // Two players in session
       const result = PokemonValidationManager.isPokemonValid(
         pokemon1,
         mockPokemon,
-        sessionPlayerIds
+        sessionuserIds
       );
       expect(result).toBe(true);
     });
@@ -428,7 +428,7 @@ describe('PokemonValidationManager', () => {
         ...mockPokemon,
         {
           id: '7',
-          playerId: 'player1',
+          userId: 'player1',
           sessionId: 'session1',
           pokemonId: 25,
           routeName: 'Route 3',
@@ -455,11 +455,11 @@ describe('PokemonValidationManager', () => {
       );
 
       const pokemon1 = mixedLocationPokemon.find((p) => p.id === '1')!;
-      const sessionPlayerIds = ['player1', 'player2'];
+      const sessionuserIds = ['player1', 'player2'];
       const result = PokemonValidationManager.isPokemonValid(
         pokemon1,
         mixedLocationPokemon,
-        sessionPlayerIds
+        sessionuserIds
       );
       expect(result).toBe(false);
     });
@@ -467,11 +467,11 @@ describe('PokemonValidationManager', () => {
     it('should return true when Pokemon is in box regardless of linked Pokemon locations', () => {
       // Pokemon 3 is in box, linked Pokemon 4 can be anywhere
       const pokemon3 = mockPokemon.find((p) => p.id === '3')!;
-      const sessionPlayerIds = ['player1', 'player2'];
+      const sessionuserIds = ['player1', 'player2'];
       const result = PokemonValidationManager.isPokemonValid(
         pokemon3,
         mockPokemon,
-        sessionPlayerIds
+        sessionuserIds
       );
       expect(result).toBe(true);
     });
@@ -484,7 +484,7 @@ describe('PokemonValidationManager', () => {
           const firstPokemonEver: Pokemon[] = [
             {
               id: '1',
-              playerId: 'player1',
+              userId: 'player1',
               sessionId: 'session1',
               pokemonId: 1,
               routeName: 'Route 1',
@@ -512,7 +512,7 @@ describe('PokemonValidationManager', () => {
           const firstPokemonEver: Pokemon[] = [
             {
               id: '1',
-              playerId: 'player1',
+              userId: 'player1',
               sessionId: 'session1',
               pokemonId: 1,
               routeName: 'Route 1',
@@ -673,7 +673,7 @@ describe('PokemonValidationManager', () => {
           const deadPokemonScenario: Pokemon[] = [
             {
               id: '1',
-              playerId: 'player1',
+              userId: 'player1',
               sessionId: 'session1',
               pokemonId: 1, // Bulbasaur
               routeName: 'Route 1',
@@ -699,7 +699,7 @@ describe('PokemonValidationManager', () => {
           const deadPokemonScenario: Pokemon[] = [
             {
               id: '1',
-              playerId: 'player1',
+              userId: 'player1',
               sessionId: 'session1',
               pokemonId: 3, // Venusaur
               routeName: 'Route 1',
@@ -725,7 +725,7 @@ describe('PokemonValidationManager', () => {
           const deadPokemonScenario: Pokemon[] = [
             {
               id: '1',
-              playerId: 'player1',
+              userId: 'player1',
               sessionId: 'session1',
               pokemonId: 1, // Bulbasaur (dead)
               routeName: 'Route 1',

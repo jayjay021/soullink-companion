@@ -9,15 +9,10 @@ type CreateSessionData =
 type UpdateSessionData =
   paths['/session/{sessionId}']['put']['requestBody']['content']['application/json'];
 
-type PlayerData = {
-  id: string;
-  name: string;
-};
-
 type Session =
   paths['/session/{sessionId}']['get']['responses']['200']['content']['application/json'];
 
-type PrismaSessionWithPlayers = Prisma.SessionGetPayload<{
+type PrismaSessionWithUsers = Prisma.SessionGetPayload<{
   select: {
     id: true;
     name: true;
@@ -26,22 +21,26 @@ type PrismaSessionWithPlayers = Prisma.SessionGetPayload<{
     status: true;
     playerSessions: {
       select: {
-        player: {
-          select: { id: true; name: true };
+        user: {
+          select: { id: true; username: true; createdAt: true };
         };
       };
     };
   };
 }>;
 
-function toSessionApi(session: PrismaSessionWithPlayers): Session {
+function toSessionApi(session: PrismaSessionWithUsers): Session {
   return {
     id: session.id,
     name: session.name,
     description: session.description ?? '',
     createdAt: session.createdAt.toISOString(),
     status: session.status,
-    players: session.playerSessions.map((ps) => ps.player),
+    users: session.playerSessions.map((ps) => ({
+      id: ps.user.id,
+      username: ps.user.username,
+      createdAt: ps.user.createdAt.toISOString(),
+    })),
   };
 }
 
@@ -57,8 +56,8 @@ export class SessionService {
           status: true,
           playerSessions: {
             select: {
-              player: {
-                select: { id: true, name: true },
+              user: {
+                select: { id: true, username: true, createdAt: true },
               },
             },
           },
@@ -89,8 +88,8 @@ export class SessionService {
           status: true,
           playerSessions: {
             select: {
-              player: {
-                select: { id: true, name: true },
+              user: {
+                select: { id: true, username: true, createdAt: true },
               },
             },
           },
@@ -115,8 +114,8 @@ export class SessionService {
           status: true,
           playerSessions: {
             select: {
-              player: {
-                select: { id: true, name: true },
+              user: {
+                select: { id: true, username: true, createdAt: true },
               },
             },
           },
@@ -155,8 +154,8 @@ export class SessionService {
           status: true,
           playerSessions: {
             select: {
-              player: {
-                select: { id: true, name: true },
+              user: {
+                select: { id: true, username: true, createdAt: true },
               },
             },
           },
@@ -187,56 +186,30 @@ export class SessionService {
     }
   }
 
-  async joinSession(sessionId: string, playerData: PlayerData) {
+  async joinSession(sessionId: string, userId: string) {
     try {
       // Ensure session exists
       const session = await prisma.session.findUnique({
         where: { id: sessionId },
       });
       if (!session) return null;
-      // Upsert player
-      await prisma.player.upsert({
-        where: { id: playerData.id },
-        update: { name: playerData.name },
-        create: { id: playerData.id, name: playerData.name },
-      });
+      // Ensure user exists
+      const user = await prisma.user.findUnique({ where: { id: userId } });
+      if (!user) throw new Error('User does not exist');
       // Check if already joined
       const alreadyJoined = await prisma.playerSession.findUnique({
-        where: { playerId_sessionId: { playerId: playerData.id, sessionId } },
+        where: { playerId_sessionId: { playerId: userId, sessionId } },
       });
-      if (alreadyJoined) throw new Error('Player already in session');
+      if (alreadyJoined) throw new Error('User already in session');
       // Add to session
       await prisma.playerSession.create({
-        data: { playerId: playerData.id, sessionId },
+        data: { playerId: userId, sessionId },
       });
-      // Return updated session with players
-      const updatedSession = await prisma.session.findUnique({
-        where: { id: sessionId },
-        select: {
-          id: true,
-          name: true,
-          description: true,
-          createdAt: true,
-          status: true,
-          playerSessions: {
-            select: {
-              player: {
-                select: { id: true, name: true },
-              },
-            },
-          },
-        },
-      });
-      return updatedSession ? toSessionApi(updatedSession) : null;
+      // Return updated session with users
+      return this.getSessionById(sessionId);
     } catch (error) {
-      if (
-        error instanceof Error &&
-        error.message === 'Player already in session'
-      ) {
-        throw error;
-      }
       log('Error joining session:', error);
-      throw new Error('Failed to join session');
+      throw error;
     }
   }
 
@@ -256,10 +229,14 @@ export class SessionService {
     try {
       const playerSessions = await prisma.playerSession.findMany({
         where: { sessionId },
-        include: { player: { select: { id: true, name: true } } },
+        include: { user: { select: { id: true, username: true, createdAt: true } } },
         orderBy: { joinedAt: 'asc' },
       });
-      return playerSessions.map((ps) => ps.player);
+      return playerSessions.map((ps) => ({
+        id: ps.user.id,
+        username: ps.user.username,
+        createdAt: ps.user.createdAt.toISOString(),
+      }));
     } catch (error) {
       log('Error getting players in session:', error);
       throw new Error('Failed to get players in session');

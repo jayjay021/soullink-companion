@@ -21,6 +21,21 @@ const Error = z
       .passthrough(),
   })
   .passthrough();
+const CreateUserRequest = z
+  .object({ username: z.string().min(2).max(50) })
+  .passthrough();
+const User = z
+  .object({
+    id: z.string(),
+    username: z.string().min(2).max(50),
+    createdAt: z.string().datetime({ offset: true }),
+  })
+  .passthrough();
+const CreateUserResponse = z.object({ user: User }).passthrough();
+const GetUserResponse = z.object({ user: User }).passthrough();
+const UpdateUserRequest = z
+  .object({ username: z.string().min(2).max(50) })
+  .passthrough();
 const SessionStatus = z.enum(["WAITING", "STARTED", "FINISHED"]);
 const SessionListItem = z
   .object({
@@ -37,7 +52,6 @@ const SessionsResponse = z
 const createSession_Body = z
   .object({ name: z.string(), description: z.string() })
   .passthrough();
-const Player = z.object({ id: z.string(), name: z.string() }).passthrough();
 const Session = z
   .object({
     id: z.string(),
@@ -45,14 +59,14 @@ const Session = z
     description: z.string(),
     createdAt: z.string().datetime({ offset: true }),
     status: SessionStatus,
-    players: z.array(Player),
+    users: z.array(User),
   })
   .passthrough();
 const updateSession_Body = z
   .object({ name: z.string(), description: z.string(), status: SessionStatus })
   .partial()
   .passthrough();
-const joinSession_Body = z.object({ player: Player }).passthrough();
+const JoinSessionRequest = z.object({ userId: z.string() }).passthrough();
 const PokedexPokemonName = z
   .object({ english: z.string(), japanese: z.string(), german: z.string() })
   .passthrough();
@@ -102,14 +116,23 @@ const PokedexPokemon = z
     image: PokedexPokemonImage,
   })
   .passthrough();
+const PaginationInfo = z
+  .object({
+    total: z.number().int(),
+    limit: z.number().int(),
+    offset: z.number().int(),
+    hasNext: z.boolean(),
+    hasPrevious: z.boolean(),
+  })
+  .passthrough();
 const PokedexPokemonResponse = z
-  .object({ pokemon: z.array(PokedexPokemon) })
+  .object({ pokemon: z.array(PokedexPokemon), pagination: PaginationInfo })
   .passthrough();
 const PokemonStatus = z.enum(["CAUGHT", "NOT_CAUGHT", "DEAD"]);
 const PokemonLocation = z.enum(["TEAM", "BOX"]);
 const AddPokemonRequest = z
   .object({
-    playerId: z.string(),
+    userId: z.string(),
     pokemonId: z.number(),
     status: PokemonStatus,
     routeName: z.string(),
@@ -120,7 +143,7 @@ const AddPokemonRequest = z
 const Pokemon = z
   .object({
     id: z.string(),
-    playerId: z.string(),
+    userId: z.string(),
     sessionId: z.string(),
     pokemonId: z.number(),
     status: PokemonStatus,
@@ -148,20 +171,25 @@ const RouteListResponse = z
 export const schemas = {
   HealthResponse,
   Error,
+  CreateUserRequest,
+  User,
+  CreateUserResponse,
+  GetUserResponse,
+  UpdateUserRequest,
   SessionStatus,
   SessionListItem,
   SessionsResponse,
   createSession_Body,
-  Player,
   Session,
   updateSession_Body,
-  joinSession_Body,
+  JoinSessionRequest,
   PokedexPokemonName,
   PokedexPokemonStats,
   PokedexPokemonEvolution,
   PokedexPokemonProfile,
   PokedexPokemonImage,
   PokedexPokemon,
+  PaginationInfo,
   PokedexPokemonResponse,
   PokemonStatus,
   PokemonLocation,
@@ -197,7 +225,7 @@ const endpoints = makeApi([
     method: "get",
     path: "/pokedex/pokemon",
     alias: "getPokedexPokemon",
-    description: `Returns a list of Pokémon from the Pokédex with optional filters`,
+    description: `Returns a list of Pokémon from the Pokédex with optional filters and pagination`,
     requestFormat: "json",
     parameters: [
       {
@@ -209,6 +237,31 @@ const endpoints = makeApi([
         name: "name",
         type: "Query",
         schema: z.string().min(1).optional(),
+      },
+      {
+        name: "type",
+        type: "Query",
+        schema: z.string().optional(),
+      },
+      {
+        name: "minId",
+        type: "Query",
+        schema: z.number().int().gte(1).lte(1025).optional(),
+      },
+      {
+        name: "maxId",
+        type: "Query",
+        schema: z.number().int().gte(1).lte(1025).optional(),
+      },
+      {
+        name: "limit",
+        type: "Query",
+        schema: z.number().int().gte(1).lte(100).optional().default(20),
+      },
+      {
+        name: "offset",
+        type: "Query",
+        schema: z.number().int().gte(0).optional().default(0),
       },
     ],
     response: PokedexPokemonResponse,
@@ -229,7 +282,7 @@ const endpoints = makeApi([
     method: "post",
     path: "/pokemon/:sessionId",
     alias: "addPokemon",
-    description: `Add a Pokémon for a player in a session`,
+    description: `Add a Pokémon for a user in a session`,
     requestFormat: "json",
     parameters: [
       {
@@ -261,7 +314,7 @@ const endpoints = makeApi([
     method: "get",
     path: "/pokemon/:sessionId",
     alias: "listPokemon",
-    description: `List or filter Pokémon for a session/player`,
+    description: `List or filter Pokémon for a session/user`,
     requestFormat: "json",
     parameters: [
       {
@@ -270,7 +323,7 @@ const endpoints = makeApi([
         schema: z.string(),
       },
       {
-        name: "playerId",
+        name: "userId",
         type: "Query",
         schema: z.string().optional(),
       },
@@ -303,7 +356,7 @@ const endpoints = makeApi([
     method: "patch",
     path: "/pokemon/:sessionId/:id",
     alias: "updatePokemon",
-    description: `Update a Pokémon’s status, location, or properties`,
+    description: `Update a Pokémon&#x27;s status, location, or properties`,
     requestFormat: "json",
     parameters: [
       {
@@ -340,7 +393,7 @@ const endpoints = makeApi([
     method: "get",
     path: "/pokemon/:sessionId/routes",
     alias: "getPokemonRoutes",
-    description: `Get unique routes for a session/player`,
+    description: `Get unique routes for a session/user`,
     requestFormat: "json",
     parameters: [
       {
@@ -349,7 +402,7 @@ const endpoints = makeApi([
         schema: z.string(),
       },
       {
-        name: "playerId",
+        name: "userId",
         type: "Query",
         schema: z.string().optional(),
       },
@@ -520,13 +573,13 @@ const endpoints = makeApi([
     method: "post",
     path: "/session/:sessionId/join",
     alias: "joinSession",
-    description: `Join a session as a player`,
+    description: `Join a session as a user`,
     requestFormat: "json",
     parameters: [
       {
         name: "body",
         type: "Body",
-        schema: joinSession_Body,
+        schema: z.object({ userId: z.string() }).passthrough(),
       },
       {
         name: "sessionId",
@@ -535,6 +588,102 @@ const endpoints = makeApi([
       },
     ],
     response: Session,
+    errors: [
+      {
+        status: 400,
+        description: `Bad request`,
+        schema: Error,
+      },
+      {
+        status: 404,
+        description: `Resource not found`,
+        schema: Error,
+      },
+      {
+        status: 500,
+        description: `Internal server error`,
+        schema: Error,
+      },
+    ],
+  },
+  {
+    method: "post",
+    path: "/users",
+    alias: "createUser",
+    description: `Creates a new user with a username`,
+    requestFormat: "json",
+    parameters: [
+      {
+        name: "body",
+        type: "Body",
+        schema: z.object({ username: z.string().min(2).max(50) }).passthrough(),
+      },
+    ],
+    response: CreateUserResponse,
+    errors: [
+      {
+        status: 400,
+        description: `Bad request`,
+        schema: Error,
+      },
+      {
+        status: 500,
+        description: `Internal server error`,
+        schema: Error,
+      },
+    ],
+  },
+  {
+    method: "get",
+    path: "/users/:userId",
+    alias: "getUserById",
+    description: `Returns a user by their ID`,
+    requestFormat: "json",
+    parameters: [
+      {
+        name: "userId",
+        type: "Path",
+        schema: z.string(),
+      },
+    ],
+    response: GetUserResponse,
+    errors: [
+      {
+        status: 400,
+        description: `Bad request`,
+        schema: Error,
+      },
+      {
+        status: 404,
+        description: `Resource not found`,
+        schema: Error,
+      },
+      {
+        status: 500,
+        description: `Internal server error`,
+        schema: Error,
+      },
+    ],
+  },
+  {
+    method: "put",
+    path: "/users/:userId",
+    alias: "updateUser",
+    description: `Update a user&#x27;s username`,
+    requestFormat: "json",
+    parameters: [
+      {
+        name: "body",
+        type: "Body",
+        schema: z.object({ username: z.string().min(2).max(50) }).passthrough(),
+      },
+      {
+        name: "userId",
+        type: "Path",
+        schema: z.string(),
+      },
+    ],
+    response: GetUserResponse,
     errors: [
       {
         status: 400,

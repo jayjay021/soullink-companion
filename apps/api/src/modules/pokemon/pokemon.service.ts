@@ -21,7 +21,7 @@ type PokemonStatus = components['schemas']['PokemonStatus'];
 function toApiPokemon(p: PrismaPokemon): Pokemon {
   return {
     id: p.id,
-    playerId: p.playerId,
+    userId: p.userId,
     sessionId: p.sessionId,
     pokemonId: p.pokemonId,
     status: p.status as PokemonStatus,
@@ -34,18 +34,18 @@ function toApiPokemon(p: PrismaPokemon): Pokemon {
 export class PokemonService {
   async listPokemon(
     sessionId: string,
-    playerId?: string,
+    userId?: string,
     routeName?: string,
     status?: PokemonStatus
   ): Promise<Pokemon[]> {
     try {
       const where: {
         sessionId: string;
-        playerId?: string;
+        userId?: string;
         routeName?: string;
         status?: PrismaPokemonStatus;
       } = { sessionId };
-      if (playerId) where.playerId = playerId;
+      if (userId) where.userId = userId;
       if (routeName) where.routeName = routeName;
       if (status) where.status = status as PrismaPokemonStatus;
       const pokes = await prisma.pokemon.findMany({
@@ -53,7 +53,7 @@ export class PokemonService {
         orderBy: { position: 'asc' },
         select: {
           id: true,
-          playerId: true,
+          userId: true,
           sessionId: true,
           pokemonId: true,
           status: true,
@@ -77,7 +77,7 @@ export class PokemonService {
         where: { sessionId, id },
         select: {
           id: true,
-          playerId: true,
+          userId: true,
           sessionId: true,
           pokemonId: true,
           status: true,
@@ -99,7 +99,7 @@ export class PokemonService {
     try {
       const poke = await prisma.pokemon.create({
         data: {
-          playerId: data.playerId,
+          userId: data.userId,
           sessionId,
           pokemonId: data.pokemonId,
           status: data.status,
@@ -109,7 +109,7 @@ export class PokemonService {
         },
         select: {
           id: true,
-          playerId: true,
+          userId: true,
           sessionId: true,
           pokemonId: true,
           status: true,
@@ -141,7 +141,7 @@ export class PokemonService {
           orderBy: { position: 'asc' },
           select: {
             id: true,
-            playerId: true,
+            userId: true,
             sessionId: true,
             pokemonId: true,
             status: true,
@@ -187,7 +187,7 @@ export class PokemonService {
           where: { id },
           select: {
             id: true,
-            playerId: true,
+            userId: true,
             sessionId: true,
             pokemonId: true,
             status: true,
@@ -210,7 +210,7 @@ export class PokemonService {
           data: updateData,
           select: {
             id: true,
-            playerId: true,
+            userId: true,
             sessionId: true,
             pokemonId: true,
             status: true,
@@ -229,10 +229,10 @@ export class PokemonService {
     }
   }
 
-  async getRoutes(sessionId: string, playerId?: string): Promise<string[]> {
+  async getRoutes(sessionId: string, userId?: string): Promise<string[]> {
     try {
-      const where: { sessionId: string; playerId?: string } = { sessionId };
-      if (playerId) where.playerId = playerId;
+      const where: { sessionId: string; userId?: string } = { sessionId };
+      if (userId) where.userId = userId;
       const pokes = await prisma.pokemon.findMany({
         where,
         select: { routeName: true },

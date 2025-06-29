@@ -1,7 +1,7 @@
 // Types for Pokemon data
 export interface Pokemon {
   id: string;
-  playerId: string;
+  userId: string;
   sessionId: string;
   pokemonId: number;
   routeName: string;
@@ -131,10 +131,10 @@ export class PokemonPositionManager {
    */
   static getNextTeamPosition(
     pokemon: Pokemon[],
-    playerId: string
+    userId: string
   ): number | null {
     const playerTeam = pokemon.filter(
-      (p) => p.playerId === playerId && p.location === 'TEAM'
+      (p) => p.userId === userId && p.location === 'TEAM'
     );
     const usedPositions = new Set(playerTeam.map((p) => p.position));
 
@@ -149,9 +149,9 @@ export class PokemonPositionManager {
   /**
    * Gets the next box position (always at the end)
    */
-  static getNextBoxPosition(pokemon: Pokemon[], playerId: string): number {
+  static getNextBoxPosition(pokemon: Pokemon[], userId: string): number {
     const playerBox = pokemon.filter(
-      (p) => p.playerId === playerId && p.location === 'BOX'
+      (p) => p.userId === userId && p.location === 'BOX'
     );
     return Math.max(0, ...playerBox.map((p) => p.position)) + 1;
   }
@@ -197,7 +197,7 @@ export class PokemonValidationManager {
    */
   static canCatchSpecies(
     speciesId: number,
-    playerId: string,
+    userId: string,
     sessionId: string,
     existingPokemon: Pokemon[],
     pokemonData: PokemonData[]
@@ -206,7 +206,7 @@ export class PokemonValidationManager {
 
     const alreadyCaught = existingPokemon.find(
       (p) =>
-        p.playerId === playerId &&
+        p.userId === userId &&
         p.sessionId === sessionId &&
         evolutionLine.includes(p.pokemonId) &&
         (p.status === 'CAUGHT' || p.status === 'DEAD')
@@ -231,7 +231,7 @@ export class PokemonValidationManager {
   static isPokemonValid(
     pokemon: Pokemon,
     allPokemon: Pokemon[],
-    sessionPlayerIds: string[]
+    sessionuserIds: string[]
   ): boolean {
     // Get all players who have a Pokemon on this route
     const playersWithRouteLink = new Set(
@@ -241,11 +241,11 @@ export class PokemonValidationManager {
             p.sessionId === pokemon.sessionId &&
             p.routeName === pokemon.routeName
         )
-        .map((p) => p.playerId)
+        .map((p) => p.userId)
     );
 
     // Check if ALL players in the session have a Pokemon on this route (complete soul link)
-    if (playersWithRouteLink.size !== sessionPlayerIds.length) {
+    if (playersWithRouteLink.size !== sessionuserIds.length) {
       return false;
     }
 
@@ -314,9 +314,9 @@ export class PokemonValidationManager {
   /**
    * Checks if a player's team is valid (all team Pokemon have their linked Pokemon in teams too)
    */
-  static isTeamValid(playerId: string, allPokemon: Pokemon[]): boolean {
+  static isTeamValid(userId: string, allPokemon: Pokemon[]): boolean {
     const playerTeam = allPokemon.filter(
-      (p) => p.playerId === playerId && p.location === 'TEAM'
+      (p) => p.userId === userId && p.location === 'TEAM'
     );
 
     for (const teamPokemon of playerTeam) {

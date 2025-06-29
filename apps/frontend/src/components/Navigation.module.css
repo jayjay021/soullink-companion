@@ -1,0 +1,65 @@
+.nav-item {
+  text-decoration: none;
+}
+
+.nav-btn {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 48px;
+  padding: 0 24px;
+  border-radius: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  font: inherit;
+  transition: background 0.2s;
+  border-left: 3px solid transparent;
+  text-decoration: none;
+}
+
+.nav-content {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding-left: 16px;
+  padding-right: 8px;
+}
+
+.nav-btn:link,
+.nav-btn:visited,
+.nav-btn:active,
+.nav-btn:focus,
+.nav-btn:hover {
+  text-decoration: none;
+}
+
+.nav-btn:hover {
+  background-color: var(--mantine-color-gray-0);
+}
+
+.nav-btn:hover svg {
+  transform: scale(1.1);
+}
+
+.nav-btn svg {
+  transition: transform 0.2s ease;
+  margin-right: 6px;
+  margin-left: 0;
+}
+
+.nav-btn.active {
+  background-color: var(--mantine-color-blue-0);
+  border-left: 3px solid var(--mantine-color-blue-6);
+  font-weight: 600;
+}
+
+.nav-btn.active:hover {
+  background-color: var(--mantine-color-blue-1);
+}
+
+.nav-btn.active svg {
+  margin-left: 6px; /* Space between blue bar and icon */
+  margin-right: 0;
+} 

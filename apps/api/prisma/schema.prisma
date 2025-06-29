@@ -7,6 +7,22 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id        String   @id @default(cuid())
+  username  String
+  email     String?  @unique // NULL for now, required later
+  passwordHash String? // NULL for now, required later
+  role      String   @default("user") // 'user' or 'admin'
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  playerSessions PlayerSession[]
+
+  pokemons  Pokemon[]
+
+  @@map("users")
+}
+
 model Session {
   id          String        @id @default(cuid())
   name        String
@@ -22,26 +38,13 @@ model Session {
   @@map("sessions")
 }
 
-model Player {
-  id        String   @id @default(cuid())
-  name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  playerSessions PlayerSession[]
-
-  pokemons  Pokemon[]
-
-  @@map("players")
-}
-
 model PlayerSession {
   playerId  String
   sessionId String
   joinedAt  DateTime @default(now())
 
-  player    Player   @relation(fields: [playerId], references: [id], onDelete: Cascade)
-  session   Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  user    User   @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  session Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
 
   @@id([playerId, sessionId])
   @@map("player_sessions")
@@ -49,7 +52,7 @@ model PlayerSession {
 
 model Pokemon {
   id        String          @id @default(cuid())
-  playerId  String
+  userId    String
   sessionId String
   pokemonId Int
   routeName String
@@ -59,10 +62,10 @@ model Pokemon {
   createdAt DateTime        @default(now())
   updatedAt DateTime        @updatedAt
 
-  player  Player  @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
   session Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
 
-  @@unique([playerId, sessionId, routeName]) // One Pokemon per route per player per session
+  @@unique([userId, sessionId, routeName]) // One Pokemon per route per user per session
   @@map("pokemons")
 }
 

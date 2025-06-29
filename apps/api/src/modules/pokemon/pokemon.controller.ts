@@ -42,9 +42,9 @@ export const listPokemon = async (
 ) => {
   try {
     const { sessionId } = req.params;
-    const { playerId, routeName, status } = req.query || {};
+    const { userId, routeName, status } = req.query || {};
     z.string().min(1).parse(sessionId);
-    if (playerId !== undefined) z.string().min(1).parse(playerId);
+    if (userId !== undefined) z.string().min(1).parse(userId);
     if (routeName !== undefined) z.string().min(1).parse(routeName);
     let statusEnum: 'CAUGHT' | 'NOT_CAUGHT' | 'DEAD' | undefined = undefined;
     if (status !== undefined) {
@@ -63,7 +63,7 @@ export const listPokemon = async (
     }
     const pokemon = await pokemonService.listPokemon(
       sessionId,
-      playerId as string | undefined,
+      userId as string | undefined,
       routeName as string | undefined,
       statusEnum
     );
@@ -146,15 +146,15 @@ export const getRoutes = async (
 ) => {
   try {
     const { sessionId } = req.params;
-    const { playerId } = req.query || {};
+    const { userId } = req.query || {};
     z.string().min(1).parse(sessionId);
-    if (playerId !== undefined)
+    if (userId !== undefined)
       z.string()
         .min(1)
-        .parse(playerId as string);
+        .parse(userId as string);
     const routes = await pokemonService.getRoutes(
       sessionId,
-      playerId as string | undefined
+      userId as string | undefined
     );
     res.status(200).json({ routes });
   } catch (error) {

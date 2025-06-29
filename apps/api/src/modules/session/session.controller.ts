@@ -233,17 +233,14 @@ export const joinSession = async (
 
     // Now validate the request body
     const joinSessionRequest = req.body;
-    schemas.joinSession_Body.parse(joinSessionRequest);
+    schemas.JoinSessionRequest.parse(joinSessionRequest);
 
-    // Additional validation for player data
-    if (
-      !joinSessionRequest.player?.id?.trim() ||
-      !joinSessionRequest.player?.name?.trim()
-    ) {
+    // Additional validation for userId
+    if (!joinSessionRequest.userId?.trim()) {
       return (res as Response<unknown>).status(400).json({
         success: false,
         error: {
-          message: 'Player id and name cannot be empty',
+          message: 'User ID cannot be empty',
           code: 'VALIDATION_ERROR',
         },
       });
@@ -251,7 +248,7 @@ export const joinSession = async (
 
     const session = await sessionService.joinSession(
       sessionId,
-      joinSessionRequest.player
+      joinSessionRequest.userId
     );
 
     if (!session) {
@@ -278,13 +275,25 @@ export const joinSession = async (
     }
     if (
       error instanceof Error &&
-      error.message === 'Player already in session'
+      error.message === 'User already in session'
     ) {
       return (res as Response<unknown>).status(400).json({
         success: false,
         error: {
-          message: 'Player is already in this session',
-          code: 'PLAYER_ALREADY_JOINED',
+          message: 'User is already in this session',
+          code: 'USER_ALREADY_JOINED',
+        },
+      });
+    }
+    if (
+      error instanceof Error &&
+      error.message === 'User does not exist'
+    ) {
+      return (res as Response<unknown>).status(400).json({
+        success: false,
+        error: {
+          message: 'User does not exist',
+          code: 'USER_NOT_FOUND',
         },
       });
     }

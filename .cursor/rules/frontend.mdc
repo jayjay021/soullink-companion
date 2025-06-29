@@ -1,0 +1,9 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+- mantine is used in the newest version, meaning the sx property is removed. use css modules instead
+- for api client use rtk query (redux toolkit query) and their openapi generator. For the generating also include tags for invalidating queries
+- Create reusable components if it makes sense. reusable components should be grouped by their topic into a seperate folder
+  - for example all pokemon related components should grouped together in components/pokemon

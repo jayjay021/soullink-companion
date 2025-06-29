@@ -52,6 +52,124 @@
         }
       }
     },
+    "/users": {
+      "post": {
+        "summary": "Create a new user",
+        "description": "Creates a new user with a username",
+        "operationId": "createUser",
+        "tags": [
+          "Users"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateUserResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/users/{userId}": {
+      "parameters": [
+        {
+          "name": "userId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Get user by ID",
+        "description": "Returns a user by their ID",
+        "operationId": "getUserById",
+        "tags": [
+          "Users"
+        ],
+        "responses": {
+          "200": {
+            "description": "User found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetUserResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update user",
+        "description": "Update a user's username",
+        "operationId": "updateUser",
+        "tags": [
+          "Users"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetUserResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
     "/session": {
       "get": {
         "summary": "List sessions",
@@ -244,7 +362,7 @@
     "/session/{sessionId}/join": {
       "post": {
         "summary": "Join session",
-        "description": "Join a session as a player",
+        "description": "Join a session as a user",
         "operationId": "joinSession",
         "tags": [
           "Session"
@@ -264,22 +382,14 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "required": [
-                  "player"
-                ],
-                "properties": {
-                  "player": {
-                    "$ref": "#/components/schemas/Player"
-                  }
-                }
+                "$ref": "#/components/schemas/JoinSessionRequest"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Player joined session",
+            "description": "User joined session",
             "content": {
               "application/json": {
                 "schema": {
@@ -303,7 +413,7 @@
     "/pokedex/pokemon": {
       "get": {
         "summary": "Query Pokédex Pokémon",
-        "description": "Returns a list of Pokémon from the Pokédex with optional filters",
+        "description": "Returns a list of Pokémon from the Pokédex with optional filters and pagination",
         "operationId": "getPokedexPokemon",
         "tags": [
           "Pokedex"
@@ -329,11 +439,65 @@
               "type": "string",
               "minLength": 1
             }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "Filter by Pokémon type",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "minId",
+            "in": "query",
+            "description": "Filter by minimum Pokémon ID",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1025
+            }
+          },
+          {
+            "name": "maxId",
+            "in": "query",
+            "description": "Filter by maximum Pokémon ID",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1025
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of Pokémon to return (default: 20, max: 100)",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Number of Pokémon to skip for pagination",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "List of Pokédex Pokémon",
+            "description": "List of Pokédex Pokémon with pagination metadata",
             "content": {
               "application/json": {
                 "schema": {
@@ -354,7 +518,7 @@
     "/pokemon/{sessionId}": {
       "post": {
         "summary": "Add a Pokémon encounter",
-        "description": "Add a Pokémon for a player in a session",
+        "description": "Add a Pokémon for a user in a session",
         "operationId": "addPokemon",
         "tags": [
           "Pokemon"
@@ -400,7 +564,7 @@
       },
       "get": {
         "summary": "List/filter Pokémon",
-        "description": "List or filter Pokémon for a session/player",
+        "description": "List or filter Pokémon for a session/user",
         "operationId": "listPokemon",
         "tags": [
           "Pokemon"
@@ -415,7 +579,7 @@
             }
           },
           {
-            "name": "playerId",
+            "name": "userId",
             "in": "query",
             "required": false,
             "schema": {
@@ -462,7 +626,7 @@
     "/pokemon/{sessionId}/{id}": {
       "patch": {
         "summary": "Update a Pokémon",
-        "description": "Update a Pokémon’s status, location, or properties",
+        "description": "Update a Pokémon's status, location, or properties",
         "operationId": "updatePokemon",
         "tags": [
           "Pokemon"
@@ -518,7 +682,7 @@
     "/pokemon/{sessionId}/routes": {
       "get": {
         "summary": "Get unique routes",
-        "description": "Get unique routes for a session/player",
+        "description": "Get unique routes for a session/user",
         "operationId": "getPokemonRoutes",
         "tags": [
           "Pokemon"
@@ -533,7 +697,7 @@
             }
           },
           {
-            "name": "playerId",
+            "name": "userId",
             "in": "query",
             "required": false,
             "schema": {
@@ -643,6 +807,120 @@
           }
         }
       },
+      "User": {
+        "type": "object",
+        "required": [
+          "id",
+          "username",
+          "createdAt"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique user identifier"
+          },
+          "username": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 50,
+            "description": "User's display name"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the user was created"
+          }
+        },
+        "example": {
+          "id": "123e4567-e89b-12d3-a456-426614174000",
+          "username": "Player1",
+          "createdAt": "2025-06-20T09:00:00.000Z"
+        }
+      },
+      "CreateUserRequest": {
+        "type": "object",
+        "required": [
+          "username"
+        ],
+        "properties": {
+          "username": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 50,
+            "description": "User's display name"
+          }
+        },
+        "example": {
+          "username": "Player1"
+        }
+      },
+      "CreateUserResponse": {
+        "type": "object",
+        "required": [
+          "user"
+        ],
+        "properties": {
+          "user": {
+            "$ref": "#/components/schemas/User"
+          }
+        },
+        "example": {
+          "user": {
+            "id": "123e4567-e89b-12d3-a456-426614174000",
+            "username": "Player1"
+          }
+        }
+      },
+      "GetUserResponse": {
+        "type": "object",
+        "required": [
+          "user"
+        ],
+        "properties": {
+          "user": {
+            "$ref": "#/components/schemas/User"
+          }
+        },
+        "example": {
+          "user": {
+            "id": "123e4567-e89b-12d3-a456-426614174000",
+            "username": "Player1",
+            "createdAt": "2025-06-20T09:00:00.000Z"
+          }
+        }
+      },
+      "UpdateUserRequest": {
+        "type": "object",
+        "required": [
+          "username"
+        ],
+        "properties": {
+          "username": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 50,
+            "description": "New username for the user"
+          }
+        },
+        "example": {
+          "username": "NewPlayerName"
+        }
+      },
+      "JoinSessionRequest": {
+        "type": "object",
+        "required": [
+          "userId"
+        ],
+        "properties": {
+          "userId": {
+            "type": "string",
+            "description": "ID of the user joining the session"
+          }
+        },
+        "example": {
+          "userId": "123e4567-e89b-12d3-a456-426614174000"
+        }
+      },
       "SessionStatus": {
         "type": "string",
         "enum": [
@@ -661,7 +939,7 @@
           "description",
           "createdAt",
           "status",
-          "players"
+          "users"
         ],
         "properties": {
           "id": {
@@ -680,10 +958,10 @@
           "status": {
             "$ref": "#/components/schemas/SessionStatus"
           },
-          "players": {
+          "users": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Player"
+              "$ref": "#/components/schemas/User"
             }
           }
         },
@@ -693,14 +971,14 @@
           "description": "A fun session",
           "createdAt": "2025-06-20T09:00:00.000Z",
           "status": "WAITING",
-          "players": [
+          "users": [
             {
-              "id": "player-1",
-              "name": "Alice"
+              "id": "user-1",
+              "username": "Alice"
             },
             {
-              "id": "player-2",
-              "name": "Bob"
+              "id": "user-2",
+              "username": "Bob"
             }
           ]
         }
@@ -772,29 +1050,11 @@
           "status": "WAITING"
         }
       },
-      "Player": {
-        "type": "object",
-        "required": [
-          "id",
-          "name"
-        ],
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          }
-        },
-        "example": {
-          "id": "player-1",
-          "name": "Alice"
-        }
-      },
       "PokedexPokemonResponse": {
         "type": "object",
         "required": [
-          "pokemon"
+          "pokemon",
+          "pagination"
         ],
         "properties": {
           "pokemon": {
@@ -802,6 +1062,9 @@
             "items": {
               "$ref": "#/components/schemas/PokedexPokemon"
             }
+          },
+          "pagination": {
+            "$ref": "#/components/schemas/PaginationInfo"
           }
         },
         "example": {
@@ -860,7 +1123,14 @@
                 "hires": "https://raw.githubusercontent.com/Purukitto/pokemon-data.json/master/images/pokedex/hires/001.png"
               }
             }
-          ]
+          ],
+          "pagination": {
+            "total": 905,
+            "limit": 20,
+            "offset": 0,
+            "hasNext": true,
+            "hasPrevious": false
+          }
         }
       },
       "PokedexPokemon": {
@@ -1124,7 +1394,7 @@
       "AddPokemonRequest": {
         "type": "object",
         "required": [
-          "playerId",
+          "userId",
           "pokemonId",
           "status",
           "routeName",
@@ -1132,7 +1402,7 @@
           "position"
         ],
         "properties": {
-          "playerId": {
+          "userId": {
             "type": "string"
           },
           "pokemonId": {
@@ -1154,7 +1424,7 @@
           }
         },
         "example": {
-          "playerId": "player-1",
+          "userId": "user-1",
           "pokemonId": 1,
           "status": "CAUGHT",
           "routeName": "Route 1",
@@ -1209,7 +1479,7 @@
         "type": "object",
         "required": [
           "id",
-          "playerId",
+          "userId",
           "sessionId",
           "pokemonId",
           "status",
@@ -1221,7 +1491,7 @@
           "id": {
             "type": "string"
           },
-          "playerId": {
+          "userId": {
             "type": "string"
           },
           "sessionId": {
@@ -1247,7 +1517,7 @@
         },
         "example": {
           "id": "pokemon-1",
-          "playerId": "player-1",
+          "userId": "user-1",
           "sessionId": "session-123",
           "pokemonId": "1",
           "status": "CAUGHT",
@@ -1273,7 +1543,7 @@
           "pokemon": [
             {
               "id": "pokemon-1",
-              "playerId": "player-1",
+              "userId": "user-1",
               "sessionId": "session-123",
               "pokemonId": "1",
               "status": "CAUGHT",
@@ -1281,7 +1551,7 @@
             },
             {
               "id": "pokemon-2",
-              "playerId": "player-1",
+              "userId": "user-1",
               "sessionId": "session-123",
               "pokemonId": "4",
               "status": "FAINTED",
@@ -1308,6 +1578,45 @@
             "Route 1",
             "Route 2"
           ]
+        }
+      },
+      "PaginationInfo": {
+        "type": "object",
+        "required": [
+          "total",
+          "limit",
+          "offset",
+          "hasNext",
+          "hasPrevious"
+        ],
+        "properties": {
+          "total": {
+            "type": "integer",
+            "description": "Total number of items"
+          },
+          "limit": {
+            "type": "integer",
+            "description": "Number of items per page"
+          },
+          "offset": {
+            "type": "integer",
+            "description": "Offset for pagination"
+          },
+          "hasNext": {
+            "type": "boolean",
+            "description": "Whether there is a next page"
+          },
+          "hasPrevious": {
+            "type": "boolean",
+            "description": "Whether there is a previous page"
+          }
+        },
+        "example": {
+          "total": 905,
+          "limit": 20,
+          "offset": 0,
+          "hasNext": true,
+          "hasPrevious": false
         }
       }
     },
@@ -1348,6 +1657,10 @@
     {
       "name": "System",
       "description": "System health and monitoring endpoints"
+    },
+    {
+      "name": "Users",
+      "description": "User management endpoints"
     },
     {
       "name": "Session",

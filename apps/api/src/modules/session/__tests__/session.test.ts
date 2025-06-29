@@ -47,10 +47,10 @@ describe('Session API ', () => {
       expect(createResponse.status).toBe(201);
 
       // Validate the response using Zod schema
-      const createSessionValidation = schemas.Session.strict().safeParse(
+      const validation = schemas.Session.strict().safeParse(
         createResponse.body
       );
-      expect(createSessionValidation.success).toBe(true);
+      expect(validation.success).toBe(true);
 
       // Now, get the list of sessions
       const listResponse = await supertest(app)
@@ -261,8 +261,20 @@ describe('Session API ', () => {
     });
   });
   describe('POST api/v1/session/:sessionId/join', () => {
-    it('should allow joining a session and return 200 OK', async () => {
-      // First, create a session to get a valid sessionId
+    it('should allow joining a session with existing user and return 200 OK', async () => {
+      // First, create a user
+      const userResponse = await supertest(app)
+        .post('/api/v1/users')
+        .send({
+          username: 'TestUser',
+        })
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(201);
+
+      const user = userResponse.body.user;
+
+      // Create a session
       const createResponse = await supertest(app)
         .post('/api/v1/session')
         .send({
@@ -276,34 +288,40 @@ describe('Session API ', () => {
       const session = schemas.Session.strict().parse(createResponse.body);
       const sessionId = session.id;
 
-      // Now, join the session
+      // Now, join the session with the existing user
       const response = await supertest(app)
         .post(`/api/v1/session/${sessionId}/join`)
         .send({
-          player: {
-            name: 'Test Player',
-            id: 'test-player-id',
-          },
+          userId: user.id,
         })
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .expect(200);
 
+      // Check basic response structure first
+      expect(response.body).toHaveProperty('id');
+      expect(response.body).toHaveProperty('name');
+      expect(response.body).toHaveProperty('description');
+      expect(response.body).toHaveProperty('createdAt');
+      expect(response.body).toHaveProperty('status');
+      expect(response.body).toHaveProperty('users');
+      expect(Array.isArray(response.body.users)).toBe(true);
+
       // Validate the response using Zod schema
       const validation = schemas.Session.strict().safeParse(response.body);
       expect(validation.success).toBe(true);
 
-      // Check if the player was added to the session
-      expect(response.body.players).toBeDefined();
+      // Check if the user was added to the session
+      expect(response.body.users).toBeDefined();
       expect(
-        response.body.players.some(
-          (p: { id: string; name: string }) => p.id === 'test-player-id'
+        response.body.users.some(
+          (p: { id: string; username: string }) => p.id === user.id
         )
       ).toBe(true);
     });
 
     it('should return 400 Bad Request for invalid join data', async () => {
-      // First, create a session to get a valid sessionId
+      // Create a session
       const createResponse = await supertest(app)
         .post('/api/v1/session')
         .send({
@@ -315,15 +333,12 @@ describe('Session API ', () => {
         .expect(201);
       const session = schemas.Session.strict().parse(createResponse.body);
       const sessionId = session.id;
-      // Now, try to join the session with invalid data
+      
+      // Try to join the session with invalid data
       await supertest(app)
         .post(`/api/v1/session/${sessionId}/join`)
         .send({
-          player: {
-            // Missing required fields
-            name: '',
-            id: '',
-          },
+          userId: '',
         })
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
@@ -331,36 +346,62 @@ describe('Session API ', () => {
     });
 
     it('should return 400 Bad Request for already joined session', async () => {
-      // First, create a session to get a valid sessionId
+      // First, create a user
+      const userResponse = await supertest(app)
+        .post('/api/v1/users')
+        .send({
+          username: 'TestUser',
+        })
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(201);
+
+      const user = userResponse.body.user;
+
+      // Create a session
       const createResponse = await supertest(app)
         .post('/api/v1/session')
         .send({
           name: 'Session for Already Joined Test',
-          description:
-            'This session is created for testing already joined JOIN',
+          description: 'This session is created for testing already joined JOIN',
         })
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .expect(201);
       const session = schemas.Session.strict().parse(createResponse.body);
       const sessionId = session.id;
+      
       // Join the session once
       await supertest(app)
         .post(`/api/v1/session/${sessionId}/join`)
-        .send({ player: { name: 'Test Player', id: 'test-player-id' } })
+        .send({ userId: user.id })
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .expect(200);
+      
       // Now, try to join the same session again
       await supertest(app)
         .post(`/api/v1/session/${sessionId}/join`)
-        .send({ player: { name: 'Test Player', id: 'test-player-id' } })
+        .send({ userId: user.id })
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .expect(400);
     });
-    it('should return 200 OK for one player joining multiple sessions', async () => {
-      // First, create a session to get a valid sessionId
+
+    it('should return 200 OK for one user joining multiple sessions', async () => {
+      // First, create a user
+      const userResponse = await supertest(app)
+        .post('/api/v1/users')
+        .send({
+          username: 'MultiSessionUser',
+        })
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(201);
+
+      const user = userResponse.body.user;
+
+      // Create first session
       const createResponse = await supertest(app)
         .post('/api/v1/session')
         .send({
@@ -373,11 +414,10 @@ describe('Session API ', () => {
       const session = schemas.Session.strict().parse(createResponse.body);
       const sessionId = session.id;
 
-      // Join the first session with a player
-      const player1 = { name: 'Player One', id: 'player-one-id' };
+      // Join the first session with the user
       const joinResponse = await supertest(app)
         .post(`/api/v1/session/${sessionId}/join`)
-        .send({ player: player1 })
+        .send({ userId: user.id })
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .expect(200);
@@ -385,15 +425,16 @@ describe('Session API ', () => {
       // Validate the response using Zod schema
       const validation = schemas.Session.strict().safeParse(joinResponse.body);
       expect(validation.success).toBe(true);
-      // Check if the player was added to the session
-      expect(joinResponse.body.players).toBeDefined();
+      
+      // Check if the user was added to the session
+      expect(joinResponse.body.users).toBeDefined();
       expect(
-        joinResponse.body.players.some(
-          (p: { id: string; name: string }) => p.id === player1.id
+        joinResponse.body.users.some(
+          (p: { id: string; username: string }) => p.id === user.id
         )
       ).toBe(true);
 
-      // Now, create another session to get a different sessionId
+      // Create second session
       const createResponse2 = await supertest(app)
         .post('/api/v1/session')
         .send({
@@ -405,36 +446,40 @@ describe('Session API ', () => {
         .expect(201);
       const session2 = schemas.Session.strict().parse(createResponse2.body);
       const sessionId2 = session2.id;
-      // Join the second session with the same player
+      
+      // Join the second session with the same user
       const response2 = await supertest(app)
         .post(`/api/v1/session/${sessionId2}/join`)
-        .send({ player: player1 })
+        .send({ userId: user.id })
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .expect(200);
+      
       // Validate the response using Zod schema
       const validation2 = schemas.Session.strict().safeParse(response2.body);
       expect(validation2.success).toBe(true);
-      // Check if the player was added to the second session
-      expect(response2.body.players).toBeDefined();
+      
+      // Check if the user was added to the second session
+      expect(response2.body.users).toBeDefined();
       expect(
-        response2.body.players.some(
-          (p: { id: string; name: string }) => p.id === player1.id
+        response2.body.users.some(
+          (p: { id: string; username: string }) => p.id === user.id
         )
       ).toBe(true);
 
-      // Check that the player still exists in the first session
+      // Check that the user still exists in the first session
       const getResponse = await supertest(app)
         .get(`/api/v1/session/${sessionId}`)
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .expect(200);
-      expect(getResponse.body.players).toBeDefined();
+      expect(getResponse.body.users).toBeDefined();
       expect(
-        getResponse.body.players.some(
-          (p: { id: string; name: string }) => p.id === player1.id
+        getResponse.body.users.some(
+          (p: { id: string; username: string }) => p.id === user.id
         )
       ).toBe(true);
+      
       // Validate the response using Zod schema
       const validation3 = schemas.Session.strict().safeParse(getResponse.body);
       expect(validation3.success).toBe(true);
@@ -446,6 +491,31 @@ describe('Session API ', () => {
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .expect(404);
+    });
+
+    it('should return 400 Bad Request when trying to join with non-existent user', async () => {
+      // Create a session
+      const createResponse = await supertest(app)
+        .post('/api/v1/session')
+        .send({
+          name: 'Session for Non-existent User Test',
+          description: 'This session is created for testing non-existent user join',
+        })
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(201);
+      const session = schemas.Session.strict().parse(createResponse.body);
+      const sessionId = session.id;
+      
+      // Try to join with a non-existent user
+      await supertest(app)
+        .post(`/api/v1/session/${sessionId}/join`)
+        .send({
+          userId: 'non-existent-user-id',
+        })
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(400);
     });
   });
 });

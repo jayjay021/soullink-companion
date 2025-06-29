@@ -18,6 +18,39 @@ const getPokedexPokemonSchema = z.object({
         })
         .optional(),
       name: z.string().min(1).optional(),
+      type: z.string().min(1).optional(),
+      minId: z
+        .string()
+        .regex(/^\d+$/)
+        .transform(Number)
+        .refine((val) => val >= 1, {
+          message: 'Min ID must be a positive number',
+        })
+        .optional(),
+      maxId: z
+        .string()
+        .regex(/^\d+$/)
+        .transform(Number)
+        .refine((val) => val >= 1, {
+          message: 'Max ID must be a positive number',
+        })
+        .optional(),
+      limit: z
+        .string()
+        .regex(/^\d+$/)
+        .transform(Number)
+        .refine((val) => val >= 1 && val <= 100, {
+          message: 'Limit must be between 1 and 100',
+        })
+        .optional(),
+      offset: z
+        .string()
+        .regex(/^\d+$/)
+        .transform(Number)
+        .refine((val) => val >= 0, {
+          message: 'Offset must be a non-negative number',
+        })
+        .optional(),
     })
     .optional(),
   body: z.object({}).optional(),
@@ -26,7 +59,7 @@ const getPokedexPokemonSchema = z.object({
 
 /**
  * GET /pokedex/pokemon
- * Query Pokédex Pokémon with optional filters
+ * Query Pokédex Pokémon with optional filters and pagination
  */
 router.get(
   '/pokemon',

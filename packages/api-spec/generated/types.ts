@@ -24,6 +24,52 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/users": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create a new user
+         * @description Creates a new user with a username
+         */
+        post: operations["createUser"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/users/{userId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                userId: string;
+            };
+            cookie?: never;
+        };
+        /**
+         * Get user by ID
+         * @description Returns a user by their ID
+         */
+        get: operations["getUserById"];
+        /**
+         * Update user
+         * @description Update a user's username
+         */
+        put: operations["updateUser"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/session": {
         parameters: {
             query?: never;
@@ -89,7 +135,7 @@ export interface paths {
         put?: never;
         /**
          * Join session
-         * @description Join a session as a player
+         * @description Join a session as a user
          */
         post: operations["joinSession"];
         delete?: never;
@@ -107,7 +153,7 @@ export interface paths {
         };
         /**
          * Query Pokédex Pokémon
-         * @description Returns a list of Pokémon from the Pokédex with optional filters
+         * @description Returns a list of Pokémon from the Pokédex with optional filters and pagination
          */
         get: operations["getPokedexPokemon"];
         put?: never;
@@ -127,13 +173,13 @@ export interface paths {
         };
         /**
          * List/filter Pokémon
-         * @description List or filter Pokémon for a session/player
+         * @description List or filter Pokémon for a session/user
          */
         get: operations["listPokemon"];
         put?: never;
         /**
          * Add a Pokémon encounter
-         * @description Add a Pokémon for a player in a session
+         * @description Add a Pokémon for a user in a session
          */
         post: operations["addPokemon"];
         delete?: never;
@@ -157,7 +203,7 @@ export interface paths {
         head?: never;
         /**
          * Update a Pokémon
-         * @description Update a Pokémon’s status, location, or properties
+         * @description Update a Pokémon's status, location, or properties
          */
         patch: operations["updatePokemon"];
         trace?: never;
@@ -171,7 +217,7 @@ export interface paths {
         };
         /**
          * Get unique routes
-         * @description Get unique routes for a session/player
+         * @description Get unique routes for a session/user
          */
         get: operations["getPokemonRoutes"];
         put?: never;
@@ -227,6 +273,62 @@ export interface components {
                 details?: Record<string, never>;
             };
         };
+        /** @example {
+         *       "id": "123e4567-e89b-12d3-a456-426614174000",
+         *       "username": "Player1",
+         *       "createdAt": "2025-06-20T09:00:00.000Z"
+         *     } */
+        User: {
+            /** @description Unique user identifier */
+            id: string;
+            /** @description User's display name */
+            username: string;
+            /**
+             * Format: date-time
+             * @description When the user was created
+             */
+            createdAt: string;
+        };
+        /** @example {
+         *       "username": "Player1"
+         *     } */
+        CreateUserRequest: {
+            /** @description User's display name */
+            username: string;
+        };
+        /** @example {
+         *       "user": {
+         *         "id": "123e4567-e89b-12d3-a456-426614174000",
+         *         "username": "Player1"
+         *       }
+         *     } */
+        CreateUserResponse: {
+            user: components["schemas"]["User"];
+        };
+        /** @example {
+         *       "user": {
+         *         "id": "123e4567-e89b-12d3-a456-426614174000",
+         *         "username": "Player1",
+         *         "createdAt": "2025-06-20T09:00:00.000Z"
+         *       }
+         *     } */
+        GetUserResponse: {
+            user: components["schemas"]["User"];
+        };
+        /** @example {
+         *       "username": "NewPlayerName"
+         *     } */
+        UpdateUserRequest: {
+            /** @description New username for the user */
+            username: string;
+        };
+        /** @example {
+         *       "userId": "123e4567-e89b-12d3-a456-426614174000"
+         *     } */
+        JoinSessionRequest: {
+            /** @description ID of the user joining the session */
+            userId: string;
+        };
         /**
          * @description The status of a session
          * @example WAITING
@@ -239,14 +341,14 @@ export interface components {
          *       "description": "A fun session",
          *       "createdAt": "2025-06-20T09:00:00.000Z",
          *       "status": "WAITING",
-         *       "players": [
+         *       "users": [
          *         {
-         *           "id": "player-1",
-         *           "name": "Alice"
+         *           "id": "user-1",
+         *           "username": "Alice"
          *         },
          *         {
-         *           "id": "player-2",
-         *           "name": "Bob"
+         *           "id": "user-2",
+         *           "username": "Bob"
          *         }
          *       ]
          *     } */
@@ -257,7 +359,7 @@ export interface components {
             /** Format: date-time */
             createdAt: string;
             status: components["schemas"]["SessionStatus"];
-            players: components["schemas"]["Player"][];
+            users: components["schemas"]["User"][];
         };
         /** @example {
          *       "sessions": [
@@ -294,14 +396,6 @@ export interface components {
             /** Format: date-time */
             createdAt: string;
             status: components["schemas"]["SessionStatus"];
-        };
-        /** @example {
-         *       "id": "player-1",
-         *       "name": "Alice"
-         *     } */
-        Player: {
-            id: string;
-            name: string;
         };
         /** @example {
          *       "pokemon": [
@@ -359,10 +453,18 @@ export interface components {
          *             "hires": "https://raw.githubusercontent.com/Purukitto/pokemon-data.json/master/images/pokedex/hires/001.png"
          *           }
          *         }
-         *       ]
+         *       ],
+         *       "pagination": {
+         *         "total": 905,
+         *         "limit": 20,
+         *         "offset": 0,
+         *         "hasNext": true,
+         *         "hasPrevious": false
+         *       }
          *     } */
         PokedexPokemonResponse: {
             pokemon: components["schemas"]["PokedexPokemon"][];
+            pagination: components["schemas"]["PaginationInfo"];
         };
         /** @example {
          *       "id": 1,
@@ -485,7 +587,7 @@ export interface components {
             hires?: string;
         };
         /** @example {
-         *       "playerId": "player-1",
+         *       "userId": "user-1",
          *       "pokemonId": 1,
          *       "status": "CAUGHT",
          *       "routeName": "Route 1",
@@ -493,7 +595,7 @@ export interface components {
          *       "position": 1
          *     } */
         AddPokemonRequest: {
-            playerId: string;
+            userId: string;
             /** @description Pokémon National Dex number */
             pokemonId: number;
             status: components["schemas"]["PokemonStatus"];
@@ -529,7 +631,7 @@ export interface components {
         PokemonLocation: "TEAM" | "BOX";
         /** @example {
          *       "id": "pokemon-1",
-         *       "playerId": "player-1",
+         *       "userId": "user-1",
          *       "sessionId": "session-123",
          *       "pokemonId": "1",
          *       "status": "CAUGHT",
@@ -539,7 +641,7 @@ export interface components {
          *     } */
         Pokemon: {
             id: string;
-            playerId: string;
+            userId: string;
             sessionId: string;
             /** @description Pokémon National Dex number */
             pokemonId: number;
@@ -553,7 +655,7 @@ export interface components {
          *       "pokemon": [
          *         {
          *           "id": "pokemon-1",
-         *           "playerId": "player-1",
+         *           "userId": "user-1",
          *           "sessionId": "session-123",
          *           "pokemonId": "1",
          *           "status": "CAUGHT",
@@ -561,7 +663,7 @@ export interface components {
          *         },
          *         {
          *           "id": "pokemon-2",
-         *           "playerId": "player-1",
+         *           "userId": "user-1",
          *           "sessionId": "session-123",
          *           "pokemonId": "4",
          *           "status": "FAINTED",
@@ -580,6 +682,25 @@ export interface components {
          *     } */
         RouteListResponse: {
             routes: string[];
+        };
+        /** @example {
+         *       "total": 905,
+         *       "limit": 20,
+         *       "offset": 0,
+         *       "hasNext": true,
+         *       "hasPrevious": false
+         *     } */
+        PaginationInfo: {
+            /** @description Total number of items */
+            total: number;
+            /** @description Number of items per page */
+            limit: number;
+            /** @description Offset for pagination */
+            offset: number;
+            /** @description Whether there is a next page */
+            hasNext: boolean;
+            /** @description Whether there is a previous page */
+            hasPrevious: boolean;
         };
     };
     responses: {
@@ -637,6 +758,86 @@ export interface operations {
                 };
             };
             400: components["responses"]["BadRequest"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    createUser: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateUserRequest"];
+            };
+        };
+        responses: {
+            /** @description User created successfully */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CreateUserResponse"];
+                };
+            };
+            400: components["responses"]["BadRequest"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    getUserById: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                userId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description User found */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetUserResponse"];
+                };
+            };
+            400: components["responses"]["BadRequest"];
+            404: components["responses"]["NotFound"];
+            500: components["responses"]["InternalServerError"];
+        };
+    };
+    updateUser: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                userId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateUserRequest"];
+            };
+        };
+        responses: {
+            /** @description User updated successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetUserResponse"];
+                };
+            };
+            400: components["responses"]["BadRequest"];
+            404: components["responses"]["NotFound"];
             500: components["responses"]["InternalServerError"];
         };
     };
@@ -783,13 +984,11 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": {
-                    player: components["schemas"]["Player"];
-                };
+                "application/json": components["schemas"]["JoinSessionRequest"];
             };
         };
         responses: {
-            /** @description Player joined session */
+            /** @description User joined session */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -810,6 +1009,16 @@ export interface operations {
                 id?: number;
                 /** @description Filter by Pokémon name (case-insensitive, partial match) */
                 name?: string;
+                /** @description Filter by Pokémon type */
+                type?: string;
+                /** @description Filter by minimum Pokémon ID */
+                minId?: number;
+                /** @description Filter by maximum Pokémon ID */
+                maxId?: number;
+                /** @description Number of Pokémon to return (default: 20, max: 100) */
+                limit?: number;
+                /** @description Number of Pokémon to skip for pagination */
+                offset?: number;
             };
             header?: never;
             path?: never;
@@ -817,7 +1026,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description List of Pokédex Pokémon */
+            /** @description List of Pokédex Pokémon with pagination metadata */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -833,7 +1042,7 @@ export interface operations {
     listPokemon: {
         parameters: {
             query?: {
-                playerId?: string;
+                userId?: string;
                 routeName?: string;
                 status?: components["schemas"]["PokemonStatus"];
             };
@@ -918,7 +1127,7 @@ export interface operations {
     getPokemonRoutes: {
         parameters: {
             query?: {
-                playerId?: string;
+                userId?: string;
             };
             header?: never;
             path: {

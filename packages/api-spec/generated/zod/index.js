@@ -24,6 +24,21 @@ const Error = zod_1.z
         .passthrough(),
 })
     .passthrough();
+const CreateUserRequest = zod_1.z
+    .object({ username: zod_1.z.string().min(2).max(50) })
+    .passthrough();
+const User = zod_1.z
+    .object({
+    id: zod_1.z.string(),
+    username: zod_1.z.string().min(2).max(50),
+    createdAt: zod_1.z.string().datetime({ offset: true }),
+})
+    .passthrough();
+const CreateUserResponse = zod_1.z.object({ user: User }).passthrough();
+const GetUserResponse = zod_1.z.object({ user: User }).passthrough();
+const UpdateUserRequest = zod_1.z
+    .object({ username: zod_1.z.string().min(2).max(50) })
+    .passthrough();
 const SessionStatus = zod_1.z.enum(["WAITING", "STARTED", "FINISHED"]);
 const SessionListItem = zod_1.z
     .object({
@@ -40,7 +55,6 @@ const SessionsResponse = zod_1.z
 const createSession_Body = zod_1.z
     .object({ name: zod_1.z.string(), description: zod_1.z.string() })
     .passthrough();
-const Player = zod_1.z.object({ id: zod_1.z.string(), name: zod_1.z.string() }).passthrough();
 const Session = zod_1.z
     .object({
     id: zod_1.z.string(),
@@ -48,14 +62,14 @@ const Session = zod_1.z
     description: zod_1.z.string(),
     createdAt: zod_1.z.string().datetime({ offset: true }),
     status: SessionStatus,
-    players: zod_1.z.array(Player),
+    users: zod_1.z.array(User),
 })
     .passthrough();
 const updateSession_Body = zod_1.z
     .object({ name: zod_1.z.string(), description: zod_1.z.string(), status: SessionStatus })
     .partial()
     .passthrough();
-const joinSession_Body = zod_1.z.object({ player: Player }).passthrough();
+const JoinSessionRequest = zod_1.z.object({ userId: zod_1.z.string() }).passthrough();
 const PokedexPokemonName = zod_1.z
     .object({ english: zod_1.z.string(), japanese: zod_1.z.string(), german: zod_1.z.string() })
     .passthrough();
@@ -105,14 +119,23 @@ const PokedexPokemon = zod_1.z
     image: PokedexPokemonImage,
 })
     .passthrough();
+const PaginationInfo = zod_1.z
+    .object({
+    total: zod_1.z.number().int(),
+    limit: zod_1.z.number().int(),
+    offset: zod_1.z.number().int(),
+    hasNext: zod_1.z.boolean(),
+    hasPrevious: zod_1.z.boolean(),
+})
+    .passthrough();
 const PokedexPokemonResponse = zod_1.z
-    .object({ pokemon: zod_1.z.array(PokedexPokemon) })
+    .object({ pokemon: zod_1.z.array(PokedexPokemon), pagination: PaginationInfo })
     .passthrough();
 const PokemonStatus = zod_1.z.enum(["CAUGHT", "NOT_CAUGHT", "DEAD"]);
 const PokemonLocation = zod_1.z.enum(["TEAM", "BOX"]);
 const AddPokemonRequest = zod_1.z
     .object({
-    playerId: zod_1.z.string(),
+    userId: zod_1.z.string(),
     pokemonId: zod_1.z.number(),
     status: PokemonStatus,
     routeName: zod_1.z.string(),
@@ -123,7 +146,7 @@ const AddPokemonRequest = zod_1.z
 const Pokemon = zod_1.z
     .object({
     id: zod_1.z.string(),
-    playerId: zod_1.z.string(),
+    userId: zod_1.z.string(),
     sessionId: zod_1.z.string(),
     pokemonId: zod_1.z.number(),
     status: PokemonStatus,
@@ -150,20 +173,25 @@ const RouteListResponse = zod_1.z
 exports.schemas = {
     HealthResponse,
     Error,
+    CreateUserRequest,
+    User,
+    CreateUserResponse,
+    GetUserResponse,
+    UpdateUserRequest,
     SessionStatus,
     SessionListItem,
     SessionsResponse,
     createSession_Body,
-    Player,
     Session,
     updateSession_Body,
-    joinSession_Body,
+    JoinSessionRequest,
     PokedexPokemonName,
     PokedexPokemonStats,
     PokedexPokemonEvolution,
     PokedexPokemonProfile,
     PokedexPokemonImage,
     PokedexPokemon,
+    PaginationInfo,
     PokedexPokemonResponse,
     PokemonStatus,
     PokemonLocation,
@@ -198,7 +226,7 @@ const endpoints = (0, core_1.makeApi)([
         method: "get",
         path: "/pokedex/pokemon",
         alias: "getPokedexPokemon",
-        description: `Returns a list of Pokémon from the Pokédex with optional filters`,
+        description: `Returns a list of Pokémon from the Pokédex with optional filters and pagination`,
         requestFormat: "json",
         parameters: [
             {
@@ -210,6 +238,31 @@ const endpoints = (0, core_1.makeApi)([
                 name: "name",
                 type: "Query",
                 schema: zod_1.z.string().min(1).optional(),
+            },
+            {
+                name: "type",
+                type: "Query",
+                schema: zod_1.z.string().optional(),
+            },
+            {
+                name: "minId",
+                type: "Query",
+                schema: zod_1.z.number().int().gte(1).lte(1025).optional(),
+            },
+            {
+                name: "maxId",
+                type: "Query",
+                schema: zod_1.z.number().int().gte(1).lte(1025).optional(),
+            },
+            {
+                name: "limit",
+                type: "Query",
+                schema: zod_1.z.number().int().gte(1).lte(100).optional().default(20),
+            },
+            {
+                name: "offset",
+                type: "Query",
+                schema: zod_1.z.number().int().gte(0).optional().default(0),
             },
         ],
         response: PokedexPokemonResponse,
@@ -230,7 +283,7 @@ const endpoints = (0, core_1.makeApi)([
         method: "post",
         path: "/pokemon/:sessionId",
         alias: "addPokemon",
-        description: `Add a Pokémon for a player in a session`,
+        description: `Add a Pokémon for a user in a session`,
         requestFormat: "json",
         parameters: [
             {
@@ -262,7 +315,7 @@ const endpoints = (0, core_1.makeApi)([
         method: "get",
         path: "/pokemon/:sessionId",
         alias: "listPokemon",
-        description: `List or filter Pokémon for a session/player`,
+        description: `List or filter Pokémon for a session/user`,
         requestFormat: "json",
         parameters: [
             {
@@ -271,7 +324,7 @@ const endpoints = (0, core_1.makeApi)([
                 schema: zod_1.z.string(),
             },
             {
-                name: "playerId",
+                name: "userId",
                 type: "Query",
                 schema: zod_1.z.string().optional(),
             },
@@ -304,7 +357,7 @@ const endpoints = (0, core_1.makeApi)([
         method: "patch",
         path: "/pokemon/:sessionId/:id",
         alias: "updatePokemon",
-        description: `Update a Pokémon’s status, location, or properties`,
+        description: `Update a Pokémon&#x27;s status, location, or properties`,
         requestFormat: "json",
         parameters: [
             {
@@ -341,7 +394,7 @@ const endpoints = (0, core_1.makeApi)([
         method: "get",
         path: "/pokemon/:sessionId/routes",
         alias: "getPokemonRoutes",
-        description: `Get unique routes for a session/player`,
+        description: `Get unique routes for a session/user`,
         requestFormat: "json",
         parameters: [
             {
@@ -350,7 +403,7 @@ const endpoints = (0, core_1.makeApi)([
                 schema: zod_1.z.string(),
             },
             {
-                name: "playerId",
+                name: "userId",
                 type: "Query",
                 schema: zod_1.z.string().optional(),
             },
@@ -521,13 +574,13 @@ const endpoints = (0, core_1.makeApi)([
         method: "post",
         path: "/session/:sessionId/join",
         alias: "joinSession",
-        description: `Join a session as a player`,
+        description: `Join a session as a user`,
         requestFormat: "json",
         parameters: [
             {
                 name: "body",
                 type: "Body",
-                schema: joinSession_Body,
+                schema: zod_1.z.object({ userId: zod_1.z.string() }).passthrough(),
             },
             {
                 name: "sessionId",
@@ -536,6 +589,102 @@ const endpoints = (0, core_1.makeApi)([
             },
         ],
         response: Session,
+        errors: [
+            {
+                status: 400,
+                description: `Bad request`,
+                schema: Error,
+            },
+            {
+                status: 404,
+                description: `Resource not found`,
+                schema: Error,
+            },
+            {
+                status: 500,
+                description: `Internal server error`,
+                schema: Error,
+            },
+        ],
+    },
+    {
+        method: "post",
+        path: "/users",
+        alias: "createUser",
+        description: `Creates a new user with a username`,
+        requestFormat: "json",
+        parameters: [
+            {
+                name: "body",
+                type: "Body",
+                schema: zod_1.z.object({ username: zod_1.z.string().min(2).max(50) }).passthrough(),
+            },
+        ],
+        response: CreateUserResponse,
+        errors: [
+            {
+                status: 400,
+                description: `Bad request`,
+                schema: Error,
+            },
+            {
+                status: 500,
+                description: `Internal server error`,
+                schema: Error,
+            },
+        ],
+    },
+    {
+        method: "get",
+        path: "/users/:userId",
+        alias: "getUserById",
+        description: `Returns a user by their ID`,
+        requestFormat: "json",
+        parameters: [
+            {
+                name: "userId",
+                type: "Path",
+                schema: zod_1.z.string(),
+            },
+        ],
+        response: GetUserResponse,
+        errors: [
+            {
+                status: 400,
+                description: `Bad request`,
+                schema: Error,
+            },
+            {
+                status: 404,
+                description: `Resource not found`,
+                schema: Error,
+            },
+            {
+                status: 500,
+                description: `Internal server error`,
+                schema: Error,
+            },
+        ],
+    },
+    {
+        method: "put",
+        path: "/users/:userId",
+        alias: "updateUser",
+        description: `Update a user&#x27;s username`,
+        requestFormat: "json",
+        parameters: [
+            {
+                name: "body",
+                type: "Body",
+                schema: zod_1.z.object({ username: zod_1.z.string().min(2).max(50) }).passthrough(),
+            },
+            {
+                name: "userId",
+                type: "Path",
+                schema: zod_1.z.string(),
+            },
+        ],
+        response: GetUserResponse,
         errors: [
             {
                 status: 400,

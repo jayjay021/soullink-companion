@@ -11,6 +11,7 @@
     "check-types": "tsc --noEmit",
     "lint": "eslint src/ --max-warnings 0",
     "test": "jest --detectOpenHandles",
+    "db:init": "prisma migrate dev --name init",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
     "db:migrate": "prisma migrate dev",
