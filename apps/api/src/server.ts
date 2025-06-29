@@ -1,4 +1,3 @@
-import { json, urlencoded } from 'body-parser';
 import express, { type Express } from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
@@ -34,8 +33,8 @@ export const createServer = (): Express => {
       })
     )
     .use(morgan('dev'))
-    .use(urlencoded({ extended: true }))
-    .use(json())
+    .use(express.json())
+    .use(express.urlencoded({ extended: true }))
     .use(
       cors({
         origin: env.CORS_ORIGIN,

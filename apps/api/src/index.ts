@@ -1,6 +1,6 @@
 import { log } from '@repo/logger';
 import { createServer } from './server';
-import { pokedexService } from './services/pokedexService';
+import { pokedexService } from './modules/pokedex/pokedex.service';
 
 const port = process.env.PORT || 5001;
 

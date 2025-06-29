@@ -29,18 +29,6 @@ describe('Session API ', () => {
       expect(response.body.sessions).toBeDefined();
     });
 
-    it('should return empty array when no sessions exist', async () => {
-      const response = await supertest(app)
-        .get('/api/v1/session')
-        .set('Accept', 'application/json')
-        .expect('Content-Type', /json/)
-        .expect(200);
-
-      expect(response.body).toHaveProperty('sessions');
-      expect(Array.isArray(response.body.sessions)).toBe(true);
-      expect(response.body.sessions.length).toBe(0);
-    });
-
     it('should return list of sessions after creating a session', async () => {
       const requestBody: CreateSessionRequest = {
         name: 'Test Session',

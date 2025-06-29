@@ -2,7 +2,7 @@ import { beforeAll, describe, expect, it } from '@jest/globals';
 import { schemas } from '@repo/api-spec/zod';
 import supertest from 'supertest';
 import { createServer } from '../../../server';
-import { pokedexService } from '../../../services/pokedexService';
+import { pokedexService } from '../pokedex.service';
 
 describe('Pokédex API', () => {
   const app = createServer();

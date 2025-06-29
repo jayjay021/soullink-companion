@@ -6,7 +6,7 @@ import {
   joinSession,
   listSessions,
   updateSession,
-} from '../../controllers/sessionController';
+} from './session.controller';
 
 const router: Router = Router();
 

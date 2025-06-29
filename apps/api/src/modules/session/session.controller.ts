@@ -2,7 +2,7 @@ import { schemas } from '@repo/api-spec/zod';
 import { paths } from '@repo/api-spec/types';
 import { Request, Response, NextFunction } from 'express';
 import { z } from 'zod';
-import { sessionService } from '../services/sessionService';
+import { sessionService } from './session.service';
 
 type GetSessionsResponse =
   paths['/session']['get']['responses']['200']['content']['application/json'];

@@ -1,3 +1,4 @@
+import 'tsconfig-paths/register';
 import { beforeAll, afterAll } from '@jest/globals';
 import path from 'path';
 import { execSync } from 'child_process';

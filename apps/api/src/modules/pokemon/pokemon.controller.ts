@@ -2,7 +2,7 @@ import { schemas } from '@repo/api-spec/zod';
 import { paths } from '@repo/api-spec/types';
 import { Request, Response, NextFunction } from 'express';
 import { z } from 'zod';
-import { pokemonService } from '../services/pokemonService';
+import { pokemonService } from './pokemon.service';
 
 // Types from OpenAPI spec
 // GET /pokemon/{sessionId}

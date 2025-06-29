@@ -1,7 +1,7 @@
-import { prisma } from '../lib/prisma';
+import { prisma } from '../../lib/prisma';
 import { log } from '@repo/logger';
 import { paths, components } from '@repo/api-spec/types';
-import { PokemonPositionManager } from '../../../../packages/pokemon-utils/src/index';
+import { PokemonPositionManager } from '@repo/pokemon-utils';
 import {
   PokemonStatus as PrismaPokemonStatus,
   Pokemon as PrismaPokemon,

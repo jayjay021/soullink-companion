@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { pokedexController } from '../../controllers/pokedexController';
+import { pokedexController } from './pokedex.controller';
 import { validate } from '../../middleware/validation';
 import { z } from 'zod';
 

@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import type { components } from '@repo/api-spec/types';
-import { pokedexService } from '../services/pokedexService';
+import { pokedexService } from './pokedex.service';
 
 // Import the generated types
 type PokedexPokemonResponse = components['schemas']['PokedexPokemonResponse'];

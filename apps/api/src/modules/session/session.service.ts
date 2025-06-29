@@ -1,4 +1,4 @@
-import { prisma } from '../lib/prisma';
+import { prisma } from '../../lib/prisma';
 import { log } from '@repo/logger';
 import { paths } from '@repo/api-spec/types';
 import { Prisma } from '@prisma/client';

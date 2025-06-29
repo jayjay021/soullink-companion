@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import sessionRoutes from './session';
-import pokedexRoutes from './pokedex';
-import pokemonRoutes from './pokemon';
+import sessionRoutes from '../../modules/session/session.routes';
+import pokedexRoutes from '../../modules/pokedex/pokedex.routes';
+import pokemonRoutes from '../../modules/pokemon/pokemon.routes';
 
 const router: Router = Router();
 
