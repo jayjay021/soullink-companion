@@ -10,24 +10,19 @@ type ListPokemonParams =
   paths['/pokemon/{sessionId}']['get']['parameters']['path'];
 type ListPokemonQuery =
   paths['/pokemon/{sessionId}']['get']['parameters']['query'];
-type ListPokemonResponse =
-  paths['/pokemon/{sessionId}']['get']['responses']['200']['content']['application/json'];
+type ListPokemonResponse = z.infer<typeof schemas.PokemonListResponse>;
 
 // POST /pokemon/{sessionId}
 type AddPokemonParams =
   paths['/pokemon/{sessionId}']['post']['parameters']['path'];
-type AddPokemonBody =
-  paths['/pokemon/{sessionId}']['post']['requestBody']['content']['application/json'];
-type AddPokemonResponse =
-  paths['/pokemon/{sessionId}']['post']['responses']['201']['content']['application/json'];
+type AddPokemonBody = z.infer<typeof schemas.CreatePokemonRequest>;
+type AddPokemonResponse = z.infer<typeof schemas.Pokemon>;
 
 // PATCH /pokemon/{sessionId}/{id}
 type UpdatePokemonParams =
   paths['/pokemon/{sessionId}/{id}']['patch']['parameters']['path'];
-type UpdatePokemonBody =
-  paths['/pokemon/{sessionId}/{id}']['patch']['requestBody']['content']['application/json'];
-type UpdatePokemonResponse =
-  paths['/pokemon/{sessionId}/{id}']['patch']['responses']['200']['content']['application/json'];
+type UpdatePokemonBody = z.infer<typeof schemas.UpdatePokemonRequest>;
+type UpdatePokemonResponse = z.infer<typeof schemas.Pokemon>;
 
 // GET /pokemon/{sessionId}
 export const listPokemon = async (
@@ -67,7 +62,7 @@ export const listPokemon = async (
       routeName as string | undefined,
       statusEnum
     );
-    res.status(200).json({ pokemon });
+    res.status(200).json(pokemon);
   } catch (error) {
     if (error instanceof z.ZodError) {
       return (res as Response<unknown>).status(400).json({
@@ -92,7 +87,7 @@ export const addPokemon = async (
   try {
     const { sessionId } = req.params;
     z.string().min(1).parse(sessionId);
-    schemas.AddPokemonRequest.parse(req.body);
+    schemas.CreatePokemonRequest.parse(req.body);
     const pokemon = await pokemonService.addPokemon(sessionId, req.body);
     res.status(201).json(pokemon);
   } catch (error) {

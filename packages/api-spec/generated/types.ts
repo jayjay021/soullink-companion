@@ -290,11 +290,30 @@ export interface components {
             createdAt: string;
         };
         /** @example {
+         *       "id": "123e4567-e89b-12d3-a456-426614174000",
          *       "username": "Player1"
+         *     } */
+        UserRef: {
+            /** @description Unique user identifier */
+            id: string;
+            /** @description User's display name */
+            username: string;
+        };
+        /** @example {
+         *       "username": "Player1",
+         *       "email": "player1@email.com",
+         *       "password": "supersecret"
          *     } */
         CreateUserRequest: {
             /** @description User's display name */
             username: string;
+            /**
+             * Format: email
+             * @description Optional email address
+             */
+            email?: string;
+            /** @description Optional password (min 8 chars) */
+            password?: string;
         };
         /** @example {
          *       "user": {
@@ -315,18 +334,12 @@ export interface components {
         GetUserResponse: {
             user: components["schemas"]["User"];
         };
-        /** @example {
-         *       "username": "NewPlayerName"
-         *     } */
         UpdateUserRequest: {
-            /** @description New username for the user */
-            username: string;
+            username?: string;
+            /** Format: email */
+            email?: string;
         };
-        /** @example {
-         *       "userId": "123e4567-e89b-12d3-a456-426614174000"
-         *     } */
         JoinSessionRequest: {
-            /** @description ID of the user joining the session */
             userId: string;
         };
         /**
@@ -359,7 +372,7 @@ export interface components {
             /** Format: date-time */
             createdAt: string;
             status: components["schemas"]["SessionStatus"];
-            users: components["schemas"]["User"][];
+            users: components["schemas"]["UserRef"][];
         };
         /** @example {
          *       "sessions": [
@@ -368,14 +381,34 @@ export interface components {
          *           "name": "My Session",
          *           "description": "A fun session",
          *           "createdAt": "2025-06-20T09:00:00.000Z",
-         *           "status": "WAITING"
+         *           "status": "WAITING",
+         *           "users": [
+         *             {
+         *               "id": "user-1",
+         *               "username": "Alice"
+         *             },
+         *             {
+         *               "id": "user-2",
+         *               "username": "Bob"
+         *             }
+         *           ]
          *         },
          *         {
          *           "id": "session-456",
          *           "name": "Another Session",
          *           "description": "Another fun session",
          *           "createdAt": "2025-06-20T10:00:00.000Z",
-         *           "status": "STARTED"
+         *           "status": "STARTED",
+         *           "users": [
+         *             {
+         *               "id": "user-3",
+         *               "username": "Charlie"
+         *             },
+         *             {
+         *               "id": "user-4",
+         *               "username": "Dana"
+         *             }
+         *           ]
          *         }
          *       ]
          *     } */
@@ -387,7 +420,17 @@ export interface components {
          *       "name": "My Session",
          *       "description": "A fun session",
          *       "createdAt": "2025-06-20T09:00:00.000Z",
-         *       "status": "WAITING"
+         *       "status": "WAITING",
+         *       "users": [
+         *         {
+         *           "id": "user-1",
+         *           "username": "Alice"
+         *         },
+         *         {
+         *           "id": "user-2",
+         *           "username": "Bob"
+         *         }
+         *       ]
          *     } */
         SessionListItem: {
             id: string;
@@ -396,6 +439,7 @@ export interface components {
             /** Format: date-time */
             createdAt: string;
             status: components["schemas"]["SessionStatus"];
+            users: components["schemas"]["UserRef"][];
         };
         /** @example {
          *       "pokemon": [
@@ -586,6 +630,15 @@ export interface components {
              */
             hires?: string;
         };
+        CreateSessionRequest: {
+            name: string;
+            description: string;
+        };
+        UpdateSessionRequest: {
+            name?: string;
+            description?: string;
+            status?: components["schemas"]["SessionStatus"];
+        };
         /** @example {
          *       "userId": "user-1",
          *       "pokemonId": 1,
@@ -594,28 +647,44 @@ export interface components {
          *       "location": "BOX",
          *       "position": 1
          *     } */
-        AddPokemonRequest: {
+        CreatePokemonRequest: {
+            /** @description ID of the user who owns the Pokémon */
             userId: string;
             /** @description Pokémon National Dex number */
             pokemonId: number;
             status: components["schemas"]["PokemonStatus"];
+            /** @description Name of the route where the Pokémon was encountered */
             routeName: string;
             location: components["schemas"]["PokemonLocation"];
             /** @description Position in the team or box */
             position: number;
         };
         /** @example {
-         *       "status": "FAINTED",
+         *       "status": "DEAD",
          *       "routeName": "Route 1",
          *       "location": "TEAM",
          *       "position": 2
          *     } */
         UpdatePokemonRequest: {
-            status?: components["schemas"]["PokemonStatus"];
-            routeName?: string;
-            location?: components["schemas"]["PokemonLocation"];
+            status: components["schemas"]["PokemonStatus"];
+            /** @description Name of the route where the Pokémon was encountered */
+            routeName: string;
+            location: components["schemas"]["PokemonLocation"];
             /** @description Position in the team or box */
-            position?: number;
+            position: number;
+        };
+        LoginRequest: {
+            /** Format: email */
+            email: string;
+            password: string;
+        };
+        LoginResponse: {
+            user: components["schemas"]["User"];
+            token: string;
+        };
+        RegisterResponse: {
+            user: components["schemas"]["User"];
+            token: string;
         };
         /**
          * @description The status of a Pokémon in a session
@@ -629,11 +698,26 @@ export interface components {
          * @enum {string}
          */
         PokemonLocation: "TEAM" | "BOX";
+        /**
+         * @description The status of a Pokémon in the Pokédex
+         * @example SEEN
+         * @enum {string}
+         */
+        PokedexStatus: "SEEN" | "CAUGHT";
+        /**
+         * @description The location of a Pokémon in the Pokédex
+         * @example WILD
+         * @enum {string}
+         */
+        PokedexLocation: "WILD" | "CAUGHT";
         /** @example {
          *       "id": "pokemon-1",
-         *       "userId": "user-1",
+         *       "user": {
+         *         "id": "user-1",
+         *         "username": "Alice"
+         *       },
          *       "sessionId": "session-123",
-         *       "pokemonId": "1",
+         *       "pokemonId": 1,
          *       "status": "CAUGHT",
          *       "routeName": "Route 1",
          *       "location": "BOX",
@@ -641,7 +725,7 @@ export interface components {
          *     } */
         Pokemon: {
             id: string;
-            userId: string;
+            user: components["schemas"]["UserRef"];
             sessionId: string;
             /** @description Pokémon National Dex number */
             pokemonId: number;
@@ -655,18 +739,24 @@ export interface components {
          *       "pokemon": [
          *         {
          *           "id": "pokemon-1",
-         *           "userId": "user-1",
+         *           "user": {
+         *             "id": "user-1",
+         *             "username": "Alice"
+         *           },
          *           "sessionId": "session-123",
-         *           "pokemonId": "1",
+         *           "pokemonId": 1,
          *           "status": "CAUGHT",
          *           "routeName": "Route 1"
          *         },
          *         {
          *           "id": "pokemon-2",
-         *           "userId": "user-1",
+         *           "user": {
+         *             "id": "user-1",
+         *             "username": "Alice"
+         *           },
          *           "sessionId": "session-123",
-         *           "pokemonId": "4",
-         *           "status": "FAINTED",
+         *           "pokemonId": 4,
+         *           "status": "DEAD",
          *           "routeName": "Route 1"
          *         }
          *       ]
@@ -872,10 +962,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": {
-                    name: string;
-                    description: string;
-                };
+                "application/json": components["schemas"]["CreateSessionRequest"];
             };
         };
         responses: {
@@ -928,11 +1015,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": {
-                    name?: string;
-                    description?: string;
-                    status?: components["schemas"]["SessionStatus"];
-                };
+                "application/json": components["schemas"]["UpdateSessionRequest"];
             };
         };
         responses: {
@@ -1078,7 +1161,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["AddPokemonRequest"];
+                "application/json": components["schemas"]["CreatePokemonRequest"];
             };
         };
         responses: {

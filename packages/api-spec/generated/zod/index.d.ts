@@ -65,137 +65,174 @@ export declare const schemas: {
     }, z.ZodTypeAny, "passthrough">>;
     CreateUserRequest: z.ZodObject<{
         username: z.ZodString;
-    }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-        username: z.ZodString;
-    }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-        username: z.ZodString;
-    }, z.ZodTypeAny, "passthrough">>;
+        email: z.ZodOptional<z.ZodString>;
+        password: z.ZodOptional<z.ZodString>;
+    }, "strip", z.ZodTypeAny, {
+        username?: string;
+        email?: string;
+        password?: string;
+    }, {
+        username?: string;
+        email?: string;
+        password?: string;
+    }>;
     User: z.ZodObject<{
         id: z.ZodString;
         username: z.ZodString;
         createdAt: z.ZodString;
-    }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-        id: z.ZodString;
-        username: z.ZodString;
-        createdAt: z.ZodString;
-    }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-        id: z.ZodString;
-        username: z.ZodString;
-        createdAt: z.ZodString;
-    }, z.ZodTypeAny, "passthrough">>;
+    }, "strip", z.ZodTypeAny, {
+        id?: string;
+        username?: string;
+        createdAt?: string;
+    }, {
+        id?: string;
+        username?: string;
+        createdAt?: string;
+    }>;
     CreateUserResponse: z.ZodObject<{
         user: z.ZodObject<{
             id: z.ZodString;
             username: z.ZodString;
             createdAt: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>;
+        }, "strip", z.ZodTypeAny, {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        }, {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        }>;
     }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
         user: z.ZodObject<{
             id: z.ZodString;
             username: z.ZodString;
             createdAt: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>;
+        }, "strip", z.ZodTypeAny, {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        }, {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        }>;
     }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
         user: z.ZodObject<{
             id: z.ZodString;
             username: z.ZodString;
             createdAt: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>;
+        }, "strip", z.ZodTypeAny, {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        }, {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        }>;
     }, z.ZodTypeAny, "passthrough">>;
     GetUserResponse: z.ZodObject<{
         user: z.ZodObject<{
             id: z.ZodString;
             username: z.ZodString;
             createdAt: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>;
+        }, "strip", z.ZodTypeAny, {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        }, {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        }>;
     }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
         user: z.ZodObject<{
             id: z.ZodString;
             username: z.ZodString;
             createdAt: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>;
+        }, "strip", z.ZodTypeAny, {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        }, {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        }>;
     }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
         user: z.ZodObject<{
             id: z.ZodString;
             username: z.ZodString;
             createdAt: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>;
+        }, "strip", z.ZodTypeAny, {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        }, {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        }>;
     }, z.ZodTypeAny, "passthrough">>;
     UpdateUserRequest: z.ZodObject<{
-        username: z.ZodString;
-    }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-        username: z.ZodString;
-    }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-        username: z.ZodString;
-    }, z.ZodTypeAny, "passthrough">>;
+        username: z.ZodOptional<z.ZodString>;
+        email: z.ZodOptional<z.ZodString>;
+    }, "strip", z.ZodTypeAny, {
+        username?: string;
+        email?: string;
+    }, {
+        username?: string;
+        email?: string;
+    }>;
     SessionStatus: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
+    UserRef: z.ZodObject<{
+        id: z.ZodString;
+        username: z.ZodString;
+    }, "strip", z.ZodTypeAny, {
+        id?: string;
+        username?: string;
+    }, {
+        id?: string;
+        username?: string;
+    }>;
     SessionListItem: z.ZodObject<{
         id: z.ZodString;
         name: z.ZodString;
         description: z.ZodString;
         createdAt: z.ZodString;
         status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
-    }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-        id: z.ZodString;
-        name: z.ZodString;
-        description: z.ZodString;
-        createdAt: z.ZodString;
-        status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
-    }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-        id: z.ZodString;
-        name: z.ZodString;
-        description: z.ZodString;
-        createdAt: z.ZodString;
-        status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
-    }, z.ZodTypeAny, "passthrough">>;
+        users: z.ZodArray<z.ZodObject<{
+            id: z.ZodString;
+            username: z.ZodString;
+        }, "strip", z.ZodTypeAny, {
+            id?: string;
+            username?: string;
+        }, {
+            id?: string;
+            username?: string;
+        }>, "many">;
+    }, "strip", z.ZodTypeAny, {
+        name?: string;
+        id?: string;
+        description?: string;
+        status?: "WAITING" | "STARTED" | "FINISHED";
+        createdAt?: string;
+        users?: {
+            id?: string;
+            username?: string;
+        }[];
+    }, {
+        name?: string;
+        id?: string;
+        description?: string;
+        status?: "WAITING" | "STARTED" | "FINISHED";
+        createdAt?: string;
+        users?: {
+            id?: string;
+            username?: string;
+        }[];
+    }>;
     SessionsResponse: z.ZodObject<{
         sessions: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
@@ -203,70 +240,72 @@ export declare const schemas: {
             description: z.ZodString;
             createdAt: z.ZodString;
             status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            name: z.ZodString;
-            description: z.ZodString;
-            createdAt: z.ZodString;
-            status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            name: z.ZodString;
-            description: z.ZodString;
-            createdAt: z.ZodString;
-            status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
-        }, z.ZodTypeAny, "passthrough">>, "many">;
-    }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-        sessions: z.ZodArray<z.ZodObject<{
-            id: z.ZodString;
-            name: z.ZodString;
-            description: z.ZodString;
-            createdAt: z.ZodString;
-            status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            name: z.ZodString;
-            description: z.ZodString;
-            createdAt: z.ZodString;
-            status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            name: z.ZodString;
-            description: z.ZodString;
-            createdAt: z.ZodString;
-            status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
-        }, z.ZodTypeAny, "passthrough">>, "many">;
-    }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-        sessions: z.ZodArray<z.ZodObject<{
-            id: z.ZodString;
-            name: z.ZodString;
-            description: z.ZodString;
-            createdAt: z.ZodString;
-            status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            name: z.ZodString;
-            description: z.ZodString;
-            createdAt: z.ZodString;
-            status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            name: z.ZodString;
-            description: z.ZodString;
-            createdAt: z.ZodString;
-            status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
-        }, z.ZodTypeAny, "passthrough">>, "many">;
-    }, z.ZodTypeAny, "passthrough">>;
-    createSession_Body: z.ZodObject<{
+            users: z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                username: z.ZodString;
+            }, "strip", z.ZodTypeAny, {
+                id?: string;
+                username?: string;
+            }, {
+                id?: string;
+                username?: string;
+            }>, "many">;
+        }, "strip", z.ZodTypeAny, {
+            name?: string;
+            id?: string;
+            description?: string;
+            status?: "WAITING" | "STARTED" | "FINISHED";
+            createdAt?: string;
+            users?: {
+                id?: string;
+                username?: string;
+            }[];
+        }, {
+            name?: string;
+            id?: string;
+            description?: string;
+            status?: "WAITING" | "STARTED" | "FINISHED";
+            createdAt?: string;
+            users?: {
+                id?: string;
+                username?: string;
+            }[];
+        }>, "many">;
+    }, "strip", z.ZodTypeAny, {
+        sessions?: {
+            name?: string;
+            id?: string;
+            description?: string;
+            status?: "WAITING" | "STARTED" | "FINISHED";
+            createdAt?: string;
+            users?: {
+                id?: string;
+                username?: string;
+            }[];
+        }[];
+    }, {
+        sessions?: {
+            name?: string;
+            id?: string;
+            description?: string;
+            status?: "WAITING" | "STARTED" | "FINISHED";
+            createdAt?: string;
+            users?: {
+                id?: string;
+                username?: string;
+            }[];
+        }[];
+    }>;
+    CreateSessionRequest: z.ZodObject<{
         name: z.ZodString;
         description: z.ZodString;
-    }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-        name: z.ZodString;
-        description: z.ZodString;
-    }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-        name: z.ZodString;
-        description: z.ZodString;
-    }, z.ZodTypeAny, "passthrough">>;
+    }, "strip", z.ZodTypeAny, {
+        name?: string;
+        description?: string;
+    }, {
+        name?: string;
+        description?: string;
+    }>;
     Session: z.ZodObject<{
         id: z.ZodString;
         name: z.ZodString;
@@ -276,75 +315,54 @@ export declare const schemas: {
         users: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
             username: z.ZodString;
-            createdAt: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>, "many">;
-    }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-        id: z.ZodString;
-        name: z.ZodString;
-        description: z.ZodString;
-        createdAt: z.ZodString;
-        status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
-        users: z.ZodArray<z.ZodObject<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>, "many">;
-    }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-        id: z.ZodString;
-        name: z.ZodString;
-        description: z.ZodString;
-        createdAt: z.ZodString;
-        status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
-        users: z.ZodArray<z.ZodObject<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>, "many">;
-    }, z.ZodTypeAny, "passthrough">>;
-    updateSession_Body: z.ZodObject<{
+        }, "strip", z.ZodTypeAny, {
+            id?: string;
+            username?: string;
+        }, {
+            id?: string;
+            username?: string;
+        }>, "many">;
+    }, "strip", z.ZodTypeAny, {
+        name?: string;
+        id?: string;
+        description?: string;
+        status?: "WAITING" | "STARTED" | "FINISHED";
+        createdAt?: string;
+        users?: {
+            id?: string;
+            username?: string;
+        }[];
+    }, {
+        name?: string;
+        id?: string;
+        description?: string;
+        status?: "WAITING" | "STARTED" | "FINISHED";
+        createdAt?: string;
+        users?: {
+            id?: string;
+            username?: string;
+        }[];
+    }>;
+    UpdateSessionRequest: z.ZodObject<{
         name: z.ZodOptional<z.ZodString>;
         description: z.ZodOptional<z.ZodString>;
         status: z.ZodOptional<z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>>;
-    }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-        name: z.ZodOptional<z.ZodString>;
-        description: z.ZodOptional<z.ZodString>;
-        status: z.ZodOptional<z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>>;
-    }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-        name: z.ZodOptional<z.ZodString>;
-        description: z.ZodOptional<z.ZodString>;
-        status: z.ZodOptional<z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>>;
-    }, z.ZodTypeAny, "passthrough">>;
+    }, "strip", z.ZodTypeAny, {
+        name?: string;
+        description?: string;
+        status?: "WAITING" | "STARTED" | "FINISHED";
+    }, {
+        name?: string;
+        description?: string;
+        status?: "WAITING" | "STARTED" | "FINISHED";
+    }>;
     JoinSessionRequest: z.ZodObject<{
         userId: z.ZodString;
-    }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-        userId: z.ZodString;
-    }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-        userId: z.ZodString;
-    }, z.ZodTypeAny, "passthrough">>;
+    }, "strip", z.ZodTypeAny, {
+        userId?: string;
+    }, {
+        userId?: string;
+    }>;
     PokedexPokemonName: z.ZodObject<{
         english: z.ZodString;
         japanese: z.ZodString;
@@ -1492,160 +1510,160 @@ export declare const schemas: {
     }, z.ZodTypeAny, "passthrough">>;
     PokemonStatus: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
     PokemonLocation: z.ZodEnum<["TEAM", "BOX"]>;
-    AddPokemonRequest: z.ZodObject<{
+    CreatePokemonRequest: z.ZodObject<{
         userId: z.ZodString;
         pokemonId: z.ZodNumber;
         status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
         routeName: z.ZodString;
         location: z.ZodEnum<["TEAM", "BOX"]>;
         position: z.ZodNumber;
-    }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-        userId: z.ZodString;
-        pokemonId: z.ZodNumber;
-        status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
-        routeName: z.ZodString;
-        location: z.ZodEnum<["TEAM", "BOX"]>;
-        position: z.ZodNumber;
-    }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-        userId: z.ZodString;
-        pokemonId: z.ZodNumber;
-        status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
-        routeName: z.ZodString;
-        location: z.ZodEnum<["TEAM", "BOX"]>;
-        position: z.ZodNumber;
-    }, z.ZodTypeAny, "passthrough">>;
+    }, "strip", z.ZodTypeAny, {
+        location?: "TEAM" | "BOX";
+        position?: number;
+        status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+        userId?: string;
+        pokemonId?: number;
+        routeName?: string;
+    }, {
+        location?: "TEAM" | "BOX";
+        position?: number;
+        status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+        userId?: string;
+        pokemonId?: number;
+        routeName?: string;
+    }>;
     Pokemon: z.ZodObject<{
         id: z.ZodString;
-        userId: z.ZodString;
+        user: z.ZodObject<{
+            id: z.ZodString;
+            username: z.ZodString;
+        }, "strip", z.ZodTypeAny, {
+            id?: string;
+            username?: string;
+        }, {
+            id?: string;
+            username?: string;
+        }>;
         sessionId: z.ZodString;
         pokemonId: z.ZodNumber;
         status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
         routeName: z.ZodString;
         location: z.ZodEnum<["TEAM", "BOX"]>;
         position: z.ZodNumber;
-    }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-        id: z.ZodString;
-        userId: z.ZodString;
-        sessionId: z.ZodString;
-        pokemonId: z.ZodNumber;
-        status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
-        routeName: z.ZodString;
-        location: z.ZodEnum<["TEAM", "BOX"]>;
-        position: z.ZodNumber;
-    }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-        id: z.ZodString;
-        userId: z.ZodString;
-        sessionId: z.ZodString;
-        pokemonId: z.ZodNumber;
-        status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
-        routeName: z.ZodString;
-        location: z.ZodEnum<["TEAM", "BOX"]>;
-        position: z.ZodNumber;
-    }, z.ZodTypeAny, "passthrough">>;
+    }, "strip", z.ZodTypeAny, {
+        location?: "TEAM" | "BOX";
+        id?: string;
+        position?: number;
+        status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+        user?: {
+            id?: string;
+            username?: string;
+        };
+        pokemonId?: number;
+        routeName?: string;
+        sessionId?: string;
+    }, {
+        location?: "TEAM" | "BOX";
+        id?: string;
+        position?: number;
+        status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+        user?: {
+            id?: string;
+            username?: string;
+        };
+        pokemonId?: number;
+        routeName?: string;
+        sessionId?: string;
+    }>;
     PokemonListResponse: z.ZodObject<{
         pokemon: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
-            userId: z.ZodString;
+            user: z.ZodObject<{
+                id: z.ZodString;
+                username: z.ZodString;
+            }, "strip", z.ZodTypeAny, {
+                id?: string;
+                username?: string;
+            }, {
+                id?: string;
+                username?: string;
+            }>;
             sessionId: z.ZodString;
             pokemonId: z.ZodNumber;
             status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
             routeName: z.ZodString;
             location: z.ZodEnum<["TEAM", "BOX"]>;
             position: z.ZodNumber;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            userId: z.ZodString;
-            sessionId: z.ZodString;
-            pokemonId: z.ZodNumber;
-            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
-            routeName: z.ZodString;
-            location: z.ZodEnum<["TEAM", "BOX"]>;
-            position: z.ZodNumber;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            userId: z.ZodString;
-            sessionId: z.ZodString;
-            pokemonId: z.ZodNumber;
-            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
-            routeName: z.ZodString;
-            location: z.ZodEnum<["TEAM", "BOX"]>;
-            position: z.ZodNumber;
-        }, z.ZodTypeAny, "passthrough">>, "many">;
-    }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-        pokemon: z.ZodArray<z.ZodObject<{
-            id: z.ZodString;
-            userId: z.ZodString;
-            sessionId: z.ZodString;
-            pokemonId: z.ZodNumber;
-            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
-            routeName: z.ZodString;
-            location: z.ZodEnum<["TEAM", "BOX"]>;
-            position: z.ZodNumber;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            userId: z.ZodString;
-            sessionId: z.ZodString;
-            pokemonId: z.ZodNumber;
-            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
-            routeName: z.ZodString;
-            location: z.ZodEnum<["TEAM", "BOX"]>;
-            position: z.ZodNumber;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            userId: z.ZodString;
-            sessionId: z.ZodString;
-            pokemonId: z.ZodNumber;
-            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
-            routeName: z.ZodString;
-            location: z.ZodEnum<["TEAM", "BOX"]>;
-            position: z.ZodNumber;
-        }, z.ZodTypeAny, "passthrough">>, "many">;
-    }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-        pokemon: z.ZodArray<z.ZodObject<{
-            id: z.ZodString;
-            userId: z.ZodString;
-            sessionId: z.ZodString;
-            pokemonId: z.ZodNumber;
-            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
-            routeName: z.ZodString;
-            location: z.ZodEnum<["TEAM", "BOX"]>;
-            position: z.ZodNumber;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            userId: z.ZodString;
-            sessionId: z.ZodString;
-            pokemonId: z.ZodNumber;
-            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
-            routeName: z.ZodString;
-            location: z.ZodEnum<["TEAM", "BOX"]>;
-            position: z.ZodNumber;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            userId: z.ZodString;
-            sessionId: z.ZodString;
-            pokemonId: z.ZodNumber;
-            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
-            routeName: z.ZodString;
-            location: z.ZodEnum<["TEAM", "BOX"]>;
-            position: z.ZodNumber;
-        }, z.ZodTypeAny, "passthrough">>, "many">;
-    }, z.ZodTypeAny, "passthrough">>;
+        }, "strip", z.ZodTypeAny, {
+            location?: "TEAM" | "BOX";
+            id?: string;
+            position?: number;
+            status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+            user?: {
+                id?: string;
+                username?: string;
+            };
+            pokemonId?: number;
+            routeName?: string;
+            sessionId?: string;
+        }, {
+            location?: "TEAM" | "BOX";
+            id?: string;
+            position?: number;
+            status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+            user?: {
+                id?: string;
+                username?: string;
+            };
+            pokemonId?: number;
+            routeName?: string;
+            sessionId?: string;
+        }>, "many">;
+    }, "strip", z.ZodTypeAny, {
+        pokemon?: {
+            location?: "TEAM" | "BOX";
+            id?: string;
+            position?: number;
+            status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+            user?: {
+                id?: string;
+                username?: string;
+            };
+            pokemonId?: number;
+            routeName?: string;
+            sessionId?: string;
+        }[];
+    }, {
+        pokemon?: {
+            location?: "TEAM" | "BOX";
+            id?: string;
+            position?: number;
+            status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+            user?: {
+                id?: string;
+                username?: string;
+            };
+            pokemonId?: number;
+            routeName?: string;
+            sessionId?: string;
+        }[];
+    }>;
     UpdatePokemonRequest: z.ZodObject<{
-        status: z.ZodOptional<z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>>;
-        routeName: z.ZodOptional<z.ZodString>;
-        location: z.ZodOptional<z.ZodEnum<["TEAM", "BOX"]>>;
-        position: z.ZodOptional<z.ZodNumber>;
-    }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-        status: z.ZodOptional<z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>>;
-        routeName: z.ZodOptional<z.ZodString>;
-        location: z.ZodOptional<z.ZodEnum<["TEAM", "BOX"]>>;
-        position: z.ZodOptional<z.ZodNumber>;
-    }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-        status: z.ZodOptional<z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>>;
-        routeName: z.ZodOptional<z.ZodString>;
-        location: z.ZodOptional<z.ZodEnum<["TEAM", "BOX"]>>;
-        position: z.ZodOptional<z.ZodNumber>;
-    }, z.ZodTypeAny, "passthrough">>;
+        status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
+        routeName: z.ZodString;
+        location: z.ZodEnum<["TEAM", "BOX"]>;
+        position: z.ZodNumber;
+    }, "strip", z.ZodTypeAny, {
+        location?: "TEAM" | "BOX";
+        position?: number;
+        status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+        routeName?: string;
+    }, {
+        location?: "TEAM" | "BOX";
+        position?: number;
+        status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+        routeName?: string;
+    }>;
     RouteListResponse: z.ZodObject<{
         routes: z.ZodArray<z.ZodString, "many">;
     }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
@@ -1653,6 +1671,78 @@ export declare const schemas: {
     }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
         routes: z.ZodArray<z.ZodString, "many">;
     }, z.ZodTypeAny, "passthrough">>;
+    LoginRequest: z.ZodObject<{
+        email: z.ZodString;
+        password: z.ZodString;
+    }, "strip", z.ZodTypeAny, {
+        email?: string;
+        password?: string;
+    }, {
+        email?: string;
+        password?: string;
+    }>;
+    LoginResponse: z.ZodObject<{
+        user: z.ZodObject<{
+            id: z.ZodString;
+            username: z.ZodString;
+            createdAt: z.ZodString;
+        }, "strip", z.ZodTypeAny, {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        }, {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        }>;
+        token: z.ZodString;
+    }, "strip", z.ZodTypeAny, {
+        user?: {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        };
+        token?: string;
+    }, {
+        user?: {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        };
+        token?: string;
+    }>;
+    RegisterResponse: z.ZodObject<{
+        user: z.ZodObject<{
+            id: z.ZodString;
+            username: z.ZodString;
+            createdAt: z.ZodString;
+        }, "strip", z.ZodTypeAny, {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        }, {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        }>;
+        token: z.ZodString;
+    }, "strip", z.ZodTypeAny, {
+        user?: {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        };
+        token?: string;
+    }, {
+        user?: {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        };
+        token?: string;
+    }>;
+    PokedexStatus: z.ZodEnum<["SEEN", "CAUGHT"]>;
+    PokedexLocation: z.ZodEnum<["WILD", "CAUGHT"]>;
 };
 export declare const api: import("@zodios/core").ZodiosInstance<[{
     method: "get";
@@ -2727,21 +2817,21 @@ export declare const api: import("@zodios/core").ZodiosInstance<[{
             routeName: z.ZodString;
             location: z.ZodEnum<["TEAM", "BOX"]>;
             position: z.ZodNumber;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            userId: z.ZodString;
-            pokemonId: z.ZodNumber;
-            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
-            routeName: z.ZodString;
-            location: z.ZodEnum<["TEAM", "BOX"]>;
-            position: z.ZodNumber;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            userId: z.ZodString;
-            pokemonId: z.ZodNumber;
-            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
-            routeName: z.ZodString;
-            location: z.ZodEnum<["TEAM", "BOX"]>;
-            position: z.ZodNumber;
-        }, z.ZodTypeAny, "passthrough">>;
+        }, "strip", z.ZodTypeAny, {
+            location?: "TEAM" | "BOX";
+            position?: number;
+            status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+            userId?: string;
+            pokemonId?: number;
+            routeName?: string;
+        }, {
+            location?: "TEAM" | "BOX";
+            position?: number;
+            status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+            userId?: string;
+            pokemonId?: number;
+            routeName?: string;
+        }>;
     }, {
         name: "sessionId";
         type: "Path";
@@ -2749,32 +2839,47 @@ export declare const api: import("@zodios/core").ZodiosInstance<[{
     }];
     response: z.ZodObject<{
         id: z.ZodString;
-        userId: z.ZodString;
+        user: z.ZodObject<{
+            id: z.ZodString;
+            username: z.ZodString;
+        }, "strip", z.ZodTypeAny, {
+            id?: string;
+            username?: string;
+        }, {
+            id?: string;
+            username?: string;
+        }>;
         sessionId: z.ZodString;
         pokemonId: z.ZodNumber;
         status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
         routeName: z.ZodString;
         location: z.ZodEnum<["TEAM", "BOX"]>;
         position: z.ZodNumber;
-    }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-        id: z.ZodString;
-        userId: z.ZodString;
-        sessionId: z.ZodString;
-        pokemonId: z.ZodNumber;
-        status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
-        routeName: z.ZodString;
-        location: z.ZodEnum<["TEAM", "BOX"]>;
-        position: z.ZodNumber;
-    }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-        id: z.ZodString;
-        userId: z.ZodString;
-        sessionId: z.ZodString;
-        pokemonId: z.ZodNumber;
-        status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
-        routeName: z.ZodString;
-        location: z.ZodEnum<["TEAM", "BOX"]>;
-        position: z.ZodNumber;
-    }, z.ZodTypeAny, "passthrough">>;
+    }, "strip", z.ZodTypeAny, {
+        location?: "TEAM" | "BOX";
+        id?: string;
+        position?: number;
+        status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+        user?: {
+            id?: string;
+            username?: string;
+        };
+        pokemonId?: number;
+        routeName?: string;
+        sessionId?: string;
+    }, {
+        location?: "TEAM" | "BOX";
+        id?: string;
+        position?: number;
+        status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+        user?: {
+            id?: string;
+            username?: string;
+        };
+        pokemonId?: number;
+        routeName?: string;
+        sessionId?: string;
+    }>;
     errors: [{
         status: 400;
         description: "Bad request";
@@ -2900,91 +3005,76 @@ export declare const api: import("@zodios/core").ZodiosInstance<[{
     response: z.ZodObject<{
         pokemon: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
-            userId: z.ZodString;
+            user: z.ZodObject<{
+                id: z.ZodString;
+                username: z.ZodString;
+            }, "strip", z.ZodTypeAny, {
+                id?: string;
+                username?: string;
+            }, {
+                id?: string;
+                username?: string;
+            }>;
             sessionId: z.ZodString;
             pokemonId: z.ZodNumber;
             status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
             routeName: z.ZodString;
             location: z.ZodEnum<["TEAM", "BOX"]>;
             position: z.ZodNumber;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            userId: z.ZodString;
-            sessionId: z.ZodString;
-            pokemonId: z.ZodNumber;
-            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
-            routeName: z.ZodString;
-            location: z.ZodEnum<["TEAM", "BOX"]>;
-            position: z.ZodNumber;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            userId: z.ZodString;
-            sessionId: z.ZodString;
-            pokemonId: z.ZodNumber;
-            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
-            routeName: z.ZodString;
-            location: z.ZodEnum<["TEAM", "BOX"]>;
-            position: z.ZodNumber;
-        }, z.ZodTypeAny, "passthrough">>, "many">;
-    }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-        pokemon: z.ZodArray<z.ZodObject<{
-            id: z.ZodString;
-            userId: z.ZodString;
-            sessionId: z.ZodString;
-            pokemonId: z.ZodNumber;
-            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
-            routeName: z.ZodString;
-            location: z.ZodEnum<["TEAM", "BOX"]>;
-            position: z.ZodNumber;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            userId: z.ZodString;
-            sessionId: z.ZodString;
-            pokemonId: z.ZodNumber;
-            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
-            routeName: z.ZodString;
-            location: z.ZodEnum<["TEAM", "BOX"]>;
-            position: z.ZodNumber;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            userId: z.ZodString;
-            sessionId: z.ZodString;
-            pokemonId: z.ZodNumber;
-            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
-            routeName: z.ZodString;
-            location: z.ZodEnum<["TEAM", "BOX"]>;
-            position: z.ZodNumber;
-        }, z.ZodTypeAny, "passthrough">>, "many">;
-    }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-        pokemon: z.ZodArray<z.ZodObject<{
-            id: z.ZodString;
-            userId: z.ZodString;
-            sessionId: z.ZodString;
-            pokemonId: z.ZodNumber;
-            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
-            routeName: z.ZodString;
-            location: z.ZodEnum<["TEAM", "BOX"]>;
-            position: z.ZodNumber;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            userId: z.ZodString;
-            sessionId: z.ZodString;
-            pokemonId: z.ZodNumber;
-            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
-            routeName: z.ZodString;
-            location: z.ZodEnum<["TEAM", "BOX"]>;
-            position: z.ZodNumber;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            userId: z.ZodString;
-            sessionId: z.ZodString;
-            pokemonId: z.ZodNumber;
-            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
-            routeName: z.ZodString;
-            location: z.ZodEnum<["TEAM", "BOX"]>;
-            position: z.ZodNumber;
-        }, z.ZodTypeAny, "passthrough">>, "many">;
-    }, z.ZodTypeAny, "passthrough">>;
+        }, "strip", z.ZodTypeAny, {
+            location?: "TEAM" | "BOX";
+            id?: string;
+            position?: number;
+            status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+            user?: {
+                id?: string;
+                username?: string;
+            };
+            pokemonId?: number;
+            routeName?: string;
+            sessionId?: string;
+        }, {
+            location?: "TEAM" | "BOX";
+            id?: string;
+            position?: number;
+            status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+            user?: {
+                id?: string;
+                username?: string;
+            };
+            pokemonId?: number;
+            routeName?: string;
+            sessionId?: string;
+        }>, "many">;
+    }, "strip", z.ZodTypeAny, {
+        pokemon?: {
+            location?: "TEAM" | "BOX";
+            id?: string;
+            position?: number;
+            status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+            user?: {
+                id?: string;
+                username?: string;
+            };
+            pokemonId?: number;
+            routeName?: string;
+            sessionId?: string;
+        }[];
+    }, {
+        pokemon?: {
+            location?: "TEAM" | "BOX";
+            id?: string;
+            position?: number;
+            status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+            user?: {
+                id?: string;
+                username?: string;
+            };
+            pokemonId?: number;
+            routeName?: string;
+            sessionId?: string;
+        }[];
+    }>;
     errors: [{
         status: 400;
         description: "Bad request";
@@ -3094,21 +3184,21 @@ export declare const api: import("@zodios/core").ZodiosInstance<[{
         name: "body";
         type: "Body";
         schema: z.ZodObject<{
-            status: z.ZodOptional<z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>>;
-            routeName: z.ZodOptional<z.ZodString>;
-            location: z.ZodOptional<z.ZodEnum<["TEAM", "BOX"]>>;
-            position: z.ZodOptional<z.ZodNumber>;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            status: z.ZodOptional<z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>>;
-            routeName: z.ZodOptional<z.ZodString>;
-            location: z.ZodOptional<z.ZodEnum<["TEAM", "BOX"]>>;
-            position: z.ZodOptional<z.ZodNumber>;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            status: z.ZodOptional<z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>>;
-            routeName: z.ZodOptional<z.ZodString>;
-            location: z.ZodOptional<z.ZodEnum<["TEAM", "BOX"]>>;
-            position: z.ZodOptional<z.ZodNumber>;
-        }, z.ZodTypeAny, "passthrough">>;
+            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
+            routeName: z.ZodString;
+            location: z.ZodEnum<["TEAM", "BOX"]>;
+            position: z.ZodNumber;
+        }, "strip", z.ZodTypeAny, {
+            location?: "TEAM" | "BOX";
+            position?: number;
+            status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+            routeName?: string;
+        }, {
+            location?: "TEAM" | "BOX";
+            position?: number;
+            status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+            routeName?: string;
+        }>;
     }, {
         name: "sessionId";
         type: "Path";
@@ -3120,32 +3210,47 @@ export declare const api: import("@zodios/core").ZodiosInstance<[{
     }];
     response: z.ZodObject<{
         id: z.ZodString;
-        userId: z.ZodString;
+        user: z.ZodObject<{
+            id: z.ZodString;
+            username: z.ZodString;
+        }, "strip", z.ZodTypeAny, {
+            id?: string;
+            username?: string;
+        }, {
+            id?: string;
+            username?: string;
+        }>;
         sessionId: z.ZodString;
         pokemonId: z.ZodNumber;
         status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
         routeName: z.ZodString;
         location: z.ZodEnum<["TEAM", "BOX"]>;
         position: z.ZodNumber;
-    }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-        id: z.ZodString;
-        userId: z.ZodString;
-        sessionId: z.ZodString;
-        pokemonId: z.ZodNumber;
-        status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
-        routeName: z.ZodString;
-        location: z.ZodEnum<["TEAM", "BOX"]>;
-        position: z.ZodNumber;
-    }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-        id: z.ZodString;
-        userId: z.ZodString;
-        sessionId: z.ZodString;
-        pokemonId: z.ZodNumber;
-        status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
-        routeName: z.ZodString;
-        location: z.ZodEnum<["TEAM", "BOX"]>;
-        position: z.ZodNumber;
-    }, z.ZodTypeAny, "passthrough">>;
+    }, "strip", z.ZodTypeAny, {
+        location?: "TEAM" | "BOX";
+        id?: string;
+        position?: number;
+        status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+        user?: {
+            id?: string;
+            username?: string;
+        };
+        pokemonId?: number;
+        routeName?: string;
+        sessionId?: string;
+    }, {
+        location?: "TEAM" | "BOX";
+        id?: string;
+        position?: number;
+        status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+        user?: {
+            id?: string;
+            username?: string;
+        };
+        pokemonId?: number;
+        routeName?: string;
+        sessionId?: string;
+    }>;
     errors: [{
         status: 400;
         description: "Bad request";
@@ -3379,60 +3484,62 @@ export declare const api: import("@zodios/core").ZodiosInstance<[{
             description: z.ZodString;
             createdAt: z.ZodString;
             status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            name: z.ZodString;
-            description: z.ZodString;
-            createdAt: z.ZodString;
-            status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            name: z.ZodString;
-            description: z.ZodString;
-            createdAt: z.ZodString;
-            status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
-        }, z.ZodTypeAny, "passthrough">>, "many">;
-    }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-        sessions: z.ZodArray<z.ZodObject<{
-            id: z.ZodString;
-            name: z.ZodString;
-            description: z.ZodString;
-            createdAt: z.ZodString;
-            status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            name: z.ZodString;
-            description: z.ZodString;
-            createdAt: z.ZodString;
-            status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            name: z.ZodString;
-            description: z.ZodString;
-            createdAt: z.ZodString;
-            status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
-        }, z.ZodTypeAny, "passthrough">>, "many">;
-    }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-        sessions: z.ZodArray<z.ZodObject<{
-            id: z.ZodString;
-            name: z.ZodString;
-            description: z.ZodString;
-            createdAt: z.ZodString;
-            status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            name: z.ZodString;
-            description: z.ZodString;
-            createdAt: z.ZodString;
-            status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            name: z.ZodString;
-            description: z.ZodString;
-            createdAt: z.ZodString;
-            status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
-        }, z.ZodTypeAny, "passthrough">>, "many">;
-    }, z.ZodTypeAny, "passthrough">>;
+            users: z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                username: z.ZodString;
+            }, "strip", z.ZodTypeAny, {
+                id?: string;
+                username?: string;
+            }, {
+                id?: string;
+                username?: string;
+            }>, "many">;
+        }, "strip", z.ZodTypeAny, {
+            name?: string;
+            id?: string;
+            description?: string;
+            status?: "WAITING" | "STARTED" | "FINISHED";
+            createdAt?: string;
+            users?: {
+                id?: string;
+                username?: string;
+            }[];
+        }, {
+            name?: string;
+            id?: string;
+            description?: string;
+            status?: "WAITING" | "STARTED" | "FINISHED";
+            createdAt?: string;
+            users?: {
+                id?: string;
+                username?: string;
+            }[];
+        }>, "many">;
+    }, "strip", z.ZodTypeAny, {
+        sessions?: {
+            name?: string;
+            id?: string;
+            description?: string;
+            status?: "WAITING" | "STARTED" | "FINISHED";
+            createdAt?: string;
+            users?: {
+                id?: string;
+                username?: string;
+            }[];
+        }[];
+    }, {
+        sessions?: {
+            name?: string;
+            id?: string;
+            description?: string;
+            status?: "WAITING" | "STARTED" | "FINISHED";
+            createdAt?: string;
+            users?: {
+                id?: string;
+                username?: string;
+            }[];
+        }[];
+    }>;
     errors: [{
         status: 400;
         description: "Bad request";
@@ -3544,13 +3651,13 @@ export declare const api: import("@zodios/core").ZodiosInstance<[{
         schema: z.ZodObject<{
             name: z.ZodString;
             description: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            name: z.ZodString;
-            description: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            name: z.ZodString;
-            description: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>;
+        }, "strip", z.ZodTypeAny, {
+            name?: string;
+            description?: string;
+        }, {
+            name?: string;
+            description?: string;
+        }>;
     }];
     response: z.ZodObject<{
         id: z.ZodString;
@@ -3561,55 +3668,34 @@ export declare const api: import("@zodios/core").ZodiosInstance<[{
         users: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
             username: z.ZodString;
-            createdAt: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>, "many">;
-    }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-        id: z.ZodString;
-        name: z.ZodString;
-        description: z.ZodString;
-        createdAt: z.ZodString;
-        status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
-        users: z.ZodArray<z.ZodObject<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>, "many">;
-    }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-        id: z.ZodString;
-        name: z.ZodString;
-        description: z.ZodString;
-        createdAt: z.ZodString;
-        status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
-        users: z.ZodArray<z.ZodObject<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>, "many">;
-    }, z.ZodTypeAny, "passthrough">>;
+        }, "strip", z.ZodTypeAny, {
+            id?: string;
+            username?: string;
+        }, {
+            id?: string;
+            username?: string;
+        }>, "many">;
+    }, "strip", z.ZodTypeAny, {
+        name?: string;
+        id?: string;
+        description?: string;
+        status?: "WAITING" | "STARTED" | "FINISHED";
+        createdAt?: string;
+        users?: {
+            id?: string;
+            username?: string;
+        }[];
+    }, {
+        name?: string;
+        id?: string;
+        description?: string;
+        status?: "WAITING" | "STARTED" | "FINISHED";
+        createdAt?: string;
+        users?: {
+            id?: string;
+            username?: string;
+        }[];
+    }>;
     errors: [{
         status: 400;
         description: "Bad request";
@@ -3729,55 +3815,34 @@ export declare const api: import("@zodios/core").ZodiosInstance<[{
         users: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
             username: z.ZodString;
-            createdAt: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>, "many">;
-    }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-        id: z.ZodString;
-        name: z.ZodString;
-        description: z.ZodString;
-        createdAt: z.ZodString;
-        status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
-        users: z.ZodArray<z.ZodObject<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>, "many">;
-    }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-        id: z.ZodString;
-        name: z.ZodString;
-        description: z.ZodString;
-        createdAt: z.ZodString;
-        status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
-        users: z.ZodArray<z.ZodObject<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>, "many">;
-    }, z.ZodTypeAny, "passthrough">>;
+        }, "strip", z.ZodTypeAny, {
+            id?: string;
+            username?: string;
+        }, {
+            id?: string;
+            username?: string;
+        }>, "many">;
+    }, "strip", z.ZodTypeAny, {
+        name?: string;
+        id?: string;
+        description?: string;
+        status?: "WAITING" | "STARTED" | "FINISHED";
+        createdAt?: string;
+        users?: {
+            id?: string;
+            username?: string;
+        }[];
+    }, {
+        name?: string;
+        id?: string;
+        description?: string;
+        status?: "WAITING" | "STARTED" | "FINISHED";
+        createdAt?: string;
+        users?: {
+            id?: string;
+            username?: string;
+        }[];
+    }>;
     errors: [{
         status: 400;
         description: "Bad request";
@@ -3939,15 +4004,15 @@ export declare const api: import("@zodios/core").ZodiosInstance<[{
             name: z.ZodOptional<z.ZodString>;
             description: z.ZodOptional<z.ZodString>;
             status: z.ZodOptional<z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>>;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            name: z.ZodOptional<z.ZodString>;
-            description: z.ZodOptional<z.ZodString>;
-            status: z.ZodOptional<z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>>;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            name: z.ZodOptional<z.ZodString>;
-            description: z.ZodOptional<z.ZodString>;
-            status: z.ZodOptional<z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>>;
-        }, z.ZodTypeAny, "passthrough">>;
+        }, "strip", z.ZodTypeAny, {
+            name?: string;
+            description?: string;
+            status?: "WAITING" | "STARTED" | "FINISHED";
+        }, {
+            name?: string;
+            description?: string;
+            status?: "WAITING" | "STARTED" | "FINISHED";
+        }>;
     }, {
         name: "sessionId";
         type: "Path";
@@ -3962,55 +4027,34 @@ export declare const api: import("@zodios/core").ZodiosInstance<[{
         users: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
             username: z.ZodString;
-            createdAt: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>, "many">;
-    }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-        id: z.ZodString;
-        name: z.ZodString;
-        description: z.ZodString;
-        createdAt: z.ZodString;
-        status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
-        users: z.ZodArray<z.ZodObject<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>, "many">;
-    }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-        id: z.ZodString;
-        name: z.ZodString;
-        description: z.ZodString;
-        createdAt: z.ZodString;
-        status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
-        users: z.ZodArray<z.ZodObject<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>, "many">;
-    }, z.ZodTypeAny, "passthrough">>;
+        }, "strip", z.ZodTypeAny, {
+            id?: string;
+            username?: string;
+        }, {
+            id?: string;
+            username?: string;
+        }>, "many">;
+    }, "strip", z.ZodTypeAny, {
+        name?: string;
+        id?: string;
+        description?: string;
+        status?: "WAITING" | "STARTED" | "FINISHED";
+        createdAt?: string;
+        users?: {
+            id?: string;
+            username?: string;
+        }[];
+    }, {
+        name?: string;
+        id?: string;
+        description?: string;
+        status?: "WAITING" | "STARTED" | "FINISHED";
+        createdAt?: string;
+        users?: {
+            id?: string;
+            username?: string;
+        }[];
+    }>;
     errors: [{
         status: 400;
         description: "Bad request";
@@ -4330,11 +4374,11 @@ export declare const api: import("@zodios/core").ZodiosInstance<[{
         type: "Body";
         schema: z.ZodObject<{
             userId: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            userId: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            userId: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>;
+        }, "strip", z.ZodTypeAny, {
+            userId?: string;
+        }, {
+            userId?: string;
+        }>;
     }, {
         name: "sessionId";
         type: "Path";
@@ -4349,55 +4393,34 @@ export declare const api: import("@zodios/core").ZodiosInstance<[{
         users: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
             username: z.ZodString;
-            createdAt: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>, "many">;
-    }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-        id: z.ZodString;
-        name: z.ZodString;
-        description: z.ZodString;
-        createdAt: z.ZodString;
-        status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
-        users: z.ZodArray<z.ZodObject<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>, "many">;
-    }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-        id: z.ZodString;
-        name: z.ZodString;
-        description: z.ZodString;
-        createdAt: z.ZodString;
-        status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
-        users: z.ZodArray<z.ZodObject<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>, "many">;
-    }, z.ZodTypeAny, "passthrough">>;
+        }, "strip", z.ZodTypeAny, {
+            id?: string;
+            username?: string;
+        }, {
+            id?: string;
+            username?: string;
+        }>, "many">;
+    }, "strip", z.ZodTypeAny, {
+        name?: string;
+        id?: string;
+        description?: string;
+        status?: "WAITING" | "STARTED" | "FINISHED";
+        createdAt?: string;
+        users?: {
+            id?: string;
+            username?: string;
+        }[];
+    }, {
+        name?: string;
+        id?: string;
+        description?: string;
+        status?: "WAITING" | "STARTED" | "FINISHED";
+        createdAt?: string;
+        users?: {
+            id?: string;
+            username?: string;
+        }[];
+    }>;
     errors: [{
         status: 400;
         description: "Bad request";
@@ -4557,54 +4580,60 @@ export declare const api: import("@zodios/core").ZodiosInstance<[{
         type: "Body";
         schema: z.ZodObject<{
             username: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            username: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            username: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>;
+            email: z.ZodOptional<z.ZodString>;
+            password: z.ZodOptional<z.ZodString>;
+        }, "strip", z.ZodTypeAny, {
+            username?: string;
+            email?: string;
+            password?: string;
+        }, {
+            username?: string;
+            email?: string;
+            password?: string;
+        }>;
     }];
     response: z.ZodObject<{
         user: z.ZodObject<{
             id: z.ZodString;
             username: z.ZodString;
             createdAt: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>;
+        }, "strip", z.ZodTypeAny, {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        }, {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        }>;
     }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
         user: z.ZodObject<{
             id: z.ZodString;
             username: z.ZodString;
             createdAt: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>;
+        }, "strip", z.ZodTypeAny, {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        }, {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        }>;
     }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
         user: z.ZodObject<{
             id: z.ZodString;
             username: z.ZodString;
             createdAt: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>;
+        }, "strip", z.ZodTypeAny, {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        }, {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        }>;
     }, z.ZodTypeAny, "passthrough">>;
     errors: [{
         status: 400;
@@ -4721,43 +4750,43 @@ export declare const api: import("@zodios/core").ZodiosInstance<[{
             id: z.ZodString;
             username: z.ZodString;
             createdAt: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>;
+        }, "strip", z.ZodTypeAny, {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        }, {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        }>;
     }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
         user: z.ZodObject<{
             id: z.ZodString;
             username: z.ZodString;
             createdAt: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>;
+        }, "strip", z.ZodTypeAny, {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        }, {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        }>;
     }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
         user: z.ZodObject<{
             id: z.ZodString;
             username: z.ZodString;
             createdAt: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>;
+        }, "strip", z.ZodTypeAny, {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        }, {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        }>;
     }, z.ZodTypeAny, "passthrough">>;
     errors: [{
         status: 400;
@@ -4917,12 +4946,15 @@ export declare const api: import("@zodios/core").ZodiosInstance<[{
         name: "body";
         type: "Body";
         schema: z.ZodObject<{
-            username: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            username: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            username: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>;
+            username: z.ZodOptional<z.ZodString>;
+            email: z.ZodOptional<z.ZodString>;
+        }, "strip", z.ZodTypeAny, {
+            username?: string;
+            email?: string;
+        }, {
+            username?: string;
+            email?: string;
+        }>;
     }, {
         name: "userId";
         type: "Path";
@@ -4933,43 +4965,43 @@ export declare const api: import("@zodios/core").ZodiosInstance<[{
             id: z.ZodString;
             username: z.ZodString;
             createdAt: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>;
+        }, "strip", z.ZodTypeAny, {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        }, {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        }>;
     }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
         user: z.ZodObject<{
             id: z.ZodString;
             username: z.ZodString;
             createdAt: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>;
+        }, "strip", z.ZodTypeAny, {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        }, {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        }>;
     }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
         user: z.ZodObject<{
             id: z.ZodString;
             username: z.ZodString;
             createdAt: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>;
+        }, "strip", z.ZodTypeAny, {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        }, {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        }>;
     }, z.ZodTypeAny, "passthrough">>;
     errors: [{
         status: 400;
@@ -6193,21 +6225,21 @@ export declare function createApiClient(baseUrl: string, options?: ZodiosOptions
             routeName: z.ZodString;
             location: z.ZodEnum<["TEAM", "BOX"]>;
             position: z.ZodNumber;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            userId: z.ZodString;
-            pokemonId: z.ZodNumber;
-            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
-            routeName: z.ZodString;
-            location: z.ZodEnum<["TEAM", "BOX"]>;
-            position: z.ZodNumber;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            userId: z.ZodString;
-            pokemonId: z.ZodNumber;
-            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
-            routeName: z.ZodString;
-            location: z.ZodEnum<["TEAM", "BOX"]>;
-            position: z.ZodNumber;
-        }, z.ZodTypeAny, "passthrough">>;
+        }, "strip", z.ZodTypeAny, {
+            location?: "TEAM" | "BOX";
+            position?: number;
+            status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+            userId?: string;
+            pokemonId?: number;
+            routeName?: string;
+        }, {
+            location?: "TEAM" | "BOX";
+            position?: number;
+            status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+            userId?: string;
+            pokemonId?: number;
+            routeName?: string;
+        }>;
     }, {
         name: "sessionId";
         type: "Path";
@@ -6215,32 +6247,47 @@ export declare function createApiClient(baseUrl: string, options?: ZodiosOptions
     }];
     response: z.ZodObject<{
         id: z.ZodString;
-        userId: z.ZodString;
+        user: z.ZodObject<{
+            id: z.ZodString;
+            username: z.ZodString;
+        }, "strip", z.ZodTypeAny, {
+            id?: string;
+            username?: string;
+        }, {
+            id?: string;
+            username?: string;
+        }>;
         sessionId: z.ZodString;
         pokemonId: z.ZodNumber;
         status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
         routeName: z.ZodString;
         location: z.ZodEnum<["TEAM", "BOX"]>;
         position: z.ZodNumber;
-    }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-        id: z.ZodString;
-        userId: z.ZodString;
-        sessionId: z.ZodString;
-        pokemonId: z.ZodNumber;
-        status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
-        routeName: z.ZodString;
-        location: z.ZodEnum<["TEAM", "BOX"]>;
-        position: z.ZodNumber;
-    }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-        id: z.ZodString;
-        userId: z.ZodString;
-        sessionId: z.ZodString;
-        pokemonId: z.ZodNumber;
-        status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
-        routeName: z.ZodString;
-        location: z.ZodEnum<["TEAM", "BOX"]>;
-        position: z.ZodNumber;
-    }, z.ZodTypeAny, "passthrough">>;
+    }, "strip", z.ZodTypeAny, {
+        location?: "TEAM" | "BOX";
+        id?: string;
+        position?: number;
+        status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+        user?: {
+            id?: string;
+            username?: string;
+        };
+        pokemonId?: number;
+        routeName?: string;
+        sessionId?: string;
+    }, {
+        location?: "TEAM" | "BOX";
+        id?: string;
+        position?: number;
+        status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+        user?: {
+            id?: string;
+            username?: string;
+        };
+        pokemonId?: number;
+        routeName?: string;
+        sessionId?: string;
+    }>;
     errors: [{
         status: 400;
         description: "Bad request";
@@ -6366,91 +6413,76 @@ export declare function createApiClient(baseUrl: string, options?: ZodiosOptions
     response: z.ZodObject<{
         pokemon: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
-            userId: z.ZodString;
+            user: z.ZodObject<{
+                id: z.ZodString;
+                username: z.ZodString;
+            }, "strip", z.ZodTypeAny, {
+                id?: string;
+                username?: string;
+            }, {
+                id?: string;
+                username?: string;
+            }>;
             sessionId: z.ZodString;
             pokemonId: z.ZodNumber;
             status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
             routeName: z.ZodString;
             location: z.ZodEnum<["TEAM", "BOX"]>;
             position: z.ZodNumber;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            userId: z.ZodString;
-            sessionId: z.ZodString;
-            pokemonId: z.ZodNumber;
-            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
-            routeName: z.ZodString;
-            location: z.ZodEnum<["TEAM", "BOX"]>;
-            position: z.ZodNumber;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            userId: z.ZodString;
-            sessionId: z.ZodString;
-            pokemonId: z.ZodNumber;
-            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
-            routeName: z.ZodString;
-            location: z.ZodEnum<["TEAM", "BOX"]>;
-            position: z.ZodNumber;
-        }, z.ZodTypeAny, "passthrough">>, "many">;
-    }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-        pokemon: z.ZodArray<z.ZodObject<{
-            id: z.ZodString;
-            userId: z.ZodString;
-            sessionId: z.ZodString;
-            pokemonId: z.ZodNumber;
-            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
-            routeName: z.ZodString;
-            location: z.ZodEnum<["TEAM", "BOX"]>;
-            position: z.ZodNumber;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            userId: z.ZodString;
-            sessionId: z.ZodString;
-            pokemonId: z.ZodNumber;
-            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
-            routeName: z.ZodString;
-            location: z.ZodEnum<["TEAM", "BOX"]>;
-            position: z.ZodNumber;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            userId: z.ZodString;
-            sessionId: z.ZodString;
-            pokemonId: z.ZodNumber;
-            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
-            routeName: z.ZodString;
-            location: z.ZodEnum<["TEAM", "BOX"]>;
-            position: z.ZodNumber;
-        }, z.ZodTypeAny, "passthrough">>, "many">;
-    }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-        pokemon: z.ZodArray<z.ZodObject<{
-            id: z.ZodString;
-            userId: z.ZodString;
-            sessionId: z.ZodString;
-            pokemonId: z.ZodNumber;
-            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
-            routeName: z.ZodString;
-            location: z.ZodEnum<["TEAM", "BOX"]>;
-            position: z.ZodNumber;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            userId: z.ZodString;
-            sessionId: z.ZodString;
-            pokemonId: z.ZodNumber;
-            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
-            routeName: z.ZodString;
-            location: z.ZodEnum<["TEAM", "BOX"]>;
-            position: z.ZodNumber;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            userId: z.ZodString;
-            sessionId: z.ZodString;
-            pokemonId: z.ZodNumber;
-            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
-            routeName: z.ZodString;
-            location: z.ZodEnum<["TEAM", "BOX"]>;
-            position: z.ZodNumber;
-        }, z.ZodTypeAny, "passthrough">>, "many">;
-    }, z.ZodTypeAny, "passthrough">>;
+        }, "strip", z.ZodTypeAny, {
+            location?: "TEAM" | "BOX";
+            id?: string;
+            position?: number;
+            status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+            user?: {
+                id?: string;
+                username?: string;
+            };
+            pokemonId?: number;
+            routeName?: string;
+            sessionId?: string;
+        }, {
+            location?: "TEAM" | "BOX";
+            id?: string;
+            position?: number;
+            status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+            user?: {
+                id?: string;
+                username?: string;
+            };
+            pokemonId?: number;
+            routeName?: string;
+            sessionId?: string;
+        }>, "many">;
+    }, "strip", z.ZodTypeAny, {
+        pokemon?: {
+            location?: "TEAM" | "BOX";
+            id?: string;
+            position?: number;
+            status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+            user?: {
+                id?: string;
+                username?: string;
+            };
+            pokemonId?: number;
+            routeName?: string;
+            sessionId?: string;
+        }[];
+    }, {
+        pokemon?: {
+            location?: "TEAM" | "BOX";
+            id?: string;
+            position?: number;
+            status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+            user?: {
+                id?: string;
+                username?: string;
+            };
+            pokemonId?: number;
+            routeName?: string;
+            sessionId?: string;
+        }[];
+    }>;
     errors: [{
         status: 400;
         description: "Bad request";
@@ -6560,21 +6592,21 @@ export declare function createApiClient(baseUrl: string, options?: ZodiosOptions
         name: "body";
         type: "Body";
         schema: z.ZodObject<{
-            status: z.ZodOptional<z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>>;
-            routeName: z.ZodOptional<z.ZodString>;
-            location: z.ZodOptional<z.ZodEnum<["TEAM", "BOX"]>>;
-            position: z.ZodOptional<z.ZodNumber>;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            status: z.ZodOptional<z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>>;
-            routeName: z.ZodOptional<z.ZodString>;
-            location: z.ZodOptional<z.ZodEnum<["TEAM", "BOX"]>>;
-            position: z.ZodOptional<z.ZodNumber>;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            status: z.ZodOptional<z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>>;
-            routeName: z.ZodOptional<z.ZodString>;
-            location: z.ZodOptional<z.ZodEnum<["TEAM", "BOX"]>>;
-            position: z.ZodOptional<z.ZodNumber>;
-        }, z.ZodTypeAny, "passthrough">>;
+            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
+            routeName: z.ZodString;
+            location: z.ZodEnum<["TEAM", "BOX"]>;
+            position: z.ZodNumber;
+        }, "strip", z.ZodTypeAny, {
+            location?: "TEAM" | "BOX";
+            position?: number;
+            status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+            routeName?: string;
+        }, {
+            location?: "TEAM" | "BOX";
+            position?: number;
+            status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+            routeName?: string;
+        }>;
     }, {
         name: "sessionId";
         type: "Path";
@@ -6586,32 +6618,47 @@ export declare function createApiClient(baseUrl: string, options?: ZodiosOptions
     }];
     response: z.ZodObject<{
         id: z.ZodString;
-        userId: z.ZodString;
+        user: z.ZodObject<{
+            id: z.ZodString;
+            username: z.ZodString;
+        }, "strip", z.ZodTypeAny, {
+            id?: string;
+            username?: string;
+        }, {
+            id?: string;
+            username?: string;
+        }>;
         sessionId: z.ZodString;
         pokemonId: z.ZodNumber;
         status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
         routeName: z.ZodString;
         location: z.ZodEnum<["TEAM", "BOX"]>;
         position: z.ZodNumber;
-    }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-        id: z.ZodString;
-        userId: z.ZodString;
-        sessionId: z.ZodString;
-        pokemonId: z.ZodNumber;
-        status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
-        routeName: z.ZodString;
-        location: z.ZodEnum<["TEAM", "BOX"]>;
-        position: z.ZodNumber;
-    }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-        id: z.ZodString;
-        userId: z.ZodString;
-        sessionId: z.ZodString;
-        pokemonId: z.ZodNumber;
-        status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
-        routeName: z.ZodString;
-        location: z.ZodEnum<["TEAM", "BOX"]>;
-        position: z.ZodNumber;
-    }, z.ZodTypeAny, "passthrough">>;
+    }, "strip", z.ZodTypeAny, {
+        location?: "TEAM" | "BOX";
+        id?: string;
+        position?: number;
+        status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+        user?: {
+            id?: string;
+            username?: string;
+        };
+        pokemonId?: number;
+        routeName?: string;
+        sessionId?: string;
+    }, {
+        location?: "TEAM" | "BOX";
+        id?: string;
+        position?: number;
+        status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+        user?: {
+            id?: string;
+            username?: string;
+        };
+        pokemonId?: number;
+        routeName?: string;
+        sessionId?: string;
+    }>;
     errors: [{
         status: 400;
         description: "Bad request";
@@ -6845,60 +6892,62 @@ export declare function createApiClient(baseUrl: string, options?: ZodiosOptions
             description: z.ZodString;
             createdAt: z.ZodString;
             status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            name: z.ZodString;
-            description: z.ZodString;
-            createdAt: z.ZodString;
-            status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            name: z.ZodString;
-            description: z.ZodString;
-            createdAt: z.ZodString;
-            status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
-        }, z.ZodTypeAny, "passthrough">>, "many">;
-    }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-        sessions: z.ZodArray<z.ZodObject<{
-            id: z.ZodString;
-            name: z.ZodString;
-            description: z.ZodString;
-            createdAt: z.ZodString;
-            status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            name: z.ZodString;
-            description: z.ZodString;
-            createdAt: z.ZodString;
-            status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            name: z.ZodString;
-            description: z.ZodString;
-            createdAt: z.ZodString;
-            status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
-        }, z.ZodTypeAny, "passthrough">>, "many">;
-    }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-        sessions: z.ZodArray<z.ZodObject<{
-            id: z.ZodString;
-            name: z.ZodString;
-            description: z.ZodString;
-            createdAt: z.ZodString;
-            status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            name: z.ZodString;
-            description: z.ZodString;
-            createdAt: z.ZodString;
-            status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            name: z.ZodString;
-            description: z.ZodString;
-            createdAt: z.ZodString;
-            status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
-        }, z.ZodTypeAny, "passthrough">>, "many">;
-    }, z.ZodTypeAny, "passthrough">>;
+            users: z.ZodArray<z.ZodObject<{
+                id: z.ZodString;
+                username: z.ZodString;
+            }, "strip", z.ZodTypeAny, {
+                id?: string;
+                username?: string;
+            }, {
+                id?: string;
+                username?: string;
+            }>, "many">;
+        }, "strip", z.ZodTypeAny, {
+            name?: string;
+            id?: string;
+            description?: string;
+            status?: "WAITING" | "STARTED" | "FINISHED";
+            createdAt?: string;
+            users?: {
+                id?: string;
+                username?: string;
+            }[];
+        }, {
+            name?: string;
+            id?: string;
+            description?: string;
+            status?: "WAITING" | "STARTED" | "FINISHED";
+            createdAt?: string;
+            users?: {
+                id?: string;
+                username?: string;
+            }[];
+        }>, "many">;
+    }, "strip", z.ZodTypeAny, {
+        sessions?: {
+            name?: string;
+            id?: string;
+            description?: string;
+            status?: "WAITING" | "STARTED" | "FINISHED";
+            createdAt?: string;
+            users?: {
+                id?: string;
+                username?: string;
+            }[];
+        }[];
+    }, {
+        sessions?: {
+            name?: string;
+            id?: string;
+            description?: string;
+            status?: "WAITING" | "STARTED" | "FINISHED";
+            createdAt?: string;
+            users?: {
+                id?: string;
+                username?: string;
+            }[];
+        }[];
+    }>;
     errors: [{
         status: 400;
         description: "Bad request";
@@ -7010,13 +7059,13 @@ export declare function createApiClient(baseUrl: string, options?: ZodiosOptions
         schema: z.ZodObject<{
             name: z.ZodString;
             description: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            name: z.ZodString;
-            description: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            name: z.ZodString;
-            description: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>;
+        }, "strip", z.ZodTypeAny, {
+            name?: string;
+            description?: string;
+        }, {
+            name?: string;
+            description?: string;
+        }>;
     }];
     response: z.ZodObject<{
         id: z.ZodString;
@@ -7027,55 +7076,34 @@ export declare function createApiClient(baseUrl: string, options?: ZodiosOptions
         users: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
             username: z.ZodString;
-            createdAt: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>, "many">;
-    }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-        id: z.ZodString;
-        name: z.ZodString;
-        description: z.ZodString;
-        createdAt: z.ZodString;
-        status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
-        users: z.ZodArray<z.ZodObject<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>, "many">;
-    }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-        id: z.ZodString;
-        name: z.ZodString;
-        description: z.ZodString;
-        createdAt: z.ZodString;
-        status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
-        users: z.ZodArray<z.ZodObject<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>, "many">;
-    }, z.ZodTypeAny, "passthrough">>;
+        }, "strip", z.ZodTypeAny, {
+            id?: string;
+            username?: string;
+        }, {
+            id?: string;
+            username?: string;
+        }>, "many">;
+    }, "strip", z.ZodTypeAny, {
+        name?: string;
+        id?: string;
+        description?: string;
+        status?: "WAITING" | "STARTED" | "FINISHED";
+        createdAt?: string;
+        users?: {
+            id?: string;
+            username?: string;
+        }[];
+    }, {
+        name?: string;
+        id?: string;
+        description?: string;
+        status?: "WAITING" | "STARTED" | "FINISHED";
+        createdAt?: string;
+        users?: {
+            id?: string;
+            username?: string;
+        }[];
+    }>;
     errors: [{
         status: 400;
         description: "Bad request";
@@ -7195,55 +7223,34 @@ export declare function createApiClient(baseUrl: string, options?: ZodiosOptions
         users: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
             username: z.ZodString;
-            createdAt: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>, "many">;
-    }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-        id: z.ZodString;
-        name: z.ZodString;
-        description: z.ZodString;
-        createdAt: z.ZodString;
-        status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
-        users: z.ZodArray<z.ZodObject<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>, "many">;
-    }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-        id: z.ZodString;
-        name: z.ZodString;
-        description: z.ZodString;
-        createdAt: z.ZodString;
-        status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
-        users: z.ZodArray<z.ZodObject<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>, "many">;
-    }, z.ZodTypeAny, "passthrough">>;
+        }, "strip", z.ZodTypeAny, {
+            id?: string;
+            username?: string;
+        }, {
+            id?: string;
+            username?: string;
+        }>, "many">;
+    }, "strip", z.ZodTypeAny, {
+        name?: string;
+        id?: string;
+        description?: string;
+        status?: "WAITING" | "STARTED" | "FINISHED";
+        createdAt?: string;
+        users?: {
+            id?: string;
+            username?: string;
+        }[];
+    }, {
+        name?: string;
+        id?: string;
+        description?: string;
+        status?: "WAITING" | "STARTED" | "FINISHED";
+        createdAt?: string;
+        users?: {
+            id?: string;
+            username?: string;
+        }[];
+    }>;
     errors: [{
         status: 400;
         description: "Bad request";
@@ -7405,15 +7412,15 @@ export declare function createApiClient(baseUrl: string, options?: ZodiosOptions
             name: z.ZodOptional<z.ZodString>;
             description: z.ZodOptional<z.ZodString>;
             status: z.ZodOptional<z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>>;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            name: z.ZodOptional<z.ZodString>;
-            description: z.ZodOptional<z.ZodString>;
-            status: z.ZodOptional<z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>>;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            name: z.ZodOptional<z.ZodString>;
-            description: z.ZodOptional<z.ZodString>;
-            status: z.ZodOptional<z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>>;
-        }, z.ZodTypeAny, "passthrough">>;
+        }, "strip", z.ZodTypeAny, {
+            name?: string;
+            description?: string;
+            status?: "WAITING" | "STARTED" | "FINISHED";
+        }, {
+            name?: string;
+            description?: string;
+            status?: "WAITING" | "STARTED" | "FINISHED";
+        }>;
     }, {
         name: "sessionId";
         type: "Path";
@@ -7428,55 +7435,34 @@ export declare function createApiClient(baseUrl: string, options?: ZodiosOptions
         users: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
             username: z.ZodString;
-            createdAt: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>, "many">;
-    }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-        id: z.ZodString;
-        name: z.ZodString;
-        description: z.ZodString;
-        createdAt: z.ZodString;
-        status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
-        users: z.ZodArray<z.ZodObject<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>, "many">;
-    }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-        id: z.ZodString;
-        name: z.ZodString;
-        description: z.ZodString;
-        createdAt: z.ZodString;
-        status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
-        users: z.ZodArray<z.ZodObject<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>, "many">;
-    }, z.ZodTypeAny, "passthrough">>;
+        }, "strip", z.ZodTypeAny, {
+            id?: string;
+            username?: string;
+        }, {
+            id?: string;
+            username?: string;
+        }>, "many">;
+    }, "strip", z.ZodTypeAny, {
+        name?: string;
+        id?: string;
+        description?: string;
+        status?: "WAITING" | "STARTED" | "FINISHED";
+        createdAt?: string;
+        users?: {
+            id?: string;
+            username?: string;
+        }[];
+    }, {
+        name?: string;
+        id?: string;
+        description?: string;
+        status?: "WAITING" | "STARTED" | "FINISHED";
+        createdAt?: string;
+        users?: {
+            id?: string;
+            username?: string;
+        }[];
+    }>;
     errors: [{
         status: 400;
         description: "Bad request";
@@ -7796,11 +7782,11 @@ export declare function createApiClient(baseUrl: string, options?: ZodiosOptions
         type: "Body";
         schema: z.ZodObject<{
             userId: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            userId: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            userId: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>;
+        }, "strip", z.ZodTypeAny, {
+            userId?: string;
+        }, {
+            userId?: string;
+        }>;
     }, {
         name: "sessionId";
         type: "Path";
@@ -7815,55 +7801,34 @@ export declare function createApiClient(baseUrl: string, options?: ZodiosOptions
         users: z.ZodArray<z.ZodObject<{
             id: z.ZodString;
             username: z.ZodString;
-            createdAt: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>, "many">;
-    }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-        id: z.ZodString;
-        name: z.ZodString;
-        description: z.ZodString;
-        createdAt: z.ZodString;
-        status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
-        users: z.ZodArray<z.ZodObject<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>, "many">;
-    }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-        id: z.ZodString;
-        name: z.ZodString;
-        description: z.ZodString;
-        createdAt: z.ZodString;
-        status: z.ZodEnum<["WAITING", "STARTED", "FINISHED"]>;
-        users: z.ZodArray<z.ZodObject<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>, "many">;
-    }, z.ZodTypeAny, "passthrough">>;
+        }, "strip", z.ZodTypeAny, {
+            id?: string;
+            username?: string;
+        }, {
+            id?: string;
+            username?: string;
+        }>, "many">;
+    }, "strip", z.ZodTypeAny, {
+        name?: string;
+        id?: string;
+        description?: string;
+        status?: "WAITING" | "STARTED" | "FINISHED";
+        createdAt?: string;
+        users?: {
+            id?: string;
+            username?: string;
+        }[];
+    }, {
+        name?: string;
+        id?: string;
+        description?: string;
+        status?: "WAITING" | "STARTED" | "FINISHED";
+        createdAt?: string;
+        users?: {
+            id?: string;
+            username?: string;
+        }[];
+    }>;
     errors: [{
         status: 400;
         description: "Bad request";
@@ -8023,54 +7988,60 @@ export declare function createApiClient(baseUrl: string, options?: ZodiosOptions
         type: "Body";
         schema: z.ZodObject<{
             username: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            username: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            username: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>;
+            email: z.ZodOptional<z.ZodString>;
+            password: z.ZodOptional<z.ZodString>;
+        }, "strip", z.ZodTypeAny, {
+            username?: string;
+            email?: string;
+            password?: string;
+        }, {
+            username?: string;
+            email?: string;
+            password?: string;
+        }>;
     }];
     response: z.ZodObject<{
         user: z.ZodObject<{
             id: z.ZodString;
             username: z.ZodString;
             createdAt: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>;
+        }, "strip", z.ZodTypeAny, {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        }, {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        }>;
     }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
         user: z.ZodObject<{
             id: z.ZodString;
             username: z.ZodString;
             createdAt: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>;
+        }, "strip", z.ZodTypeAny, {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        }, {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        }>;
     }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
         user: z.ZodObject<{
             id: z.ZodString;
             username: z.ZodString;
             createdAt: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>;
+        }, "strip", z.ZodTypeAny, {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        }, {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        }>;
     }, z.ZodTypeAny, "passthrough">>;
     errors: [{
         status: 400;
@@ -8187,43 +8158,43 @@ export declare function createApiClient(baseUrl: string, options?: ZodiosOptions
             id: z.ZodString;
             username: z.ZodString;
             createdAt: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>;
+        }, "strip", z.ZodTypeAny, {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        }, {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        }>;
     }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
         user: z.ZodObject<{
             id: z.ZodString;
             username: z.ZodString;
             createdAt: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>;
+        }, "strip", z.ZodTypeAny, {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        }, {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        }>;
     }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
         user: z.ZodObject<{
             id: z.ZodString;
             username: z.ZodString;
             createdAt: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>;
+        }, "strip", z.ZodTypeAny, {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        }, {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        }>;
     }, z.ZodTypeAny, "passthrough">>;
     errors: [{
         status: 400;
@@ -8383,12 +8354,15 @@ export declare function createApiClient(baseUrl: string, options?: ZodiosOptions
         name: "body";
         type: "Body";
         schema: z.ZodObject<{
-            username: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            username: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            username: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>;
+            username: z.ZodOptional<z.ZodString>;
+            email: z.ZodOptional<z.ZodString>;
+        }, "strip", z.ZodTypeAny, {
+            username?: string;
+            email?: string;
+        }, {
+            username?: string;
+            email?: string;
+        }>;
     }, {
         name: "userId";
         type: "Path";
@@ -8399,43 +8373,43 @@ export declare function createApiClient(baseUrl: string, options?: ZodiosOptions
             id: z.ZodString;
             username: z.ZodString;
             createdAt: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>;
+        }, "strip", z.ZodTypeAny, {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        }, {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        }>;
     }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
         user: z.ZodObject<{
             id: z.ZodString;
             username: z.ZodString;
             createdAt: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>;
+        }, "strip", z.ZodTypeAny, {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        }, {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        }>;
     }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
         user: z.ZodObject<{
             id: z.ZodString;
             username: z.ZodString;
             createdAt: z.ZodString;
-        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-            id: z.ZodString;
-            username: z.ZodString;
-            createdAt: z.ZodString;
-        }, z.ZodTypeAny, "passthrough">>;
+        }, "strip", z.ZodTypeAny, {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        }, {
+            id?: string;
+            username?: string;
+            createdAt?: string;
+        }>;
     }, z.ZodTypeAny, "passthrough">>;
     errors: [{
         status: 400;

@@ -1,12 +1,11 @@
 import { beforeAll, describe, expect, it } from '@jest/globals';
-import { paths } from '@repo/api-spec/types';
 import { schemas } from '@repo/api-spec/zod';
 import supertest from 'supertest';
 import { App } from 'supertest/types';
+import { z } from 'zod';
 
-type AddPokemonRequest =
-  paths['/pokemon/{sessionId}']['post']['requestBody']['content']['application/json'];
-type UpdatePokemonRequest = paths['/pokemon/{sessionId}/{id}']['patch']['requestBody']['content']['application/json'];
+type AddPokemonRequest = z.infer<typeof schemas.CreatePokemonRequest>;
+type UpdatePokemonRequest = z.infer<typeof schemas.UpdatePokemonRequest>;
 
 describe('Pokemon API', () => {
   let app: App;
@@ -58,7 +57,7 @@ describe('Pokemon API', () => {
       // Validate the response using Zod schema
       const validation = schemas.Pokemon.strict().safeParse(response.body);
       expect(validation.success).toBe(true);
-      expect(response.body.userId).toBe(user.id);
+      expect(response.body.user.id).toBe(user.id);
       expect(response.body.pokemonId).toBe(25);
     });
     it('should return 400 for invalid Pokémon data', async () => {
@@ -137,7 +136,7 @@ describe('Pokemon API', () => {
       const validation = schemas.PokemonListResponse.strict().safeParse(response.body);
       expect(validation.success).toBe(true);
       expect(response.body.pokemon).toHaveLength(1);
-      expect(response.body.pokemon[0].userId).toBe(user.id);
+      expect(response.body.pokemon[0].user.id).toBe(user.id);
     });
     it('should filter Pokémon by userId', async () => {
       // Create two users
@@ -204,7 +203,7 @@ describe('Pokemon API', () => {
         .expect(200);
 
       expect(response.body.pokemon).toHaveLength(1);
-      expect(response.body.pokemon[0].userId).toBe(user1.id);
+      expect(response.body.pokemon[0].user.id).toBe(user1.id);
     });
     it('should return 400 for invalid status filter', async () => {
       const sessionRes = await supertest(app)
@@ -262,6 +261,7 @@ describe('Pokemon API', () => {
       // Update the Pokémon
       const updateData: UpdatePokemonRequest = {
         status: 'DEAD',
+        routeName: 'Route 1',
         location: 'TEAM',
         position: 2,
       };

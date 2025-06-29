@@ -1,8 +1,9 @@
 import { Grid } from '@mantine/core';
-import type { components } from '@repo/api-spec/types';
-import PokedexCard from './PokedexCard';
 
-type PokedexPokemon = components['schemas']['PokedexPokemon'];
+import PokedexCard from './PokedexCard';
+import { PokedexPokemon } from '../../lib/api-client/generated.api';
+
+
 
 interface PokedexGridProps {
   pokemon: PokedexPokemon[];

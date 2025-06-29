@@ -1,12 +1,10 @@
 import { useState } from 'react';
 import { Container, Title, Stack, Card, Text, Loader } from '@mantine/core';
-import { usePokedexPokemon } from '../hooks/useApi';
+import { useGetPokedexPokemonQuery } from '../lib/api-client/generated.api';
 import PokedexSearch from '../components/pokedex/PokedexSearch';
 import PokedexGrid from '../components/pokedex/PokedexGrid';
 import PokedexPagination from '../components/pokedex/PokedexPagination';
-import type { components } from '@repo/api-spec/types';
-
-type PokedexPokemon = components['schemas']['PokedexPokemon'];
+import type { PokedexPokemon } from '../lib/api-client/generated.api';
 
 export function PokedexPage() {
   const [page, setPage] = useState(1);
@@ -19,10 +17,12 @@ export function PokedexPage() {
     maxId: '' as number | '',
   });
 
-  const { data: pokedexResponse, isLoading } = usePokedexPokemon({
-    ...filters,
-    minId: filters.minId === '' ? undefined : filters.minId,
-    maxId: filters.maxId === '' ? undefined : filters.maxId,
+  const { data: pokedexResponse, isLoading } = useGetPokedexPokemonQuery({
+    id: filters.id,
+    name: filters.name || undefined,
+    type: filters.type || undefined,
+    minId: filters.minId === '' ? undefined : Number(filters.minId),
+    maxId: filters.maxId === '' ? undefined : Number(filters.maxId),
     limit,
     offset: (page - 1) * limit,
   });

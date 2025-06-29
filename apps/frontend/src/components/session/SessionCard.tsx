@@ -1,19 +1,29 @@
 import { Card, Stack, Group, Title, Text, Badge, Button, ActionIcon, Menu } from '@mantine/core';
-import { IconDots, IconEdit, IconTrash } from '@tabler/icons-react';
-import type { components } from '@repo/api-spec/types';
+import { IconDots, IconEdit, IconTrash, IconEye } from '@tabler/icons-react';
+import { Session, SessionStatus, UserRef } from '../../lib/api-client/generated.api';
 
-type SessionListItem = components['schemas']['SessionListItem'];
-type SessionStatus = components['schemas']['SessionStatus'];
+// Custom type that matches the actual backend response
+
 
 interface SessionCardProps {
-  session: SessionListItem;
-  onEdit: (session: SessionListItem) => void;
+  session: Session;
+  currentUser: UserRef | null;
+  onEdit: (session: Session) => void;
   onDelete: (sessionId: string) => void;
   onJoin: (sessionId: string) => void;
+  onView: (sessionId: string) => void;
   isJoining: boolean;
 }
 
-export function SessionCard({ session, onEdit, onDelete, onJoin, isJoining }: SessionCardProps) {
+export function SessionCard({ 
+  session, 
+  currentUser, 
+  onEdit, 
+  onDelete, 
+  onJoin, 
+  onView, 
+  isJoining 
+}: SessionCardProps) {
   const getStatusColor = (status: SessionStatus) => {
     switch (status) {
       case 'WAITING': return 'yellow';
@@ -31,6 +41,8 @@ export function SessionCard({ session, onEdit, onDelete, onJoin, isJoining }: Se
       default: return status;
     }
   };
+
+  const isUserInSession = currentUser && session.users.some(user => user.id === currentUser.id);
 
   return (
     <Card withBorder p="xl">
@@ -69,6 +81,9 @@ export function SessionCard({ session, onEdit, onDelete, onJoin, isJoining }: Se
           <Badge color={getStatusColor(session.status)} variant="light">
             {getStatusLabel(session.status)}
           </Badge>
+          <Badge color="blue" variant="light">
+            {session.users.length} player{session.users.length !== 1 ? 's' : ''}
+          </Badge>
         </Group>
 
         <Text size="xs" c="dimmed">
@@ -76,14 +91,25 @@ export function SessionCard({ session, onEdit, onDelete, onJoin, isJoining }: Se
         </Text>
 
         <Group gap="xs">
-          <Button 
-            variant="light" 
-            fullWidth
-            onClick={() => onJoin(session.id)}
-            loading={isJoining}
-          >
-            Join Session
-          </Button>
+          {isUserInSession ? (
+            <Button 
+              variant="light" 
+              fullWidth
+              leftSection={<IconEye size={16} />}
+              onClick={() => onView(session.id)}
+            >
+              View Session
+            </Button>
+          ) : (
+            <Button 
+              variant="light" 
+              fullWidth
+              onClick={() => onJoin(session.id)}
+              loading={isJoining}
+            >
+              Join Session
+            </Button>
+          )}
         </Group>
       </Stack>
     </Card>

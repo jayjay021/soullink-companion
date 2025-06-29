@@ -1,9 +1,22 @@
 import { Container, Title, Text, Card, Stack, Grid, Badge, Loader } from '@mantine/core';
-import { useDashboardStats, useHealth } from '../hooks/useApi';
+import { useListSessionsQuery, useGetHealthQuery } from '../lib/api-client/generated.api';
 
 export function DashboardPage() {
-  const { data: stats, isLoading, error } = useDashboardStats();
-  const { data: health } = useHealth();
+  const { data: sessionsResponse, isLoading: sessionsLoading, error: sessionsError } = useListSessionsQuery();
+  const { data: health, isLoading: healthLoading, error: healthError } = useGetHealthQuery();
+
+  const isLoading = sessionsLoading || healthLoading;
+  const error = sessionsError || healthError;
+
+  // Compute dashboard stats from the data
+  const stats = sessionsResponse ? {
+    totalSessions: sessionsResponse.sessions.length,
+    activeSessions: sessionsResponse.sessions.filter((s) => s.status === 'STARTED').length,
+    waitingSessions: sessionsResponse.sessions.filter((s) => s.status === 'WAITING').length,
+    finishedSessions: sessionsResponse.sessions.filter((s) => s.status === 'FINISHED').length,
+    apiStatus: health?.status || 'unknown',
+    uptime: health?.uptime || 0,
+  } : undefined;
 
   if (isLoading) {
     return (

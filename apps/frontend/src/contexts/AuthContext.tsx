@@ -1,8 +1,6 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import { useCreateUser, useUpdateUser } from '../hooks/useApi';
-import type { components } from '@repo/api-spec/types';
-
-type User = components['schemas']['User'];
+import { useCreateUserMutation, useUpdateUserMutation } from '../lib/api-client/generated.api';
+import type { User } from '../lib/api-client/generated.api';
 
 interface AuthContextType {
   user: User | null;
@@ -22,8 +20,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const createUserMutation = useCreateUser();
-  const updateUserMutation = useUpdateUser();
+  const [createUserMutation] = useCreateUserMutation();
+  const [updateUserMutation] = useUpdateUserMutation();
 
   // Load user from localStorage on mount
   useEffect(() => {
@@ -47,7 +45,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setError(null);
       setIsLoading(true);
 
-      const result = await createUserMutation.mutateAsync({ username });
+      const result = await createUserMutation({ createUserRequest: { username } }).unwrap();
       const newUser = result.user;
 
       // Store in localStorage
@@ -71,10 +69,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setError(null);
       setIsLoading(true);
 
-      const result = await updateUserMutation.mutateAsync({
+      const result = await updateUserMutation({
         userId: user.id,
-        data: { username },
-      });
+        updateUserRequest: { username },
+      }).unwrap();
       const updatedUser = result.user;
 
       // Update localStorage

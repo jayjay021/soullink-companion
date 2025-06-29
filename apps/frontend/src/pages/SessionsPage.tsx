@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { 
   Container, 
   Title, 
@@ -9,68 +10,87 @@ import {
   Text,
   Card
 } from '@mantine/core';
-import { useSessions, useCreateSession, useDeleteSession, useUpdateSession, useJoinSession } from '../hooks/useApi';
+import {
+  useListSessionsQuery,
+  useCreateSessionMutation,
+  useDeleteSessionMutation,
+  useUpdateSessionMutation,
+  useJoinSessionMutation,
+  SessionListItem,
+} from '../lib/api-client/generated.api';
 import { useAuth } from '../contexts/AuthContext';
 import { IconPlus } from '@tabler/icons-react';
 import { SessionList, CreateSessionModal, EditSessionModal } from '../components/session';
-import type { components } from '@repo/api-spec/types';
 
-type SessionListItem = components['schemas']['SessionListItem'];
+type FormData = { name: string; description: string };
 
 export function SessionsPage() {
+  const navigate = useNavigate();
   const { user } = useAuth();
-  const { data: sessionsResponse, isLoading, error } = useSessions();
-  const createSession = useCreateSession();
-  const deleteSession = useDeleteSession();
-  const updateSession = useUpdateSession();
-  const joinSession = useJoinSession();
+  const { data: sessionsResponse, isLoading, error } = useListSessionsQuery();
+  const [createSession, { isLoading: isCreating }] = useCreateSessionMutation();
+  const [deleteSession] = useDeleteSessionMutation();
+  const [updateSession, { isLoading: isUpdating }] = useUpdateSessionMutation();
+  const [joinSession, { isLoading: isJoining }] = useJoinSessionMutation();
   
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [selectedSession, setSelectedSession] = useState<SessionListItem | null>(null);
-  const [formData, setFormData] = useState({ name: '', description: '' });
+  const [formData, setFormData] = useState<FormData>({ name: '', description: '' });
 
   const sessions = sessionsResponse?.sessions || [];
 
-  const handleCreateSession = () => {
+  const handleCreateSession = async () => {
     if (!user) return;
-    
-    createSession.mutate(formData, {
-      onSuccess: () => {
-        setCreateModalOpen(false);
-        setFormData({ name: '', description: '' });
-      },
-    });
-  };
-
-  const handleEditSession = () => {
-    if (!selectedSession) return;
-    
-    updateSession.mutate({
-      sessionId: selectedSession.id,
-      data: formData,
-    }, {
-      onSuccess: () => {
-        setEditModalOpen(false);
-        setSelectedSession(null);
-        setFormData({ name: '', description: '' });
-      },
-    });
-  };
-
-  const handleDeleteSession = (sessionId: string) => {
-    if (confirm('Are you sure you want to delete this session?')) {
-      deleteSession.mutate(sessionId);
+    try {
+      await createSession({ createSessionRequest: formData }).unwrap();
+      setCreateModalOpen(false);
+      setFormData({ name: '', description: '' });
+    } catch (error) {
+      console.error('Failed to create session:', error);
     }
   };
 
-  const handleJoinSession = (sessionId: string) => {
+  const handleEditSession = async () => {
+    if (!selectedSession) return;
+    try {
+      await updateSession({
+        sessionId: selectedSession.id,
+        updateSessionRequest: formData,
+      }).unwrap();
+      setEditModalOpen(false);
+      setSelectedSession(null);
+      setFormData({ name: '', description: '' });
+    } catch (error) {
+      console.error('Failed to update session:', error);
+    }
+  };
+
+  const handleDeleteSession = async (sessionId: string) => {
+    if (confirm('Are you sure you want to delete this session?')) {
+      try {
+        await deleteSession({ sessionId }).unwrap();
+      } catch (error) {
+        console.error('Failed to delete session:', error);
+      }
+    }
+  };
+
+  const handleJoinSession = async (sessionId: string) => {
     if (!user) return;
-    
-    joinSession.mutate({
-      sessionId,
-      data: { userId: user.id },
-    });
+    try {
+      await joinSession({
+        sessionId,
+        joinSessionRequest: { userId: user.id },
+      }).unwrap();
+      navigate(`/sessions/${sessionId}`);
+    } catch (error) {
+      console.error('Failed to join session:', error);
+    }
+  };
+
+  const handleViewSession = (sessionId: string) => {
+    navigate(`/sessions/${sessionId}`);
   };
 
   const openEditModal = (session: SessionListItem) => {
@@ -120,11 +140,13 @@ export function SessionsPage() {
 
         <SessionList
           sessions={sessions}
+          currentUser={user}
           onCreateSession={() => setCreateModalOpen(true)}
           onEditSession={openEditModal}
           onDeleteSession={handleDeleteSession}
           onJoinSession={handleJoinSession}
-          isJoining={joinSession.isPending}
+          onViewSession={handleViewSession}
+          isJoining={isJoining}
         />
       </Stack>
 
@@ -134,7 +156,7 @@ export function SessionsPage() {
         formData={formData}
         onFormDataChange={setFormData}
         onSubmit={handleCreateSession}
-        isLoading={createSession.isPending}
+        isLoading={isCreating}
       />
 
       <EditSessionModal
@@ -143,7 +165,7 @@ export function SessionsPage() {
         formData={formData}
         onFormDataChange={setFormData}
         onSubmit={handleEditSession}
-        isLoading={updateSession.isPending}
+        isLoading={isUpdating}
       />
     </Container>
   );

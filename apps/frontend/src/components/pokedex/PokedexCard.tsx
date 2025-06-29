@@ -1,12 +1,11 @@
 import { Card, Stack, Group, Image, Title, Text } from '@mantine/core';
-import type { components } from '@repo/api-spec/types';
 import PokedexTypeBadge from './PokedexTypeBadge';
 import PokedexStats from './PokedexStats';
 import styles from './PokedexCard.module.css';
+import type { PokedexPokemon } from '../../lib/api-client/generated.api';
 
 const fallbackImg = 'https://placehold.co/120x120?text=?';
 
-type PokedexPokemon = components['schemas']['PokedexPokemon'];
 
 interface PokedexCardProps {
   pokemon: PokedexPokemon;

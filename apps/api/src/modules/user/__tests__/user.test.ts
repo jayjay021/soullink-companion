@@ -1,11 +1,11 @@
 import { beforeAll, beforeEach, afterAll, describe, expect, it } from '@jest/globals';
-import { paths } from '@repo/api-spec/types';
 import { schemas } from '@repo/api-spec/zod';
 import supertest from 'supertest';
 import { App } from 'supertest/types';
 import { prisma } from '../../../lib/prisma';
+import { z } from 'zod';
 
-type CreateUserRequest = paths['/users']['post']['requestBody']['content']['application/json'];
+type CreateUserRequest = z.infer<typeof schemas.CreateUserRequest>;
 
 describe('User API', () => {
   let app: App;

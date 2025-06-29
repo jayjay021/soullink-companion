@@ -1,24 +1,27 @@
 import { Grid, Card, Stack, Text, Button } from '@mantine/core';
 import { SessionCard } from './SessionCard';
-import type { components } from '@repo/api-spec/types';
+import { Session, UserRef } from '../../lib/api-client/generated.api';
 
-type SessionListItem = components['schemas']['SessionListItem'];
 
 interface SessionListProps {
-  sessions: SessionListItem[];
+  sessions: Session[];
+  currentUser: UserRef | null;
   onCreateSession: () => void;
-  onEditSession: (session: SessionListItem) => void;
+  onEditSession: (session: Session) => void;
   onDeleteSession: (sessionId: string) => void;
   onJoinSession: (sessionId: string) => void;
+  onViewSession: (sessionId: string) => void;
   isJoining: boolean;
 }
 
 export function SessionList({ 
   sessions, 
+  currentUser,
   onCreateSession, 
   onEditSession, 
   onDeleteSession, 
   onJoinSession, 
+  onViewSession,
   isJoining 
 }: SessionListProps) {
   if (sessions.length === 0) {
@@ -41,9 +44,11 @@ export function SessionList({
         <Grid.Col key={session.id} span={{ base: 12, md: 6, lg: 4 }}>
           <SessionCard
             session={session}
+            currentUser={currentUser}
             onEdit={onEditSession}
             onDelete={onDeleteSession}
             onJoin={onJoinSession}
+            onView={onViewSession}
             isJoining={isJoining}
           />
         </Grid.Col>

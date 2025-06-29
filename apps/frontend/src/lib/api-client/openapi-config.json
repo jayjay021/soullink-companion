@@ -1,0 +1,9 @@
+{
+    "apiFile": "./api.ts",
+    "schemaFile": "/home/holt034/Development/soullink-companion/packages/api-spec/generated/openapi.json",
+    "apiImport": "api",
+    "outputFile": "./generated.api.ts",
+    "exportName": "api",
+    "hooks": true,
+    "tag": true
+}

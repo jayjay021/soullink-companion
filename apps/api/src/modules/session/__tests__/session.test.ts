@@ -1,11 +1,11 @@
 import { beforeAll, describe, expect, it } from '@jest/globals';
-import { paths } from '@repo/api-spec/types';
 import { schemas } from '@repo/api-spec/zod';
 import supertest from 'supertest';
 import { App } from 'supertest/types';
+import { z } from 'zod';
 
-type CreateSessionRequest =
-  paths['/session']['post']['requestBody']['content']['application/json'];
+type CreateSessionRequest = z.infer<typeof schemas.CreateSessionRequest>;
+type UpdateSessionRequest = z.infer<typeof schemas.UpdateSessionRequest>;
 
 // Supertest - Test suite for session API endpoints
 describe('Session API ', () => {
@@ -46,7 +46,7 @@ describe('Session API ', () => {
       //check if session was created successfully and response body matches Session schema
       expect(createResponse.status).toBe(201);
 
-      // Validate the response using Zod schema
+      // Validate the response using Zod schema with strict validation
       const validation = schemas.Session.strict().safeParse(
         createResponse.body
       );
@@ -63,7 +63,7 @@ describe('Session API ', () => {
       expect(Array.isArray(listResponse.body.sessions)).toBe(true);
       expect(listResponse.body.sessions.length).toBeGreaterThan(0);
 
-      const sessionListValidation = schemas.SessionsResponse.safeParse(
+      const sessionListValidation = schemas.SessionsResponse.strict().safeParse(
         listResponse.body
       );
       expect(sessionListValidation.success).toBe(true);
@@ -85,7 +85,7 @@ describe('Session API ', () => {
 
       expect(response.body).toBeDefined();
 
-      // Validate the response using Zod schema
+      // Validate the response using Zod schema with strict validation
       const validation = schemas.Session.strict().safeParse(response.body);
       expect(validation.success).toBe(true);
     });
@@ -126,7 +126,7 @@ describe('Session API ', () => {
         .expect('Content-Type', /json/)
         .expect(200);
 
-      // Validate the response using Zod schema
+      // Validate the response using Zod schema with strict validation
       const validation = schemas.Session.strict().safeParse(response.body);
       expect(validation.success).toBe(true);
     });
@@ -156,7 +156,7 @@ describe('Session API ', () => {
       const sessionId = session.id;
 
       // Now, update the session
-      const updateRequestBody: CreateSessionRequest = {
+      const updateRequestBody: UpdateSessionRequest = {
         name: 'Updated Session Name',
         description: 'This is an updated description',
       };
@@ -168,7 +168,7 @@ describe('Session API ', () => {
         .expect('Content-Type', /json/)
         .expect(200);
 
-      // Validate the response using Zod schema
+      // Validate the response using Zod schema with strict validation
       const validation = schemas.Session.strict().safeParse(response.body);
       expect(validation.success).toBe(true);
 
@@ -201,7 +201,7 @@ describe('Session API ', () => {
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .expect(200);
-      // Validate the response using Zod schema
+      // Validate the response using Zod schema with strict validation
       const validation = schemas.Session.strict().safeParse(response.body);
       expect(validation.success).toBe(true);
       // Check if the session was updated correctly
@@ -307,7 +307,7 @@ describe('Session API ', () => {
       expect(response.body).toHaveProperty('users');
       expect(Array.isArray(response.body.users)).toBe(true);
 
-      // Validate the response using Zod schema
+      // Validate the response using Zod schema with strict validation
       const validation = schemas.Session.strict().safeParse(response.body);
       expect(validation.success).toBe(true);
 
@@ -422,7 +422,7 @@ describe('Session API ', () => {
         .expect('Content-Type', /json/)
         .expect(200);
 
-      // Validate the response using Zod schema
+      // Validate the response using Zod schema with strict validation
       const validation = schemas.Session.strict().safeParse(joinResponse.body);
       expect(validation.success).toBe(true);
       
@@ -455,7 +455,7 @@ describe('Session API ', () => {
         .expect('Content-Type', /json/)
         .expect(200);
       
-      // Validate the response using Zod schema
+      // Validate the response using Zod schema with strict validation
       const validation2 = schemas.Session.strict().safeParse(response2.body);
       expect(validation2.success).toBe(true);
       
@@ -480,7 +480,7 @@ describe('Session API ', () => {
         )
       ).toBe(true);
       
-      // Validate the response using Zod schema
+      // Validate the response using Zod schema with strict validation
       const validation3 = schemas.Session.strict().safeParse(getResponse.body);
       expect(validation3.success).toBe(true);
     });

@@ -139,13 +139,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required: [name, description]
-              properties:
-                name:
-                  type: string
-                description:
-                  type: string
+              $ref: '#/components/schemas/CreateSessionRequest'
       responses:
         '201':
           description: Session created
@@ -194,14 +188,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                description:
-                  type: string
-                status:
-                  $ref: '#/components/schemas/SessionStatus'
+              $ref: '#/components/schemas/UpdateSessionRequest'
       responses:
         '200':
           description: Session updated
@@ -353,7 +340,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AddPokemonRequest'
+              $ref: '#/components/schemas/CreatePokemonRequest'
       responses:
         '201':
           description: Pokémon added
@@ -546,10 +533,30 @@ components:
           type: string
           format: date-time
           description: When the user was created
+      additionalProperties: false
       example:
         id: "123e4567-e89b-12d3-a456-426614174000"
         username: "Player1"
         createdAt: "2025-06-20T09:00:00.000Z"
+
+    UserRef:
+      type: object
+      required:
+        - id
+        - username
+      properties:
+        id:
+          type: string
+          description: Unique user identifier
+        username:
+          type: string
+          minLength: 2
+          maxLength: 50
+          description: User's display name
+      additionalProperties: false
+      example:
+        id: "123e4567-e89b-12d3-a456-426614174000"
+        username: "Player1"
 
     CreateUserRequest:
       type: object
@@ -558,11 +565,20 @@ components:
       properties:
         username:
           type: string
-          minLength: 2
-          maxLength: 50
           description: User's display name
+        email:
+          type: string
+          format: email
+          description: Optional email address
+        password:
+          type: string
+          minLength: 8
+          description: Optional password (min 8 chars)
+      additionalProperties: false
       example:
         username: "Player1"
+        email: "player1@email.com"
+        password: "supersecret"
 
     CreateUserResponse:
       type: object
@@ -591,17 +607,14 @@ components:
 
     UpdateUserRequest:
       type: object
-      required:
-        - username
       properties:
         username:
           type: string
-          minLength: 2
-          maxLength: 50
-          description: New username for the user
-      example:
-        username: "NewPlayerName"
-    
+        email:
+          type: string
+          format: email
+      additionalProperties: false
+
     JoinSessionRequest:
       type: object
       required:
@@ -609,10 +622,8 @@ components:
       properties:
         userId:
           type: string
-          description: ID of the user joining the session
-      example:
-        userId: "123e4567-e89b-12d3-a456-426614174000"
-    
+      additionalProperties: false
+
     SessionStatus:
       type: string
       enum:
@@ -646,7 +657,8 @@ components:
         users:
           type: array
           items:
-            $ref: '#/components/schemas/User'
+            $ref: '#/components/schemas/UserRef'
+      additionalProperties: false
       example:
         id: "session-123"
         name: "My Session"
@@ -667,6 +679,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SessionListItem'
+      additionalProperties: false
       example:
         sessions:
           - id: "session-123"
@@ -674,11 +687,21 @@ components:
             description: "A fun session"
             createdAt: "2025-06-20T09:00:00.000Z"
             status: "WAITING"
+            users:
+              - id: "user-1"
+                username: "Alice"
+              - id: "user-2"
+                username: "Bob"
           - id: "session-456"
             name: "Another Session"
             description: "Another fun session"
             createdAt: "2025-06-20T10:00:00.000Z"
             status: "STARTED"
+            users:
+              - id: "user-3"
+                username: "Charlie"
+              - id: "user-4"
+                username: "Dana"
     SessionListItem:
       type: object
       required:
@@ -687,6 +710,7 @@ components:
         - description
         - createdAt
         - status
+        - users
       properties:
         id:
           type: string
@@ -699,13 +723,22 @@ components:
           format: date-time
         status:
           $ref: '#/components/schemas/SessionStatus'
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserRef'
+      additionalProperties: false
       example:
         id: "session-123"
         name: "My Session"
         description: "A fun session"
         createdAt: "2025-06-20T09:00:00.000Z"
         status: "WAITING"
-
+        users:
+          - id: "user-1"
+            username: "Alice"
+          - id: "user-2"
+            username: "Bob"
 
     PokedexPokemonResponse:
       type: object
@@ -941,7 +974,30 @@ components:
           format: uri
           description: High resolution image URL
 
-    AddPokemonRequest:
+    CreateSessionRequest:
+      type: object
+      required:
+        - name
+        - description
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+      additionalProperties: false
+
+    UpdateSessionRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        status:
+          $ref: '#/components/schemas/SessionStatus'
+      additionalProperties: false
+
+    CreatePokemonRequest:
       type: object
       required:
         - userId
@@ -953,6 +1009,7 @@ components:
       properties:
         userId:
           type: string
+          description: ID of the user who owns the Pokémon
         pokemonId:
           type: number
           description: Pokémon National Dex number
@@ -960,11 +1017,13 @@ components:
           $ref: '#/components/schemas/PokemonStatus'
         routeName:
           type: string
+          description: Name of the route where the Pokémon was encountered
         location:
           $ref: '#/components/schemas/PokemonLocation'
         position:
           type: integer
           description: Position in the team or box
+      additionalProperties: false
       example:
         userId: "user-1"
         pokemonId: 1
@@ -975,21 +1034,65 @@ components:
 
     UpdatePokemonRequest:
       type: object
+      required:
+        - status
+        - routeName
+        - location
+        - position
       properties:
         status:
           $ref: '#/components/schemas/PokemonStatus'
         routeName:
           type: string
+          description: Name of the route where the Pokémon was encountered
         location:
           $ref: '#/components/schemas/PokemonLocation'
         position:
           type: integer
           description: Position in the team or box
+      additionalProperties: false
       example:
-        status: "FAINTED"
+        status: "DEAD"
         routeName: "Route 1"
         location: "TEAM"
         position: 2
+
+    LoginRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+      additionalProperties: false
+
+    LoginResponse:
+      type: object
+      required:
+        - user
+        - token
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+        token:
+          type: string
+      additionalProperties: false
+
+    RegisterResponse:
+      type: object
+      required:
+        - user
+        - token
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+        token:
+          type: string
+      additionalProperties: false
 
     PokemonStatus:
       type: string
@@ -1008,11 +1111,27 @@ components:
       description: The location of a Pokémon (TEAM or BOX)
       example: "BOX"
 
+    PokedexStatus:
+      type: string
+      enum:
+        - SEEN
+        - CAUGHT
+      description: The status of a Pokémon in the Pokédex
+      example: "SEEN"
+
+    PokedexLocation:
+      type: string
+      enum:
+        - WILD
+        - CAUGHT
+      description: The location of a Pokémon in the Pokédex
+      example: "WILD"
+
     Pokemon:
       type: object
       required:
         - id
-        - userId
+        - user
         - sessionId
         - pokemonId
         - status
@@ -1022,8 +1141,8 @@ components:
       properties:
         id:
           type: string
-        userId:
-          type: string
+        user:
+          $ref: '#/components/schemas/UserRef'
         sessionId:
           type: string
         pokemonId:
@@ -1038,11 +1157,14 @@ components:
         position:
           type: integer
           description: Position in the team or box
+      additionalProperties: false
       example:
         id: "pokemon-1"
-        userId: "user-1"
+        user:
+          id: "user-1"
+          username: "Alice"
         sessionId: "session-123"
-        pokemonId: "1"
+        pokemonId: 1
         status: "CAUGHT"
         routeName: "Route 1"
         location: "BOX"
@@ -1057,19 +1179,24 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Pokemon'
+      additionalProperties: false
       example:
         pokemon:
           - id: "pokemon-1"
-            userId: "user-1"
+            user:
+              id: "user-1"
+              username: "Alice"
             sessionId: "session-123"
-            pokemonId: "1"
+            pokemonId: 1
             status: "CAUGHT"
             routeName: "Route 1"
           - id: "pokemon-2"
-            userId: "user-1"
+            user:
+              id: "user-1"
+              username: "Alice"
             sessionId: "session-123"
-            pokemonId: "4"
-            status: "FAINTED"
+            pokemonId: 4
+            status: "DEAD"
             routeName: "Route 1"
 
     RouteListResponse:

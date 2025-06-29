@@ -1,11 +1,10 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { RouterProvider } from 'react-router-dom';
-import { QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { Provider } from 'react-redux';
+import { store } from './store';
 
 import { router } from './router';
-import { queryClient } from './lib/query-client';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { AuthProvider } from './contexts/AuthContext';
 import { UserSetupWrapper } from './components/UserSetupWrapper';
@@ -23,16 +22,15 @@ if (el) {
   root.render(
     <React.StrictMode>
       <ErrorBoundary>
-        <QueryClientProvider client={queryClient}>
+        <Provider store={store}>
           <MantineProvider theme={theme}>
             <AuthProvider>
               <UserSetupWrapper>
                 <RouterProvider router={router} />
-                <ReactQueryDevtools initialIsOpen={false} />
               </UserSetupWrapper>
             </AuthProvider>
           </MantineProvider>
-        </QueryClientProvider>
+        </Provider>
       </ErrorBoundary>
     </React.StrictMode>
   );

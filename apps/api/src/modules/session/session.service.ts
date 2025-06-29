@@ -1,51 +1,17 @@
 import { prisma } from '../../lib/prisma';
 import { log } from '@repo/logger';
-import { paths } from '@repo/api-spec/types';
-import { Prisma } from '@prisma/client';
+import { z } from 'zod';
+import { schemas } from '@repo/api-spec/zod';
+import { SessionMapper } from './session.mapper';
 
-type CreateSessionData =
-  paths['/session']['post']['requestBody']['content']['application/json'];
-
-type UpdateSessionData =
-  paths['/session/{sessionId}']['put']['requestBody']['content']['application/json'];
-
-type Session =
-  paths['/session/{sessionId}']['get']['responses']['200']['content']['application/json'];
-
-type PrismaSessionWithUsers = Prisma.SessionGetPayload<{
-  select: {
-    id: true;
-    name: true;
-    description: true;
-    createdAt: true;
-    status: true;
-    playerSessions: {
-      select: {
-        user: {
-          select: { id: true; username: true; createdAt: true };
-        };
-      };
-    };
-  };
-}>;
-
-function toSessionApi(session: PrismaSessionWithUsers): Session {
-  return {
-    id: session.id,
-    name: session.name,
-    description: session.description ?? '',
-    createdAt: session.createdAt.toISOString(),
-    status: session.status,
-    users: session.playerSessions.map((ps) => ({
-      id: ps.user.id,
-      username: ps.user.username,
-      createdAt: ps.user.createdAt.toISOString(),
-    })),
-  };
-}
+// Zod schema types for request/response
+type CreateSessionData = z.infer<typeof schemas.CreateSessionRequest>;
+type UpdateSessionData = z.infer<typeof schemas.UpdateSessionRequest>;
+type SessionDto = z.infer<typeof schemas.Session>;
+type SessionsResponseDto = z.infer<typeof schemas.SessionsResponse>;
 
 export class SessionService {
-  async listSessions() {
+  async listSessions(): Promise<SessionsResponseDto> {
     try {
       const sessions = await prisma.session.findMany({
         select: {
@@ -66,14 +32,14 @@ export class SessionService {
           createdAt: 'desc',
         },
       });
-      return sessions.map(toSessionApi);
+      return SessionMapper.mapPrismaToSessionsResponseDto(sessions);
     } catch (error) {
       log('Error listing sessions:', error);
       throw new Error('Failed to list sessions');
     }
   }
 
-  async createSession(data: CreateSessionData) {
+  async createSession(data: CreateSessionData): Promise<SessionDto> {
     try {
       const session = await prisma.session.create({
         data: {
@@ -95,14 +61,14 @@ export class SessionService {
           },
         },
       });
-      return toSessionApi(session);
+      return SessionMapper.mapPrismaToSessionDto(session);
     } catch (error) {
       log('Error creating session:', error);
       throw new Error('Failed to create session');
     }
   }
 
-  async getSessionById(sessionId: string) {
+  async getSessionById(sessionId: string): Promise<SessionDto | null> {
     try {
       const session = await prisma.session.findUnique({
         where: { id: sessionId },
@@ -122,14 +88,14 @@ export class SessionService {
         },
       });
       if (!session) return null;
-      return toSessionApi(session);
+      return SessionMapper.mapPrismaToSessionDto(session);
     } catch (error) {
       log('Error getting session:', error);
       throw new Error('Failed to get session');
     }
   }
 
-  async updateSession(sessionId: string, data: UpdateSessionData) {
+  async updateSession(sessionId: string, data: UpdateSessionData): Promise<SessionDto | null> {
     try {
       const existingSession = await prisma.session.findUnique({
         where: { id: sessionId },
@@ -161,14 +127,14 @@ export class SessionService {
           },
         },
       });
-      return toSessionApi(session);
+      return SessionMapper.mapPrismaToSessionDto(session);
     } catch (error) {
       log('Error updating session:', error);
       throw new Error('Failed to update session');
     }
   }
 
-  async deleteSession(sessionId: string) {
+  async deleteSession(sessionId: string): Promise<boolean | null> {
     try {
       const existingSession = await prisma.session.findUnique({
         where: { id: sessionId },
@@ -186,7 +152,7 @@ export class SessionService {
     }
   }
 
-  async joinSession(sessionId: string, userId: string) {
+  async joinSession(sessionId: string, userId: string): Promise<SessionDto | null> {
     try {
       // Ensure session exists
       const session = await prisma.session.findUnique({
@@ -213,7 +179,7 @@ export class SessionService {
     }
   }
 
-  async removePlayerFromSession(sessionId: string, playerId: string) {
+  async removePlayerFromSession(sessionId: string, playerId: string): Promise<SessionDto | null> {
     try {
       await prisma.playerSession.delete({
         where: { playerId_sessionId: { playerId, sessionId } },

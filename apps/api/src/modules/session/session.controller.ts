@@ -1,35 +1,22 @@
-import { schemas } from '@repo/api-spec/zod';
-import { paths } from '@repo/api-spec/types';
 import { Request, Response, NextFunction } from 'express';
 import { z } from 'zod';
 import { sessionService } from './session.service';
+import { schemas } from '@repo/api-spec/zod';
 
-type GetSessionsResponse =
-  paths['/session']['get']['responses']['200']['content']['application/json'];
-type CreateSessionBody =
-  paths['/session']['post']['requestBody']['content']['application/json'];
-type CreateSessionResponse =
-  paths['/session']['post']['responses']['201']['content']['application/json'];
-type GetSessionResponse =
-  paths['/session/{sessionId}']['get']['responses']['200']['content']['application/json'];
-type GetSessionParams =
-  paths['/session/{sessionId}']['get']['parameters']['path'];
-type PutSessionParams =
-  paths['/session/{sessionId}']['put']['parameters']['path'];
-type UpdateSessionBody =
-  paths['/session/{sessionId}']['put']['requestBody']['content']['application/json'];
-type UpdateSessionResponse =
-  paths['/session/{sessionId}']['put']['responses']['200']['content']['application/json'];
-type DeleteSessionParams =
-  paths['/session/{sessionId}']['delete']['parameters']['path'];
-type DeleteSessionResponse =
-  paths['/session/{sessionId}']['delete']['responses']['204'];
-type JoinSessionBody =
-  paths['/session/{sessionId}/join']['post']['requestBody']['content']['application/json'];
-type JoinSessionResponse =
-  paths['/session/{sessionId}/join']['post']['responses']['200']['content']['application/json'];
-type JoinSessionParams =
-  paths['/session/{sessionId}/join']['post']['parameters']['path'];
+// Type definitions using Zod schema types
+type GetSessionsResponse = z.infer<typeof schemas.SessionsResponse>;
+type CreateSessionBody = z.infer<typeof schemas.CreateSessionRequest>;
+type CreateSessionResponse = z.infer<typeof schemas.Session>;
+type GetSessionResponse = z.infer<typeof schemas.Session>;
+type GetSessionParams = { sessionId: string };
+type PutSessionParams = { sessionId: string };
+type UpdateSessionBody = z.infer<typeof schemas.UpdateSessionRequest>;
+type UpdateSessionResponse = z.infer<typeof schemas.Session>;
+type DeleteSessionParams = { sessionId: string };
+type DeleteSessionResponse = void;
+type JoinSessionBody = z.infer<typeof schemas.JoinSessionRequest>;
+type JoinSessionResponse = z.infer<typeof schemas.Session>;
+type JoinSessionParams = { sessionId: string };
 
 // GET /session
 export const listSessions = async (
@@ -39,7 +26,7 @@ export const listSessions = async (
 ) => {
   try {
     const sessions = await sessionService.listSessions();
-    res.status(200).json({ sessions });
+    res.status(200).json(sessions);
   } catch (error) {
     next(error);
   }
@@ -54,8 +41,8 @@ export const createSession = async (
   try {
     const createSessionRequest = req.body;
 
-    // Validate the request body against the CreateSessionBody schema
-    schemas.createSession_Body.parse(createSessionRequest);
+    // Validate the request body against the CreateSessionRequest schema
+    schemas.CreateSessionRequest.parse(createSessionRequest);
 
     const session = await sessionService.createSession({
       name: createSessionRequest.name,
@@ -132,7 +119,7 @@ export const updateSession = async (
     // Validate the sessionId and request body
     const sessionIdSchema = z.string().min(1);
     sessionIdSchema.parse(sessionId);
-    schemas.updateSession_Body.parse(updateSessionRequest);
+    schemas.UpdateSessionRequest.parse(updateSessionRequest);
 
     const session = await sessionService.updateSession(
       sessionId,

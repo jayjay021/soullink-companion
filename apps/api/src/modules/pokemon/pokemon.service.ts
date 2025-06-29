@@ -1,35 +1,19 @@
 import { prisma } from '../../lib/prisma';
 import { log } from '@repo/logger';
-import { paths, components } from '@repo/api-spec/types';
+import { z } from 'zod';
+import { schemas } from '@repo/api-spec/zod';
+import { PokemonMapper } from './pokemon.mapper';
 import { PokemonPositionManager } from '@repo/pokemon-utils';
 import {
   PokemonStatus as PrismaPokemonStatus,
-  Pokemon as PrismaPokemon,
 } from '@prisma/client';
 
-// Types from OpenAPI spec
-// Use paths for request bodies, components for objects
-
-type AddPokemonData =
-  paths['/pokemon/{sessionId}']['post']['requestBody']['content']['application/json'];
-type UpdatePokemonData =
-  paths['/pokemon/{sessionId}/{id}']['patch']['requestBody']['content']['application/json'];
-type Pokemon = components['schemas']['Pokemon'];
-type PokemonLocation = components['schemas']['PokemonLocation'];
-type PokemonStatus = components['schemas']['PokemonStatus'];
-
-function toApiPokemon(p: PrismaPokemon): Pokemon {
-  return {
-    id: p.id,
-    userId: p.userId,
-    sessionId: p.sessionId,
-    pokemonId: p.pokemonId,
-    status: p.status as PokemonStatus,
-    routeName: p.routeName,
-    location: p.location as PokemonLocation,
-    position: p.position,
-  };
-}
+// Zod schema types for request/response
+type CreatePokemonData = z.infer<typeof schemas.CreatePokemonRequest>;
+type UpdatePokemonData = z.infer<typeof schemas.UpdatePokemonRequest>;
+type PokemonDto = z.infer<typeof schemas.Pokemon>;
+type PokemonListResponseDto = z.infer<typeof schemas.PokemonListResponse>;
+type PokemonStatus = z.infer<typeof schemas.PokemonStatus>;
 
 export class PokemonService {
   async listPokemon(
@@ -37,7 +21,7 @@ export class PokemonService {
     userId?: string,
     routeName?: string,
     status?: PokemonStatus
-  ): Promise<Pokemon[]> {
+  ): Promise<PokemonListResponseDto> {
     try {
       const where: {
         sessionId: string;
@@ -48,54 +32,55 @@ export class PokemonService {
       if (userId) where.userId = userId;
       if (routeName) where.routeName = routeName;
       if (status) where.status = status as PrismaPokemonStatus;
+      
       const pokes = await prisma.pokemon.findMany({
         where,
         orderBy: { position: 'asc' },
         select: {
           id: true,
-          userId: true,
           sessionId: true,
           pokemonId: true,
           status: true,
           routeName: true,
           location: true,
           position: true,
-          createdAt: true,
-          updatedAt: true,
+          user: {
+            select: { id: true, username: true },
+          },
         },
       });
-      return pokes.map(toApiPokemon);
+      return PokemonMapper.mapPrismaToPokemonListResponseDto(pokes);
     } catch (error) {
       log('Error listing pokemon:', error);
       throw new Error('Failed to list pokemon');
     }
   }
 
-  async getPokemon(sessionId: string, id: string): Promise<Pokemon | null> {
+  async getPokemon(sessionId: string, id: string): Promise<PokemonDto | null> {
     try {
       const poke = await prisma.pokemon.findFirst({
         where: { sessionId, id },
         select: {
           id: true,
-          userId: true,
           sessionId: true,
           pokemonId: true,
           status: true,
           routeName: true,
           location: true,
           position: true,
-          createdAt: true,
-          updatedAt: true,
+          user: {
+            select: { id: true, username: true },
+          },
         },
       });
-      return poke ? toApiPokemon(poke) : null;
+      return poke ? PokemonMapper.mapPrismaToPokemonDto(poke) : null;
     } catch (error) {
       log('Error getting pokemon:', error);
       throw new Error('Failed to get pokemon');
     }
   }
 
-  async addPokemon(sessionId: string, data: AddPokemonData): Promise<Pokemon> {
+  async addPokemon(sessionId: string, data: CreatePokemonData): Promise<PokemonDto> {
     try {
       const poke = await prisma.pokemon.create({
         data: {
@@ -109,18 +94,18 @@ export class PokemonService {
         },
         select: {
           id: true,
-          userId: true,
           sessionId: true,
           pokemonId: true,
           status: true,
           routeName: true,
           location: true,
           position: true,
-          createdAt: true,
-          updatedAt: true,
+          user: {
+            select: { id: true, username: true },
+          },
         },
       });
-      return toApiPokemon(poke);
+      return PokemonMapper.mapPrismaToPokemonDto(poke);
     } catch (error) {
       log('Error adding pokemon:', error);
       throw new Error('Failed to add pokemon');
@@ -131,7 +116,7 @@ export class PokemonService {
     sessionId: string,
     id: string,
     data: UpdatePokemonData
-  ): Promise<Pokemon> {
+  ): Promise<PokemonDto> {
     try {
       // If moving (location or position is present), use PokemonPositionManager
       if (data.location !== undefined || data.position !== undefined) {
@@ -187,41 +172,43 @@ export class PokemonService {
           where: { id },
           select: {
             id: true,
-            userId: true,
             sessionId: true,
             pokemonId: true,
             status: true,
             routeName: true,
             location: true,
             position: true,
-            createdAt: true,
-            updatedAt: true,
+            user: {
+              select: { id: true, username: true },
+            },
           },
         });
-        if (!updated) throw new Error('Pokemon not found after move');
-        return toApiPokemon(updated);
+        if (!updated) throw new Error('Pokemon not found after update');
+        return PokemonMapper.mapPrismaToPokemonDto(updated);
       } else {
-        // Regular update
-        const updateData: Record<string, unknown> = {};
-        if (data.status !== undefined) updateData.status = data.status;
-        if (data.routeName !== undefined) updateData.routeName = data.routeName;
-        const poke = await prisma.pokemon.update({
+        // Simple update without position management
+        const updated = await prisma.pokemon.update({
           where: { id },
-          data: updateData,
+          data: {
+            ...(data.status !== undefined && { status: data.status }),
+            ...(data.routeName !== undefined && { routeName: data.routeName }),
+            ...(data.location !== undefined && { location: data.location }),
+            ...(data.position !== undefined && { position: data.position }),
+          },
           select: {
             id: true,
-            userId: true,
             sessionId: true,
             pokemonId: true,
             status: true,
             routeName: true,
             location: true,
             position: true,
-            createdAt: true,
-            updatedAt: true,
+            user: {
+              select: { id: true, username: true },
+            },
           },
         });
-        return toApiPokemon(poke);
+        return PokemonMapper.mapPrismaToPokemonDto(updated);
       }
     } catch (error) {
       log('Error updating pokemon:', error);
@@ -229,20 +216,34 @@ export class PokemonService {
     }
   }
 
+  async deletePokemon(sessionId: string, id: string): Promise<boolean> {
+    try {
+      const pokemon = await prisma.pokemon.findFirst({
+        where: { sessionId, id },
+      });
+      if (!pokemon) return false;
+      await prisma.pokemon.delete({ where: { id } });
+      return true;
+    } catch (error) {
+      log('Error deleting pokemon:', error);
+      throw new Error('Failed to delete pokemon');
+    }
+  }
+
   async getRoutes(sessionId: string, userId?: string): Promise<string[]> {
     try {
       const where: { sessionId: string; userId?: string } = { sessionId };
       if (userId) where.userId = userId;
-      const pokes = await prisma.pokemon.findMany({
+      const routes = await prisma.pokemon.findMany({
         where,
         select: { routeName: true },
+        distinct: ['routeName'],
+        orderBy: { routeName: 'asc' },
       });
-      // Get unique route names
-      const uniqueRoutes = Array.from(new Set(pokes.map((p) => p.routeName)));
-      return uniqueRoutes;
+      return routes.map((r) => r.routeName);
     } catch (error) {
-      log('Error getting unique routes:', error);
-      throw new Error('Failed to get unique routes');
+      log('Error getting routes:', error);
+      throw new Error('Failed to get routes');
     }
   }
 }

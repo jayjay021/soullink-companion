@@ -1,8 +1,11 @@
-import type { components } from '@repo/api-spec/types';
+import { z } from 'zod';
+import { schemas } from '@repo/api-spec/zod';
+import { PokedexMapper } from './pokedex.mapper';
+import { RawPokemonData } from './pokedex.types';
 import pokemonData from './pokemon-data.json';
 
-type PokedexPokemon = components['schemas']['PokedexPokemon'];
-type PaginationInfo = components['schemas']['PaginationInfo'];
+// Zod schema types for request/response
+type PokedexPokemonResponseDto = z.infer<typeof schemas.PokedexPokemonResponse>;
 
 interface PokedexQueryParams {
   id?: number;
@@ -14,14 +17,9 @@ interface PokedexQueryParams {
   offset?: number;
 }
 
-interface PokedexResponse {
-  pokemon: PokedexPokemon[];
-  pagination: PaginationInfo;
-}
-
 class PokedexService {
   private static instance: PokedexService;
-  private pokemonData: PokedexPokemon[] = [];
+  private pokemonData: RawPokemonData[] = [];
   private isLoaded = false;
 
   private constructor() {}
@@ -43,7 +41,7 @@ class PokedexService {
     }
 
     try {
-      this.pokemonData = pokemonData as PokedexPokemon[];
+      this.pokemonData = pokemonData as RawPokemonData[];
       this.isLoaded = true;
 
       console.log(
@@ -58,7 +56,7 @@ class PokedexService {
   /**
    * Get Pokémon data with optional filters and pagination
    */
-  public getPokemon(params: PokedexQueryParams = {}): PokedexResponse {
+  public getPokemon(params: PokedexQueryParams = {}): PokedexPokemonResponseDto {
     if (!this.isLoaded) {
       throw new Error('Pokédex data not loaded. Call loadData() first.');
     }
@@ -116,18 +114,16 @@ class PokedexService {
     const hasNext = offset + limit < total;
     const hasPrevious = offset > 0;
 
-    const pagination: PaginationInfo = {
-      total,
-      limit,
-      offset,
-      hasNext,
-      hasPrevious,
-    };
-
-    return {
-      pokemon: paginatedPokemon,
-      pagination,
-    };
+    return PokedexMapper.mapPokemonDataToPokedexResponseDto(
+      paginatedPokemon,
+      {
+        total,
+        limit,
+        offset,
+        hasNext,
+        hasPrevious,
+      }
+    );
   }
 
   /**

@@ -24,52 +24,51 @@ const Error = zod_1.z
         .passthrough(),
 })
     .passthrough();
-const CreateUserRequest = zod_1.z
-    .object({ username: zod_1.z.string().min(2).max(50) })
-    .passthrough();
-const User = zod_1.z
-    .object({
+const CreateUserRequest = zod_1.z.object({
+    username: zod_1.z.string(),
+    email: zod_1.z.string().email().optional(),
+    password: zod_1.z.string().min(8).optional(),
+});
+const User = zod_1.z.object({
     id: zod_1.z.string(),
     username: zod_1.z.string().min(2).max(50),
     createdAt: zod_1.z.string().datetime({ offset: true }),
-})
-    .passthrough();
+});
 const CreateUserResponse = zod_1.z.object({ user: User }).passthrough();
 const GetUserResponse = zod_1.z.object({ user: User }).passthrough();
 const UpdateUserRequest = zod_1.z
-    .object({ username: zod_1.z.string().min(2).max(50) })
-    .passthrough();
+    .object({ username: zod_1.z.string(), email: zod_1.z.string().email() })
+    .partial();
 const SessionStatus = zod_1.z.enum(["WAITING", "STARTED", "FINISHED"]);
-const SessionListItem = zod_1.z
-    .object({
+const UserRef = zod_1.z.object({
+    id: zod_1.z.string(),
+    username: zod_1.z.string().min(2).max(50),
+});
+const SessionListItem = zod_1.z.object({
     id: zod_1.z.string(),
     name: zod_1.z.string(),
     description: zod_1.z.string(),
     createdAt: zod_1.z.string().datetime({ offset: true }),
     status: SessionStatus,
-})
-    .passthrough();
-const SessionsResponse = zod_1.z
-    .object({ sessions: zod_1.z.array(SessionListItem) })
-    .passthrough();
-const createSession_Body = zod_1.z
-    .object({ name: zod_1.z.string(), description: zod_1.z.string() })
-    .passthrough();
-const Session = zod_1.z
-    .object({
+    users: zod_1.z.array(UserRef),
+});
+const SessionsResponse = zod_1.z.object({ sessions: zod_1.z.array(SessionListItem) });
+const CreateSessionRequest = zod_1.z.object({
+    name: zod_1.z.string(),
+    description: zod_1.z.string(),
+});
+const Session = zod_1.z.object({
     id: zod_1.z.string(),
     name: zod_1.z.string(),
     description: zod_1.z.string(),
     createdAt: zod_1.z.string().datetime({ offset: true }),
     status: SessionStatus,
-    users: zod_1.z.array(User),
-})
-    .passthrough();
-const updateSession_Body = zod_1.z
+    users: zod_1.z.array(UserRef),
+});
+const UpdateSessionRequest = zod_1.z
     .object({ name: zod_1.z.string(), description: zod_1.z.string(), status: SessionStatus })
-    .partial()
-    .passthrough();
-const JoinSessionRequest = zod_1.z.object({ userId: zod_1.z.string() }).passthrough();
+    .partial();
+const JoinSessionRequest = zod_1.z.object({ userId: zod_1.z.string() });
 const PokedexPokemonName = zod_1.z
     .object({ english: zod_1.z.string(), japanese: zod_1.z.string(), german: zod_1.z.string() })
     .passthrough();
@@ -133,43 +132,42 @@ const PokedexPokemonResponse = zod_1.z
     .passthrough();
 const PokemonStatus = zod_1.z.enum(["CAUGHT", "NOT_CAUGHT", "DEAD"]);
 const PokemonLocation = zod_1.z.enum(["TEAM", "BOX"]);
-const AddPokemonRequest = zod_1.z
-    .object({
+const CreatePokemonRequest = zod_1.z.object({
     userId: zod_1.z.string(),
     pokemonId: zod_1.z.number(),
     status: PokemonStatus,
     routeName: zod_1.z.string(),
     location: PokemonLocation,
     position: zod_1.z.number().int(),
-})
-    .passthrough();
-const Pokemon = zod_1.z
-    .object({
+});
+const Pokemon = zod_1.z.object({
     id: zod_1.z.string(),
-    userId: zod_1.z.string(),
+    user: UserRef,
     sessionId: zod_1.z.string(),
     pokemonId: zod_1.z.number(),
     status: PokemonStatus,
     routeName: zod_1.z.string(),
     location: PokemonLocation,
     position: zod_1.z.number().int(),
-})
-    .passthrough();
-const PokemonListResponse = zod_1.z
-    .object({ pokemon: zod_1.z.array(Pokemon) })
-    .passthrough();
-const UpdatePokemonRequest = zod_1.z
-    .object({
+});
+const PokemonListResponse = zod_1.z.object({ pokemon: zod_1.z.array(Pokemon) });
+const UpdatePokemonRequest = zod_1.z.object({
     status: PokemonStatus,
     routeName: zod_1.z.string(),
     location: PokemonLocation,
     position: zod_1.z.number().int(),
-})
-    .partial()
-    .passthrough();
+});
 const RouteListResponse = zod_1.z
     .object({ routes: zod_1.z.array(zod_1.z.string()) })
     .passthrough();
+const LoginRequest = zod_1.z.object({
+    email: zod_1.z.string().email(),
+    password: zod_1.z.string(),
+});
+const LoginResponse = zod_1.z.object({ user: User, token: zod_1.z.string() });
+const RegisterResponse = zod_1.z.object({ user: User, token: zod_1.z.string() });
+const PokedexStatus = zod_1.z.enum(["SEEN", "CAUGHT"]);
+const PokedexLocation = zod_1.z.enum(["WILD", "CAUGHT"]);
 exports.schemas = {
     HealthResponse,
     Error,
@@ -179,11 +177,12 @@ exports.schemas = {
     GetUserResponse,
     UpdateUserRequest,
     SessionStatus,
+    UserRef,
     SessionListItem,
     SessionsResponse,
-    createSession_Body,
+    CreateSessionRequest,
     Session,
-    updateSession_Body,
+    UpdateSessionRequest,
     JoinSessionRequest,
     PokedexPokemonName,
     PokedexPokemonStats,
@@ -195,11 +194,16 @@ exports.schemas = {
     PokedexPokemonResponse,
     PokemonStatus,
     PokemonLocation,
-    AddPokemonRequest,
+    CreatePokemonRequest,
     Pokemon,
     PokemonListResponse,
     UpdatePokemonRequest,
     RouteListResponse,
+    LoginRequest,
+    LoginResponse,
+    RegisterResponse,
+    PokedexStatus,
+    PokedexLocation,
 };
 const endpoints = (0, core_1.makeApi)([
     {
@@ -289,7 +293,7 @@ const endpoints = (0, core_1.makeApi)([
             {
                 name: "body",
                 type: "Body",
-                schema: AddPokemonRequest,
+                schema: CreatePokemonRequest,
             },
             {
                 name: "sessionId",
@@ -452,7 +456,7 @@ const endpoints = (0, core_1.makeApi)([
             {
                 name: "body",
                 type: "Body",
-                schema: createSession_Body,
+                schema: CreateSessionRequest,
             },
         ],
         response: Session,
@@ -511,7 +515,7 @@ const endpoints = (0, core_1.makeApi)([
             {
                 name: "body",
                 type: "Body",
-                schema: updateSession_Body,
+                schema: UpdateSessionRequest,
             },
             {
                 name: "sessionId",
@@ -580,7 +584,7 @@ const endpoints = (0, core_1.makeApi)([
             {
                 name: "body",
                 type: "Body",
-                schema: zod_1.z.object({ userId: zod_1.z.string() }).passthrough(),
+                schema: zod_1.z.object({ userId: zod_1.z.string() }),
             },
             {
                 name: "sessionId",
@@ -617,7 +621,7 @@ const endpoints = (0, core_1.makeApi)([
             {
                 name: "body",
                 type: "Body",
-                schema: zod_1.z.object({ username: zod_1.z.string().min(2).max(50) }).passthrough(),
+                schema: CreateUserRequest,
             },
         ],
         response: CreateUserResponse,
@@ -676,7 +680,7 @@ const endpoints = (0, core_1.makeApi)([
             {
                 name: "body",
                 type: "Body",
-                schema: zod_1.z.object({ username: zod_1.z.string().min(2).max(50) }).passthrough(),
+                schema: UpdateUserRequest,
             },
             {
                 name: "userId",

@@ -5,7 +5,9 @@ import { ApiError } from './errorHandler';
 export const validate = (schema: z.ZodSchema) => {
   return (req: Request, res: Response, next: NextFunction) => {
     try {
-      const result = schema.parse({
+      // Use strict validation for object schemas to disallow additional properties
+      const strictSchema = schema instanceof z.ZodObject ? schema.strict() : schema;
+      const result = strictSchema.parse({
         body: req.body,
         query: req.query,
         params: req.params,
