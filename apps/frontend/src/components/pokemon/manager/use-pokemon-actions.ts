@@ -22,8 +22,10 @@ export function usePokemonActions(sessionId: string) {
           sessionId,
           id: pokemonId,
           updatePokemonRequest: {
-            ...pokemon,
             status: 'DEAD',
+            routeName: pokemon.routeName,
+            location: pokemon.location,
+            position: pokemon.position,
           },
         }).unwrap();
       } catch (err: unknown) {
@@ -57,9 +59,10 @@ export function usePokemonActions(sessionId: string) {
           sessionId,
           id: pokemonId,
           updatePokemonRequest: {
-            ...pokemon,
             location: newLocation,
             position: newPosition,
+            status: pokemon.status,
+            routeName: pokemon.routeName,
           },
         }).unwrap();
       } catch (err: unknown) {
