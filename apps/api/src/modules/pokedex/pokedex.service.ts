@@ -127,6 +127,18 @@ class PokedexService {
   }
 
   /**
+   * Get a single Pokémon by ID
+   */
+  public getPokemonById(id: number): RawPokemonData | null {
+    if (!this.isLoaded) {
+      throw new Error('Pokédex data not loaded. Call loadData() first.');
+    }
+
+    const pokemon = this.pokemonData.find(p => p.id === id);
+    return pokemon || null;
+  }
+
+  /**
    * Get total count of loaded Pokémon
    */
   public getPokemonCount(): number {

@@ -718,6 +718,8 @@ export interface components {
          *       },
          *       "sessionId": "session-123",
          *       "pokemonId": 1,
+         *       "name": "Bulbasaur",
+         *       "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png",
          *       "status": "CAUGHT",
          *       "routeName": "Route 1",
          *       "location": "BOX",
@@ -729,6 +731,10 @@ export interface components {
             sessionId: string;
             /** @description Pokémon National Dex number */
             pokemonId: number;
+            /** @description Pokémon display name */
+            name: string;
+            /** @description Pokémon image URL */
+            image: string;
             status: components["schemas"]["PokemonStatus"];
             routeName: string;
             location: components["schemas"]["PokemonLocation"];

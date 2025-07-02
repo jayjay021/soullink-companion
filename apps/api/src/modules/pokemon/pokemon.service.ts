@@ -3,10 +3,11 @@ import { log } from '@repo/logger';
 import { z } from 'zod';
 import { schemas } from '@repo/api-spec/zod';
 import { PokemonMapper } from './pokemon.mapper';
-import { PokemonPositionManager } from '@repo/pokemon-utils';
+import { PokemonPositionManager, PokemonValidationManager } from '@repo/pokemon-utils';
 import {
   PokemonStatus as PrismaPokemonStatus,
 } from '@prisma/client';
+import { pokedexService } from '../pokedex/pokedex.service';
 
 // Zod schema types for request/response
 type CreatePokemonData = z.infer<typeof schemas.CreatePokemonRequest>;
@@ -49,7 +50,7 @@ export class PokemonService {
           },
         },
       });
-      return PokemonMapper.mapPrismaToPokemonListResponseDto(pokes);
+      return PokemonMapper.mapPrismaToPokemonListResponseDtoEnriched(pokes);
     } catch (error) {
       log('Error listing pokemon:', error);
       throw new Error('Failed to list pokemon');
@@ -73,7 +74,7 @@ export class PokemonService {
           },
         },
       });
-      return poke ? PokemonMapper.mapPrismaToPokemonDto(poke) : null;
+      return poke ? PokemonMapper.mapPrismaToPokemonDtoEnriched(poke) : null;
     } catch (error) {
       log('Error getting pokemon:', error);
       throw new Error('Failed to get pokemon');
@@ -81,6 +82,35 @@ export class PokemonService {
   }
 
   async addPokemon(sessionId: string, data: CreatePokemonData): Promise<PokemonDto> {
+    // get all pokemon for the session with user data
+    const allPokemon = await prisma.pokemon.findMany({
+      where: { sessionId },
+      select: {
+        id: true,
+        sessionId: true,
+        pokemonId: true,
+        status: true,
+        routeName: true,
+        location: true,
+        position: true,
+        user: {
+          select: { id: true, username: true },
+        },
+      },
+    });
+    const allPokemonMapped = allPokemon.map(poke => ({
+      ...poke,
+      name: `Pokemon #${poke.pokemonId}`, // Fallback name
+      image: '', // Fallback image
+    }));
+
+    // get pokedex data for ALL pokemon (not just the ones in the session)
+    // canCatchSpecies needs the full pokedex data to check evolution lines
+    const pokedexData = pokedexService.getPokemon();
+
+    // check if user can catch pokemon
+    const canCatch = PokemonValidationManager.canCatchSpecies(data.pokemonId, data.userId, allPokemonMapped, pokedexData.pokemon);
+    if (!canCatch.canCatch) throw new Error(canCatch.reason || 'User cannot catch this pokemon');
     try {
       const poke = await prisma.pokemon.create({
         data: {
@@ -105,7 +135,7 @@ export class PokemonService {
           },
         },
       });
-      return PokemonMapper.mapPrismaToPokemonDto(poke);
+      return PokemonMapper.mapPrismaToPokemonDtoEnriched(poke);
     } catch (error) {
       log('Error adding pokemon:', error);
       throw new Error('Failed to add pokemon');
@@ -126,25 +156,31 @@ export class PokemonService {
           orderBy: { position: 'asc' },
           select: {
             id: true,
-            userId: true,
             sessionId: true,
             pokemonId: true,
             status: true,
             routeName: true,
             location: true,
             position: true,
-            createdAt: true,
-            updatedAt: true,
+            user: {
+              select: { id: true, username: true },
+            },
           },
         });
+        // Map to the new structure for PokemonPositionManager
+        const mappedPokemon = allPokemon.map(poke => ({
+          ...poke,
+          name: `Pokemon #${poke.pokemonId}`, // Fallback name
+          image: '', // Fallback image
+        }));
         // Find the current pokemon
-        const current = allPokemon.find((p) => p.id === id);
+        const current = mappedPokemon.find((p) => p.id === id);
         if (!current) throw new Error('Pokemon not found');
         const newLocation = data.location ?? current.location;
         const newPosition = data.position ?? current.position;
         const { valid, adjustedPokemon, error } =
           PokemonPositionManager.validateMove(
-            allPokemon,
+            mappedPokemon,
             id,
             newLocation,
             newPosition
@@ -184,7 +220,7 @@ export class PokemonService {
           },
         });
         if (!updated) throw new Error('Pokemon not found after update');
-        return PokemonMapper.mapPrismaToPokemonDto(updated);
+        return PokemonMapper.mapPrismaToPokemonDtoEnriched(updated);
       } else {
         // Simple update without position management
         const updated = await prisma.pokemon.update({
@@ -208,7 +244,7 @@ export class PokemonService {
             },
           },
         });
-        return PokemonMapper.mapPrismaToPokemonDto(updated);
+        return PokemonMapper.mapPrismaToPokemonDtoEnriched(updated);
       }
     } catch (error) {
       log('Error updating pokemon:', error);

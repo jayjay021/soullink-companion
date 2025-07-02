@@ -4,6 +4,7 @@ import {
   PokemonListResponseDto,
   UserRefDto
 } from '../../lib/mappers/base.mapper';
+import { pokedexService } from '../pokedex/pokedex.service';
 
 // Prisma types for pokemon with user data
 export type PrismaPokemonWithUser = Prisma.PokemonGetPayload<{
@@ -40,6 +41,8 @@ export class PokemonMapper {
    * Maps a Prisma pokemon with user data to a Pokemon DTO
    */
   static mapPrismaToPokemonDto(pokemon: PrismaPokemonWithUser): PokemonDto {
+    const pokedexData = pokedexService.getPokemonById(pokemon.pokemonId);
+    
     return {
       id: pokemon.id,
       user: {
@@ -48,6 +51,31 @@ export class PokemonMapper {
       } as UserRefDto,
       sessionId: pokemon.sessionId,
       pokemonId: pokemon.pokemonId,
+      name: pokedexData?.name.english || `Pokemon #${pokemon.pokemonId}`,
+      image: pokedexData?.image.thumbnail || '',
+      status: pokemon.status,
+      routeName: pokemon.routeName,
+      location: pokemon.location,
+      position: pokemon.position,
+    };
+  }
+
+  /**
+   * Maps a Prisma pokemon with user data to a Pokemon DTO, enriched with Pokedex data
+   */
+  static mapPrismaToPokemonDtoEnriched(pokemon: PrismaPokemonWithUser): PokemonDto {
+    const pokedexData = pokedexService.getPokemonById(pokemon.pokemonId);
+    
+    return {
+      id: pokemon.id,
+      user: {
+        id: pokemon.user.id,
+        username: pokemon.user.username,
+      } as UserRefDto,
+      sessionId: pokemon.sessionId,
+      pokemonId: pokemon.pokemonId,
+      name: pokedexData?.name.english || `Pokemon #${pokemon.pokemonId}`,
+      image: pokedexData?.image.thumbnail || '',
       status: pokemon.status,
       routeName: pokemon.routeName,
       location: pokemon.location,
@@ -65,6 +93,15 @@ export class PokemonMapper {
   }
 
   /**
+   * Maps a Prisma pokemon with user data to a PokemonListResponse DTO, enriched with Pokedex data
+   */
+  static mapPrismaToPokemonListResponseDtoEnriched(pokemons: PrismaPokemonWithUser[]): PokemonListResponseDto {
+    return {
+      pokemon: pokemons.map(pokemon => this.mapPrismaToPokemonDtoEnriched(pokemon)),
+    };
+  }
+
+  /**
    * Maps a single Prisma pokemon to a PokemonListResponse DTO (for consistency)
    */
   static mapPrismaToPokemonListResponseDtoSingle(pokemon: PrismaPokemonWithUser): PokemonListResponseDto {
@@ -74,31 +111,12 @@ export class PokemonMapper {
   }
 
   /**
-   * Legacy mapper for pokemon without user data (for transition period)
-   * This should be removed once all services are updated to include user data
+   * Maps a single Prisma pokemon to a PokemonListResponse DTO, enriched with Pokedex data
    */
-  static mapPrismaLegacyToPokemonDto(pokemon: PrismaPokemonLegacy): PokemonDto {
+  static mapPrismaToPokemonListResponseDtoSingleEnriched(pokemon: PrismaPokemonWithUser): PokemonListResponseDto {
     return {
-      id: pokemon.id,
-      user: {
-        id: pokemon.userId, // Using userId as user.id temporarily
-        username: 'Unknown', // This will need to be fetched separately
-      } as UserRefDto,
-      sessionId: pokemon.sessionId,
-      pokemonId: pokemon.pokemonId,
-      status: pokemon.status,
-      routeName: pokemon.routeName,
-      location: pokemon.location,
-      position: pokemon.position,
+      pokemon: [this.mapPrismaToPokemonDtoEnriched(pokemon)],
     };
   }
 
-  /**
-   * Legacy mapper for pokemon list without user data (for transition period)
-   */
-  static mapPrismaLegacyToPokemonListResponseDto(pokemons: PrismaPokemonLegacy[]): PokemonListResponseDto {
-    return {
-      pokemon: pokemons.map(pokemon => this.mapPrismaLegacyToPokemonDto(pokemon)),
-    };
-  }
 } 

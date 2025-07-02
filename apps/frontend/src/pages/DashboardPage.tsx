@@ -1,5 +1,6 @@
 import { Container, Title, Text, Card, Stack, Grid, Badge, Loader } from '@mantine/core';
-import { useListSessionsQuery, useGetHealthQuery } from '../lib/api-client/generated.api';
+import { useListSessionsQuery } from '../lib/api-client/generated.api';
+import { useGetHealthQuery } from '../lib/api-client/health.api';
 
 export function DashboardPage() {
   const { data: sessionsResponse, isLoading: sessionsLoading, error: sessionsError } = useListSessionsQuery();

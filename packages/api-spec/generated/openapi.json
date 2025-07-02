@@ -1637,6 +1637,8 @@
           "user",
           "sessionId",
           "pokemonId",
+          "name",
+          "image",
           "status",
           "routeName",
           "location",
@@ -1655,6 +1657,14 @@
           "pokemonId": {
             "type": "number",
             "description": "Pokémon National Dex number"
+          },
+          "name": {
+            "type": "string",
+            "description": "Pokémon display name"
+          },
+          "image": {
+            "type": "string",
+            "description": "Pokémon image URL"
           },
           "status": {
             "$ref": "#/components/schemas/PokemonStatus"
@@ -1679,6 +1689,8 @@
           },
           "sessionId": "session-123",
           "pokemonId": 1,
+          "name": "Bulbasaur",
+          "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png",
           "status": "CAUGHT",
           "routeName": "Route 1",
           "location": "BOX",

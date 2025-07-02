@@ -1546,14 +1546,18 @@ export declare const schemas: {
         }>;
         sessionId: z.ZodString;
         pokemonId: z.ZodNumber;
+        name: z.ZodString;
+        image: z.ZodString;
         status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
         routeName: z.ZodString;
         location: z.ZodEnum<["TEAM", "BOX"]>;
         position: z.ZodNumber;
     }, "strip", z.ZodTypeAny, {
+        name?: string;
         location?: "TEAM" | "BOX";
         id?: string;
         position?: number;
+        image?: string;
         status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
         user?: {
             id?: string;
@@ -1563,9 +1567,11 @@ export declare const schemas: {
         routeName?: string;
         sessionId?: string;
     }, {
+        name?: string;
         location?: "TEAM" | "BOX";
         id?: string;
         position?: number;
+        image?: string;
         status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
         user?: {
             id?: string;
@@ -1590,14 +1596,18 @@ export declare const schemas: {
             }>;
             sessionId: z.ZodString;
             pokemonId: z.ZodNumber;
+            name: z.ZodString;
+            image: z.ZodString;
             status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
             routeName: z.ZodString;
             location: z.ZodEnum<["TEAM", "BOX"]>;
             position: z.ZodNumber;
         }, "strip", z.ZodTypeAny, {
+            name?: string;
             location?: "TEAM" | "BOX";
             id?: string;
             position?: number;
+            image?: string;
             status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
             user?: {
                 id?: string;
@@ -1607,9 +1617,11 @@ export declare const schemas: {
             routeName?: string;
             sessionId?: string;
         }, {
+            name?: string;
             location?: "TEAM" | "BOX";
             id?: string;
             position?: number;
+            image?: string;
             status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
             user?: {
                 id?: string;
@@ -1621,9 +1633,11 @@ export declare const schemas: {
         }>, "many">;
     }, "strip", z.ZodTypeAny, {
         pokemon?: {
+            name?: string;
             location?: "TEAM" | "BOX";
             id?: string;
             position?: number;
+            image?: string;
             status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
             user?: {
                 id?: string;
@@ -1635,9 +1649,11 @@ export declare const schemas: {
         }[];
     }, {
         pokemon?: {
+            name?: string;
             location?: "TEAM" | "BOX";
             id?: string;
             position?: number;
+            image?: string;
             status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
             user?: {
                 id?: string;
@@ -2851,14 +2867,18 @@ export declare const api: import("@zodios/core").ZodiosInstance<[{
         }>;
         sessionId: z.ZodString;
         pokemonId: z.ZodNumber;
+        name: z.ZodString;
+        image: z.ZodString;
         status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
         routeName: z.ZodString;
         location: z.ZodEnum<["TEAM", "BOX"]>;
         position: z.ZodNumber;
     }, "strip", z.ZodTypeAny, {
+        name?: string;
         location?: "TEAM" | "BOX";
         id?: string;
         position?: number;
+        image?: string;
         status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
         user?: {
             id?: string;
@@ -2868,9 +2888,11 @@ export declare const api: import("@zodios/core").ZodiosInstance<[{
         routeName?: string;
         sessionId?: string;
     }, {
+        name?: string;
         location?: "TEAM" | "BOX";
         id?: string;
         position?: number;
+        image?: string;
         status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
         user?: {
             id?: string;
@@ -3017,14 +3039,18 @@ export declare const api: import("@zodios/core").ZodiosInstance<[{
             }>;
             sessionId: z.ZodString;
             pokemonId: z.ZodNumber;
+            name: z.ZodString;
+            image: z.ZodString;
             status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
             routeName: z.ZodString;
             location: z.ZodEnum<["TEAM", "BOX"]>;
             position: z.ZodNumber;
         }, "strip", z.ZodTypeAny, {
+            name?: string;
             location?: "TEAM" | "BOX";
             id?: string;
             position?: number;
+            image?: string;
             status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
             user?: {
                 id?: string;
@@ -3034,9 +3060,11 @@ export declare const api: import("@zodios/core").ZodiosInstance<[{
             routeName?: string;
             sessionId?: string;
         }, {
+            name?: string;
             location?: "TEAM" | "BOX";
             id?: string;
             position?: number;
+            image?: string;
             status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
             user?: {
                 id?: string;
@@ -3048,9 +3076,11 @@ export declare const api: import("@zodios/core").ZodiosInstance<[{
         }>, "many">;
     }, "strip", z.ZodTypeAny, {
         pokemon?: {
+            name?: string;
             location?: "TEAM" | "BOX";
             id?: string;
             position?: number;
+            image?: string;
             status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
             user?: {
                 id?: string;
@@ -3062,9 +3092,11 @@ export declare const api: import("@zodios/core").ZodiosInstance<[{
         }[];
     }, {
         pokemon?: {
+            name?: string;
             location?: "TEAM" | "BOX";
             id?: string;
             position?: number;
+            image?: string;
             status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
             user?: {
                 id?: string;
@@ -3222,14 +3254,18 @@ export declare const api: import("@zodios/core").ZodiosInstance<[{
         }>;
         sessionId: z.ZodString;
         pokemonId: z.ZodNumber;
+        name: z.ZodString;
+        image: z.ZodString;
         status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
         routeName: z.ZodString;
         location: z.ZodEnum<["TEAM", "BOX"]>;
         position: z.ZodNumber;
     }, "strip", z.ZodTypeAny, {
+        name?: string;
         location?: "TEAM" | "BOX";
         id?: string;
         position?: number;
+        image?: string;
         status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
         user?: {
             id?: string;
@@ -3239,9 +3275,11 @@ export declare const api: import("@zodios/core").ZodiosInstance<[{
         routeName?: string;
         sessionId?: string;
     }, {
+        name?: string;
         location?: "TEAM" | "BOX";
         id?: string;
         position?: number;
+        image?: string;
         status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
         user?: {
             id?: string;
@@ -6259,14 +6297,18 @@ export declare function createApiClient(baseUrl: string, options?: ZodiosOptions
         }>;
         sessionId: z.ZodString;
         pokemonId: z.ZodNumber;
+        name: z.ZodString;
+        image: z.ZodString;
         status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
         routeName: z.ZodString;
         location: z.ZodEnum<["TEAM", "BOX"]>;
         position: z.ZodNumber;
     }, "strip", z.ZodTypeAny, {
+        name?: string;
         location?: "TEAM" | "BOX";
         id?: string;
         position?: number;
+        image?: string;
         status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
         user?: {
             id?: string;
@@ -6276,9 +6318,11 @@ export declare function createApiClient(baseUrl: string, options?: ZodiosOptions
         routeName?: string;
         sessionId?: string;
     }, {
+        name?: string;
         location?: "TEAM" | "BOX";
         id?: string;
         position?: number;
+        image?: string;
         status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
         user?: {
             id?: string;
@@ -6425,14 +6469,18 @@ export declare function createApiClient(baseUrl: string, options?: ZodiosOptions
             }>;
             sessionId: z.ZodString;
             pokemonId: z.ZodNumber;
+            name: z.ZodString;
+            image: z.ZodString;
             status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
             routeName: z.ZodString;
             location: z.ZodEnum<["TEAM", "BOX"]>;
             position: z.ZodNumber;
         }, "strip", z.ZodTypeAny, {
+            name?: string;
             location?: "TEAM" | "BOX";
             id?: string;
             position?: number;
+            image?: string;
             status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
             user?: {
                 id?: string;
@@ -6442,9 +6490,11 @@ export declare function createApiClient(baseUrl: string, options?: ZodiosOptions
             routeName?: string;
             sessionId?: string;
         }, {
+            name?: string;
             location?: "TEAM" | "BOX";
             id?: string;
             position?: number;
+            image?: string;
             status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
             user?: {
                 id?: string;
@@ -6456,9 +6506,11 @@ export declare function createApiClient(baseUrl: string, options?: ZodiosOptions
         }>, "many">;
     }, "strip", z.ZodTypeAny, {
         pokemon?: {
+            name?: string;
             location?: "TEAM" | "BOX";
             id?: string;
             position?: number;
+            image?: string;
             status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
             user?: {
                 id?: string;
@@ -6470,9 +6522,11 @@ export declare function createApiClient(baseUrl: string, options?: ZodiosOptions
         }[];
     }, {
         pokemon?: {
+            name?: string;
             location?: "TEAM" | "BOX";
             id?: string;
             position?: number;
+            image?: string;
             status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
             user?: {
                 id?: string;
@@ -6630,14 +6684,18 @@ export declare function createApiClient(baseUrl: string, options?: ZodiosOptions
         }>;
         sessionId: z.ZodString;
         pokemonId: z.ZodNumber;
+        name: z.ZodString;
+        image: z.ZodString;
         status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
         routeName: z.ZodString;
         location: z.ZodEnum<["TEAM", "BOX"]>;
         position: z.ZodNumber;
     }, "strip", z.ZodTypeAny, {
+        name?: string;
         location?: "TEAM" | "BOX";
         id?: string;
         position?: number;
+        image?: string;
         status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
         user?: {
             id?: string;
@@ -6647,9 +6705,11 @@ export declare function createApiClient(baseUrl: string, options?: ZodiosOptions
         routeName?: string;
         sessionId?: string;
     }, {
+        name?: string;
         location?: "TEAM" | "BOX";
         id?: string;
         position?: number;
+        image?: string;
         status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
         user?: {
             id?: string;

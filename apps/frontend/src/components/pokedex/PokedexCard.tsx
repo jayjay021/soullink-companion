@@ -15,7 +15,7 @@ const PokedexCard = ({ pokemon }: PokedexCardProps) => (
   <Card withBorder p="md" className={styles.card} tabIndex={0}>
     <Stack gap="md" align="center">
       <Image
-        src={pokemon.image.sprite}
+        src={pokemon.image.thumbnail}
         alt={`${pokemon.name.english} sprite`}
         width={120}
         height={120}

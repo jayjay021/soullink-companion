@@ -1,22 +1,13 @@
-// Types for Pokemon data
-export interface Pokemon {
-  id: string;
-  userId: string;
-  sessionId: string;
-  pokemonId: number;
-  routeName: string;
-  status: 'CAUGHT' | 'NOT_CAUGHT' | 'DEAD';
-  location: 'TEAM' | 'BOX';
-  position: number;
-}
+import { z } from 'zod';
+import { schemas } from '@repo/api-spec/zod';
 
-export interface PokemonData {
-  id: number;
-  name: string;
-  evolution_next?: number;
-  evolution_prev?: number;
-  [key: string]: unknown;
-}
+// Use generated types from API spec
+export type Pokemon = z.infer<typeof schemas.Pokemon>;
+export type PokemonStatus = z.infer<typeof schemas.PokemonStatus>;
+export type PokemonLocation = z.infer<typeof schemas.PokemonLocation>;
+export type PokemonData = z.infer<typeof schemas.PokedexPokemon>;
+
+
 
 // Position management utilities
 export class PokemonPositionManager {
@@ -31,10 +22,10 @@ export class PokemonPositionManager {
       .filter((p) => p.location === 'BOX' && p.id !== removedPokemonId)
       .sort((a, b) => a.position - b.position);
 
-    // Reassign positions to remove gaps
+    // Reassign positions to remove gaps (0-based indexing)
     return boxPokemon.map((p, index) => ({
       ...p,
-      position: index + 1,
+      position: index,
     }));
   }
 
@@ -44,7 +35,7 @@ export class PokemonPositionManager {
   static validateMove(
     pokemon: Pokemon[],
     pokemonId: string,
-    newLocation: 'TEAM' | 'BOX',
+    newLocation: PokemonLocation,
     newPosition: number
   ): { valid: boolean; adjustedPokemon: Pokemon[]; error?: string } {
     const targetPokemon = pokemon.find((p) => p.id === pokemonId);
@@ -60,13 +51,13 @@ export class PokemonPositionManager {
       return { valid: true, adjustedPokemon: [] };
     }
 
-    // Validate team position
+    // Validate team position (0-based indexing: 0-5)
     if (newLocation === 'TEAM') {
-      if (newPosition < 1 || newPosition > 6) {
+      if (newPosition < 0 || newPosition > 5) {
         return {
           valid: false,
           adjustedPokemon: [],
-          error: 'Team position must be between 1 and 6',
+          error: 'Team position must be between 0 and 5',
         };
       }
       // Check if position is occupied
@@ -86,11 +77,11 @@ export class PokemonPositionManager {
     }
 
     if (newLocation === 'BOX') {
-      if (newPosition < 1) {
+      if (newPosition < 0) {
         return {
           valid: false,
           adjustedPokemon: [],
-          error: 'Box position must be >= 1',
+          error: 'Box position must be >= 0',
         };
       }
       // Check if position is occupied
@@ -127,18 +118,18 @@ export class PokemonPositionManager {
   }
 
   /**
-   * Gets the next available team position
+   * Gets the next available team position (0-based indexing)
    */
   static getNextTeamPosition(
     pokemon: Pokemon[],
     userId: string
   ): number | null {
     const playerTeam = pokemon.filter(
-      (p) => p.userId === userId && p.location === 'TEAM'
+      (p) => p.user.id === userId && p.location === 'TEAM'
     );
     const usedPositions = new Set(playerTeam.map((p) => p.position));
 
-    for (let i = 1; i <= 6; i++) {
+    for (let i = 0; i <= 5; i++) {
       if (!usedPositions.has(i)) {
         return i;
       }
@@ -147,13 +138,13 @@ export class PokemonPositionManager {
   }
 
   /**
-   * Gets the next box position (always at the end)
+   * Gets the next box position (always at the end, 0-based indexing)
    */
   static getNextBoxPosition(pokemon: Pokemon[], userId: string): number {
     const playerBox = pokemon.filter(
-      (p) => p.userId === userId && p.location === 'BOX'
+      (p) => p.user.id === userId && p.location === 'BOX'
     );
-    return Math.max(0, ...playerBox.map((p) => p.position)) + 1;
+    return Math.max(-1, ...playerBox.map((p) => p.position)) + 1;
   }
 }
 
@@ -171,25 +162,38 @@ export class PokemonValidationManager {
 
     const evolutionLine = new Set<number>([speciesId]);
 
-    // Follow evolution chain backwards
+    // Follow evolution chain backwards to find the base form
     let current: PokemonData | undefined = species;
-    while (current?.evolution_prev) {
-      const prevId: number = current.evolution_prev;
+    while (current?.evolution?.prev) {
+      const prevId: number = parseInt(current.evolution.prev[0]);
       evolutionLine.add(prevId);
       current = pokemonData.find((p) => p.id === prevId);
       if (!current) break;
     }
 
-    // Follow evolution chain forwards
-    current = species;
-    while (current?.evolution_next) {
-      const nextId: number = current.evolution_next;
-      evolutionLine.add(nextId);
-      current = pokemonData.find((p) => p.id === nextId);
-      if (!current) break;
-    }
+    // Now start from the base form and follow all evolution chains forward
+    const baseForm = current || species;
+    const visited = new Set<number>();
+    
+    const traverseForward = (pokemon: PokemonData) => {
+      if (visited.has(pokemon.id)) return;
+      visited.add(pokemon.id);
+      evolutionLine.add(pokemon.id);
+      
+      if (pokemon.evolution?.next) {
+        for (const next of pokemon.evolution.next) {
+          const nextId = parseInt(next[0]);
+          const nextPokemon = pokemonData.find((p) => p.id === nextId);
+          if (nextPokemon) {
+            traverseForward(nextPokemon);
+          }
+        }
+      }
+    };
 
-    return Array.from(evolutionLine);
+    traverseForward(baseForm);
+
+    return Array.from(evolutionLine).sort((a, b) => a - b);
   }
 
   /**
@@ -198,27 +202,21 @@ export class PokemonValidationManager {
   static canCatchSpecies(
     speciesId: number,
     userId: string,
-    sessionId: string,
     existingPokemon: Pokemon[],
     pokemonData: PokemonData[]
   ): { canCatch: boolean; reason?: string } {
     const evolutionLine = this.getEvolutionLine(speciesId, pokemonData);
+    const userPokemon = existingPokemon.filter((p) => p.user.id === userId);
 
-    const alreadyCaught = existingPokemon.find(
-      (p) =>
-        p.userId === userId &&
-        p.sessionId === sessionId &&
-        evolutionLine.includes(p.pokemonId) &&
-        (p.status === 'CAUGHT' || p.status === 'DEAD')
+    // Check if any Pokemon in the evolution line is already caught
+    const caughtInLine = userPokemon.some((p) =>
+      evolutionLine.includes(p.pokemonId)
     );
 
-    if (alreadyCaught) {
-      const caughtSpecies = pokemonData.find(
-        (p) => p.id === alreadyCaught.pokemonId
-      );
+    if (caughtInLine) {
       return {
         canCatch: false,
-        reason: `Evolution line already caught: ${caughtSpecies?.name || 'Unknown'} on ${alreadyCaught.routeName}`,
+        reason: 'A Pokemon in this evolution line is already caught',
       };
     }
 
@@ -226,40 +224,41 @@ export class PokemonValidationManager {
   }
 
   /**
-   * Checks if a Pokemon is valid (has complete soul link and team coordination)
+   * Validates if a Pokemon object is valid
    */
   static isPokemonValid(
     pokemon: Pokemon,
     allPokemon: Pokemon[],
     sessionuserIds: string[]
   ): boolean {
-    // Get all players who have a Pokemon on this route
-    const playersWithRouteLink = new Set(
-      allPokemon
-        .filter(
-          (p) =>
-            p.sessionId === pokemon.sessionId &&
-            p.routeName === pokemon.routeName
-        )
-        .map((p) => p.userId)
-    );
-
-    // Check if ALL players in the session have a Pokemon on this route (complete soul link)
-    if (playersWithRouteLink.size !== sessionuserIds.length) {
+    // Check if user exists in session
+    if (!sessionuserIds.includes(pokemon.user.id)) {
       return false;
     }
 
-    // If this Pokemon is in a team, check if all linked Pokemon are also in their teams
-    if (pokemon.location === 'TEAM') {
-      const linkedPokemon = this.getLinkedPokemon(pokemon, allPokemon);
-      return linkedPokemon.every((linked) => linked.location === 'TEAM');
+    // Check if position is valid for location
+    if (pokemon.location === 'TEAM' && (pokemon.position < 0 || pokemon.position > 5)) {
+      return false;
     }
 
-    return true;
+    if (pokemon.location === 'BOX' && pokemon.position < 0) {
+      return false;
+    }
+
+    // Check for duplicate positions in same location for same user
+    const duplicatePosition = allPokemon.some(
+      (p) =>
+        p.id !== pokemon.id &&
+        p.user.id === pokemon.user.id &&
+        p.location === pokemon.location &&
+        p.position === pokemon.position
+    );
+
+    return !duplicatePosition;
   }
 
   /**
-   * Checks if a Pokemon can be moved to team (not dead or linked to dead)
+   * Checks if a Pokemon can be moved to team
    */
   static canMoveToTeam(
     pokemonId: string,
@@ -270,14 +269,17 @@ export class PokemonValidationManager {
       return { canMove: false, reason: 'Pokemon not found' };
     }
 
-    // Can't move dead Pokemon
-    if (pokemon.status === 'DEAD') {
-      return { canMove: false, reason: 'Dead Pokemon cannot be moved to team' };
+    if (pokemon.location === 'TEAM') {
+      return { canMove: false, reason: 'Pokemon is already in team' };
     }
 
-    // Check if linked to dead Pokemon
-    if (this.isLinkedToDead(pokemon, allPokemon)) {
-      return { canMove: false, reason: 'Pokemon is linked to a dead Pokemon' };
+    // Check if team is full
+    const userTeam = allPokemon.filter(
+      (p) => p.user.id === pokemon.user.id && p.location === 'TEAM'
+    );
+
+    if (userTeam.length >= 6) {
+      return { canMove: false, reason: 'Team is full' };
     }
 
     return { canMove: true };
@@ -287,49 +289,26 @@ export class PokemonValidationManager {
    * Checks if a Pokemon is linked to a dead Pokemon
    */
   static isLinkedToDead(pokemon: Pokemon, allPokemon: Pokemon[]): boolean {
-    // Get all Pokemon on the same route in the same session (excluding self)
-    const linkedPokemon = allPokemon.filter(
-      (p) =>
-        p.sessionId === pokemon.sessionId &&
-        p.routeName === pokemon.routeName &&
-        p.id !== pokemon.id
-    );
-
-    // Check if any linked Pokemon is dead
+    const linkedPokemon = this.getLinkedPokemon(pokemon, allPokemon);
     return linkedPokemon.some((p) => p.status === 'DEAD');
   }
 
   /**
-   * Gets all Pokemon linked to a given Pokemon (same route, same session)
+   * Gets all Pokemon linked to the given Pokemon (same species)
    */
   static getLinkedPokemon(pokemon: Pokemon, allPokemon: Pokemon[]): Pokemon[] {
     return allPokemon.filter(
-      (p) =>
-        p.sessionId === pokemon.sessionId &&
-        p.routeName === pokemon.routeName &&
-        p.id !== pokemon.id
+      (p) => p.pokemonId === pokemon.pokemonId && p.id !== pokemon.id
     );
   }
 
   /**
-   * Checks if a player's team is valid (all team Pokemon have their linked Pokemon in teams too)
+   * Checks if a user's team is valid (no dead Pokemon)
    */
   static isTeamValid(userId: string, allPokemon: Pokemon[]): boolean {
-    const playerTeam = allPokemon.filter(
-      (p) => p.userId === userId && p.location === 'TEAM'
+    const userTeam = allPokemon.filter(
+      (p) => p.user.id === userId && p.location === 'TEAM'
     );
-
-    for (const teamPokemon of playerTeam) {
-      const linkedPokemon = this.getLinkedPokemon(teamPokemon, allPokemon);
-
-      // Check if all linked Pokemon are also in their respective teams
-      for (const linked of linkedPokemon) {
-        if (linked.location !== 'TEAM') {
-          return false;
-        }
-      }
-    }
-
-    return true;
+    return !userTeam.some((p) => p.status === 'DEAD');
   }
 }

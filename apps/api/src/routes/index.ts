@@ -3,9 +3,6 @@ import v1Routes from './v1';
 
 const router: Router = Router();
 
-// Mount v1 routes
-router.use('/v1', v1Routes);
-
 // Health check endpoint (not versioned)
 router.get('/health', (req, res) => {
   res.json({
@@ -14,5 +11,8 @@ router.get('/health', (req, res) => {
     version: '1.0.0',
   });
 });
+
+// Mount v1 routes
+router.use('/v1', v1Routes);
 
 export default router;

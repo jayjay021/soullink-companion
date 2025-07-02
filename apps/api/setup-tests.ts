@@ -1,4 +1,3 @@
-
 import { beforeAll, afterAll } from '@jest/globals';
 import path from 'path';
 import { execSync } from 'child_process';
@@ -13,6 +12,7 @@ process.env.DATABASE_URL = `file:${path.join(apiRoot, 'prisma/test.db')}`;
 
 // Now import prisma after setting the environment
 import { prisma } from './src/lib/prisma';
+import { pokedexService } from './src/modules/pokedex/pokedex.service';
 
 beforeAll(async () => {
   // Push the schema to test database (creates tables if they don't exist)
@@ -21,6 +21,9 @@ beforeAll(async () => {
     cwd: apiRoot, // Ensure prisma runs from the API directory
     env: { ...process.env, DATABASE_URL: process.env.DATABASE_URL },
   });
+
+  // Initialize Pokédex data for tests
+  await pokedexService.loadData();
 });
 
 afterAll(async () => {

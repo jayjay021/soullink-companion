@@ -405,6 +405,10 @@ export type Pokemon = {
   sessionId: string;
   /** Pokémon National Dex number */
   pokemonId: number;
+  /** Pokémon display name */
+  name: string;
+  /** Pokémon image URL */
+  image: string;
   status: PokemonStatus;
   routeName: string;
   location: PokemonLocation;

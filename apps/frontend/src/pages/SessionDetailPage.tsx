@@ -1,17 +1,23 @@
 import { useParams, Navigate } from 'react-router-dom';
-import { Container, Title, Text, Card, Stack, Loader } from '@mantine/core';
+import { Container, Title, Text, Card, Stack, Loader, Grid } from '@mantine/core';
 import { useGetSessionQuery } from '../lib/api-client/generated.api';
-import type { UserRef, Session } from '../lib/api-client/generated.api';
-
+import { SessionHeader, PlayerInfo } from '../components/session';
+import { PokemonManager } from '../components/pokemon/manager/pokemon-manager';
+import { useListPokemonQuery } from '../lib/api-client/generated.api';
+import { useAuth } from '../contexts/AuthContext';
+import { enhancePokemon } from '../components/pokemon/manager/pokemon-utils';
 
 export function SessionDetailPage() {
   const { sessionId } = useParams<{ sessionId: string }>();
-  
+  const { user } = useAuth();
+  const playerId = user?.id;
+
   if (!sessionId) {
     return <Navigate to="/sessions" replace />;
   }
 
   const { data: session, isLoading, error } = useGetSessionQuery({ sessionId });
+  const { data: pokemonData = { pokemon: [] }, refetch } = useListPokemonQuery({ sessionId, userId: playerId }, { skip: !playerId, refetchOnMountOrArgChange: true });
 
   if (isLoading) {
     return (
@@ -39,53 +45,54 @@ export function SessionDetailPage() {
     );
   }
 
-  const sessionData = session as Session;
+  const team = pokemonData.pokemon.filter((p) => p.location === 'TEAM').map(p => enhancePokemon(p, pokemonData.pokemon));
+  const box = pokemonData.pokemon.filter((p) => p.location === 'BOX').map(p => enhancePokemon(p, pokemonData.pokemon));
 
   return (
     <Container size="lg">
       <Stack gap="lg">
-        <Title order={1}>{sessionData.name}</Title>
+        {/* Session Header with title, details, and status button */}
+        <SessionHeader session={session} />
         
-        <Card withBorder p="xl">
-          <Stack gap="md">
-            <Title order={2} size="h3">Session Details</Title>
-            <Text>{sessionData.description}</Text>
-            <Text size="sm" c="dimmed">
-              Created: {new Date(sessionData.createdAt).toLocaleDateString()}
-            </Text>
-            <Text size="sm" c="dimmed">
-              Status: {sessionData.status}
-            </Text>
-            <Text size="sm" c="dimmed">
-              Players: {sessionData.users.length}
-            </Text>
-          </Stack>
-        </Card>
-
-        <Card withBorder p="xl">
-          <Stack gap="md">
-            <Title order={2} size="h3">Players</Title>
-            {sessionData.users.length === 0 ? (
-              <Text c="dimmed">No players have joined this session yet.</Text>
-            ) : (
-              <Stack gap="xs">
-                {sessionData.users.map((user: UserRef) => (
-                  <Text key={user.id}>{user.username}</Text>
-                ))}
-              </Stack>
-            )}
-          </Stack>
-        </Card>
-
-        <Card withBorder p="xl">
-          <Stack gap="md">
-            <Title order={2} size="h3">Session Detail Page</Title>
-            <Text c="dimmed">
-              This is a placeholder for the session detail page. 
-              Future features will include Pokemon tracking, team management, and more.
-            </Text>
-          </Stack>
-        </Card>
+        {/* Main content area using horizontal layout */}
+        <Grid gutter="lg">
+          {/* Left column - Pokemon manager */}
+          <Grid.Col span={{ base: 12, md: 8 }}>
+            <PokemonManager
+              team={team}
+              box={box}
+              sessionId={session.id}
+              playerId={playerId || ''}
+              onPokemonUpdate={refetch}
+              sessionPlayers={session.users}
+              allSessionPokemon={pokemonData.pokemon.map(p => enhancePokemon(p, pokemonData.pokemon))}
+            />
+          </Grid.Col>
+          
+          {/* Right column - Player info and session info */}
+          <Grid.Col span={{ base: 12, md: 4 }}>
+            <Stack gap="lg">
+              <PlayerInfo users={session.users} />
+              
+              <Card withBorder p="xl">
+                <Stack gap="md">
+                  <Title order={3} size="h4">Session Info</Title>
+                  <Stack gap="xs">
+                    <Text size="sm">
+                      <strong>Type:</strong> Standard Session
+                    </Text>
+                    <Text size="sm">
+                      <strong>Rules:</strong> Standard Pokemon rules
+                    </Text>
+                    <Text size="sm">
+                      <strong>Max Players:</strong> 8
+                    </Text>
+                  </Stack>
+                </Stack>
+              </Card>
+            </Stack>
+          </Grid.Col>
+        </Grid>
       </Stack>
     </Container>
   );

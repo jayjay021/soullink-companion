@@ -13,6 +13,7 @@
     "generate:api": "rtk-query-codegen-openapi src/lib/api-client/openapi-config.json"
   },
   "dependencies": {
+    "@repo/pokemon-utils": "workspace:*",
     "@hookform/resolvers": "^3.9.0",
     "@mantine/core": "^8.1.1",
     "@mantine/dropzone": "^8.1.1",

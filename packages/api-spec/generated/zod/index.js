@@ -145,6 +145,8 @@ const Pokemon = zod_1.z.object({
     user: UserRef,
     sessionId: zod_1.z.string(),
     pokemonId: zod_1.z.number(),
+    name: zod_1.z.string(),
+    image: zod_1.z.string(),
     status: PokemonStatus,
     routeName: zod_1.z.string(),
     location: PokemonLocation,
