@@ -1,0 +1,1856 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "SoulLink Companion API",
+    "description": "API for the SoulLink Companion application",
+    "version": "1.0.0",
+    "contact": {
+      "name": "API Support",
+      "email": "support@soullink.com"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5001/api/v1",
+      "description": "Development server"
+    },
+    {
+      "url": "https://api.soullink.com/v1",
+      "description": "Production server"
+    }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Health check endpoint",
+        "description": "Returns the health status of the API",
+        "operationId": "getHealth",
+        "tags": [
+          "System"
+        ],
+        "responses": {
+          "200": {
+            "description": "Health status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/users": {
+      "post": {
+        "summary": "Create a new user",
+        "description": "Creates a new user with a username",
+        "operationId": "createUser",
+        "tags": [
+          "Users"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateUserResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/users/{userId}": {
+      "parameters": [
+        {
+          "name": "userId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Get user by ID",
+        "description": "Returns a user by their ID",
+        "operationId": "getUserById",
+        "tags": [
+          "Users"
+        ],
+        "responses": {
+          "200": {
+            "description": "User found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetUserResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update user",
+        "description": "Update a user's username",
+        "operationId": "updateUser",
+        "tags": [
+          "Users"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetUserResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/session": {
+      "get": {
+        "summary": "List sessions",
+        "description": "Returns a list of all sessions",
+        "operationId": "listSessions",
+        "tags": [
+          "Session"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of sessions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new session",
+        "description": "Creates a new session",
+        "operationId": "createSession",
+        "tags": [
+          "Session"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSessionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Session created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Session"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/session/{sessionId}": {
+      "parameters": [
+        {
+          "name": "sessionId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Get session by ID",
+        "description": "Returns a session by its ID",
+        "operationId": "getSession",
+        "tags": [
+          "Session"
+        ],
+        "responses": {
+          "200": {
+            "description": "Session found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Session"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update session",
+        "description": "Update session name, description, or status",
+        "operationId": "updateSession",
+        "tags": [
+          "Session"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSessionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Session updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Session"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete session",
+        "description": "Deletes a session by its ID",
+        "operationId": "deleteSession",
+        "tags": [
+          "Session"
+        ],
+        "responses": {
+          "204": {
+            "description": "Session deleted"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/session/{sessionId}/join": {
+      "post": {
+        "summary": "Join session",
+        "description": "Join a session as a user",
+        "operationId": "joinSession",
+        "tags": [
+          "Session"
+        ],
+        "parameters": [
+          {
+            "name": "sessionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JoinSessionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User joined session",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Session"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/pokedex/pokemon": {
+      "get": {
+        "summary": "Query Pokédex Pokémon",
+        "description": "Returns a list of Pokémon from the Pokédex with optional filters and pagination",
+        "operationId": "getPokedexPokemon",
+        "tags": [
+          "Pokedex"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "Filter by Pokémon ID",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1025
+            }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Filter by Pokémon name (case-insensitive, partial match)",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "Filter by Pokémon type",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "minId",
+            "in": "query",
+            "description": "Filter by minimum Pokémon ID",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1025
+            }
+          },
+          {
+            "name": "maxId",
+            "in": "query",
+            "description": "Filter by maximum Pokémon ID",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1025
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of Pokémon to return (default: 20, max: 100)",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Number of Pokémon to skip for pagination",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of Pokédex Pokémon with pagination metadata",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PokedexPokemonResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/pokemon/{sessionId}": {
+      "post": {
+        "summary": "Add a Pokémon encounter",
+        "description": "Add a Pokémon for a user in a session",
+        "operationId": "addPokemon",
+        "tags": [
+          "Pokemon"
+        ],
+        "parameters": [
+          {
+            "name": "sessionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePokemonRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Pokémon added",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Pokemon"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
+      "get": {
+        "summary": "List/filter Pokémon",
+        "description": "List or filter Pokémon for a session/user",
+        "operationId": "listPokemon",
+        "tags": [
+          "Pokemon"
+        ],
+        "parameters": [
+          {
+            "name": "sessionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "routeName",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/PokemonStatus"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of Pokémon",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PokemonListResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/pokemon/{sessionId}/{id}": {
+      "patch": {
+        "summary": "Update a Pokémon",
+        "description": "Update a Pokémon's status, location, or properties",
+        "operationId": "updatePokemon",
+        "tags": [
+          "Pokemon"
+        ],
+        "parameters": [
+          {
+            "name": "sessionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePokemonRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Pokémon updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Pokemon"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/pokemon/{sessionId}/routes": {
+      "get": {
+        "summary": "Get unique routes",
+        "description": "Get unique routes for a session/user",
+        "operationId": "getPokemonRoutes",
+        "tags": [
+          "Pokemon"
+        ],
+        "parameters": [
+          {
+            "name": "sessionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of unique routes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RouteListResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HealthResponse": {
+        "type": "object",
+        "required": [
+          "status",
+          "timestamp",
+          "uptime"
+        ],
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "error"
+            ],
+            "description": "Health status"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Current server timestamp"
+          },
+          "uptime": {
+            "type": "number",
+            "description": "Server uptime in seconds"
+          },
+          "version": {
+            "type": "string",
+            "description": "API version"
+          }
+        },
+        "example": {
+          "status": "ok",
+          "timestamp": "2025-06-20T08:59:34.496Z",
+          "uptime": 20.243046746,
+          "version": "1.0.0"
+        }
+      },
+      "Error": {
+        "type": "object",
+        "required": [
+          "success",
+          "error"
+        ],
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "enum": [
+              false
+            ]
+          },
+          "error": {
+            "type": "object",
+            "required": [
+              "message"
+            ],
+            "properties": {
+              "message": {
+                "type": "string",
+                "description": "Error message"
+              },
+              "code": {
+                "type": "string",
+                "description": "Error code"
+              },
+              "details": {
+                "type": "object",
+                "description": "Additional error details"
+              }
+            }
+          }
+        },
+        "example": {
+          "success": false,
+          "error": {
+            "message": "Resource not found",
+            "code": "NOT_FOUND"
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "required": [
+          "id",
+          "username",
+          "createdAt"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique user identifier"
+          },
+          "username": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 50,
+            "description": "User's display name"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the user was created"
+          }
+        },
+        "additionalProperties": false,
+        "example": {
+          "id": "123e4567-e89b-12d3-a456-426614174000",
+          "username": "Player1",
+          "createdAt": "2025-06-20T09:00:00.000Z"
+        }
+      },
+      "UserRef": {
+        "type": "object",
+        "required": [
+          "id",
+          "username"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique user identifier"
+          },
+          "username": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 50,
+            "description": "User's display name"
+          }
+        },
+        "additionalProperties": false,
+        "example": {
+          "id": "123e4567-e89b-12d3-a456-426614174000",
+          "username": "Player1"
+        }
+      },
+      "CreateUserRequest": {
+        "type": "object",
+        "required": [
+          "username"
+        ],
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "User's display name"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "Optional email address"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 8,
+            "description": "Optional password (min 8 chars)"
+          }
+        },
+        "additionalProperties": false,
+        "example": {
+          "username": "Player1",
+          "email": "player1@email.com",
+          "password": "supersecret"
+        }
+      },
+      "CreateUserResponse": {
+        "type": "object",
+        "required": [
+          "user"
+        ],
+        "properties": {
+          "user": {
+            "$ref": "#/components/schemas/User"
+          }
+        },
+        "example": {
+          "user": {
+            "id": "123e4567-e89b-12d3-a456-426614174000",
+            "username": "Player1"
+          }
+        }
+      },
+      "GetUserResponse": {
+        "type": "object",
+        "required": [
+          "user"
+        ],
+        "properties": {
+          "user": {
+            "$ref": "#/components/schemas/User"
+          }
+        },
+        "example": {
+          "user": {
+            "id": "123e4567-e89b-12d3-a456-426614174000",
+            "username": "Player1",
+            "createdAt": "2025-06-20T09:00:00.000Z"
+          }
+        }
+      },
+      "UpdateUserRequest": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          }
+        },
+        "additionalProperties": false
+      },
+      "JoinSessionRequest": {
+        "type": "object",
+        "required": [
+          "userId"
+        ],
+        "properties": {
+          "userId": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SessionStatus": {
+        "type": "string",
+        "enum": [
+          "WAITING",
+          "STARTED",
+          "FINISHED"
+        ],
+        "description": "The status of a session",
+        "example": "WAITING"
+      },
+      "Session": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "description",
+          "createdAt",
+          "status",
+          "users"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "$ref": "#/components/schemas/SessionStatus"
+          },
+          "users": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserRef"
+            }
+          }
+        },
+        "additionalProperties": false,
+        "example": {
+          "id": "session-123",
+          "name": "My Session",
+          "description": "A fun session",
+          "createdAt": "2025-06-20T09:00:00.000Z",
+          "status": "WAITING",
+          "users": [
+            {
+              "id": "user-1",
+              "username": "Alice"
+            },
+            {
+              "id": "user-2",
+              "username": "Bob"
+            }
+          ]
+        }
+      },
+      "SessionsResponse": {
+        "type": "object",
+        "required": [
+          "sessions"
+        ],
+        "properties": {
+          "sessions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SessionListItem"
+            }
+          }
+        },
+        "additionalProperties": false,
+        "example": {
+          "sessions": [
+            {
+              "id": "session-123",
+              "name": "My Session",
+              "description": "A fun session",
+              "createdAt": "2025-06-20T09:00:00.000Z",
+              "status": "WAITING",
+              "users": [
+                {
+                  "id": "user-1",
+                  "username": "Alice"
+                },
+                {
+                  "id": "user-2",
+                  "username": "Bob"
+                }
+              ]
+            },
+            {
+              "id": "session-456",
+              "name": "Another Session",
+              "description": "Another fun session",
+              "createdAt": "2025-06-20T10:00:00.000Z",
+              "status": "STARTED",
+              "users": [
+                {
+                  "id": "user-3",
+                  "username": "Charlie"
+                },
+                {
+                  "id": "user-4",
+                  "username": "Dana"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "SessionListItem": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "description",
+          "createdAt",
+          "status",
+          "users"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "$ref": "#/components/schemas/SessionStatus"
+          },
+          "users": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserRef"
+            }
+          }
+        },
+        "additionalProperties": false,
+        "example": {
+          "id": "session-123",
+          "name": "My Session",
+          "description": "A fun session",
+          "createdAt": "2025-06-20T09:00:00.000Z",
+          "status": "WAITING",
+          "users": [
+            {
+              "id": "user-1",
+              "username": "Alice"
+            },
+            {
+              "id": "user-2",
+              "username": "Bob"
+            }
+          ]
+        }
+      },
+      "PokedexPokemonResponse": {
+        "type": "object",
+        "required": [
+          "pokemon",
+          "pagination"
+        ],
+        "properties": {
+          "pokemon": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PokedexPokemon"
+            }
+          },
+          "pagination": {
+            "$ref": "#/components/schemas/PaginationInfo"
+          }
+        },
+        "example": {
+          "pokemon": [
+            {
+              "id": 1,
+              "name": {
+                "english": "Bulbasaur",
+                "japanese": "フシギダネ",
+                "german": "Bisasam"
+              },
+              "type": [
+                "Grass",
+                "Poison"
+              ],
+              "base": {
+                "HP": 45,
+                "Attack": 49,
+                "Defense": 49,
+                "Sp. Attack": 65,
+                "Sp. Defense": 65,
+                "Speed": 45
+              },
+              "species": "Seed Pokémon",
+              "description": "Bulbasaur can be seen napping in bright sunlight. There is a seed on its back. By soaking up the sun's rays, the seed grows progressively larger.",
+              "evolution": {
+                "next": [
+                  [
+                    "2",
+                    "Level 16"
+                  ]
+                ]
+              },
+              "profile": {
+                "height": "0.7 m",
+                "weight": "6.9 kg",
+                "egg": [
+                  "Monster",
+                  "Grass"
+                ],
+                "ability": [
+                  [
+                    "Overgrow",
+                    "false"
+                  ],
+                  [
+                    "Chlorophyll",
+                    "true"
+                  ]
+                ],
+                "gender": "87.5:12.5"
+              },
+              "image": {
+                "sprite": "https://raw.githubusercontent.com/Purukitto/pokemon-data.json/master/images/pokedex/sprites/001.png",
+                "thumbnail": "https://raw.githubusercontent.com/Purukitto/pokemon-data.json/master/images/pokedex/thumbnails/001.png",
+                "hires": "https://raw.githubusercontent.com/Purukitto/pokemon-data.json/master/images/pokedex/hires/001.png"
+              }
+            }
+          ],
+          "pagination": {
+            "total": 905,
+            "limit": 20,
+            "offset": 0,
+            "hasNext": true,
+            "hasPrevious": false
+          }
+        }
+      },
+      "PokedexPokemon": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "type",
+          "base",
+          "species",
+          "description",
+          "profile",
+          "image"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Pokémon National Dex number",
+            "minimum": 1,
+            "maximum": 1025
+          },
+          "name": {
+            "$ref": "#/components/schemas/PokedexPokemonName"
+          },
+          "type": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Pokémon types",
+            "minItems": 1,
+            "maxItems": 2
+          },
+          "base": {
+            "$ref": "#/components/schemas/PokedexPokemonStats"
+          },
+          "species": {
+            "type": "string",
+            "description": "Pokémon species classification"
+          },
+          "description": {
+            "type": "string",
+            "description": "Pokémon description"
+          },
+          "evolution": {
+            "$ref": "#/components/schemas/PokedexPokemonEvolution"
+          },
+          "profile": {
+            "$ref": "#/components/schemas/PokedexPokemonProfile"
+          },
+          "image": {
+            "$ref": "#/components/schemas/PokedexPokemonImage"
+          }
+        },
+        "example": {
+          "id": 1,
+          "name": {
+            "english": "Bulbasaur",
+            "japanese": "フシギダネ",
+            "german": "Bisasam"
+          },
+          "type": [
+            "Grass",
+            "Poison"
+          ],
+          "base": {
+            "HP": 45,
+            "Attack": 49,
+            "Defense": 49,
+            "Sp. Attack": 65,
+            "Sp. Defense": 65,
+            "Speed": 45
+          },
+          "species": "Seed Pokémon",
+          "description": "Bulbasaur can be seen napping in bright sunlight. There is a seed on its back. By soaking up the sun's rays, the seed grows progressively larger.",
+          "evolution": {
+            "next": [
+              [
+                "2",
+                "Level 16"
+              ]
+            ]
+          },
+          "profile": {
+            "height": "0.7 m",
+            "weight": "6.9 kg",
+            "egg": [
+              "Monster",
+              "Grass"
+            ],
+            "ability": [
+              [
+                "Overgrow",
+                "false"
+              ],
+              [
+                "Chlorophyll",
+                "true"
+              ]
+            ],
+            "gender": "87.5:12.5"
+          },
+          "image": {
+            "sprite": "https://raw.githubusercontent.com/Purukitto/pokemon-data.json/master/images/pokedex/sprites/001.png",
+            "thumbnail": "https://raw.githubusercontent.com/Purukitto/pokemon-data.json/master/images/pokedex/thumbnails/001.png",
+            "hires": "https://raw.githubusercontent.com/Purukitto/pokemon-data.json/master/images/pokedex/hires/001.png"
+          }
+        }
+      },
+      "PokedexPokemonName": {
+        "type": "object",
+        "required": [
+          "english",
+          "japanese",
+          "german"
+        ],
+        "properties": {
+          "english": {
+            "type": "string",
+            "description": "English name"
+          },
+          "japanese": {
+            "type": "string",
+            "description": "Japanese name"
+          },
+          "german": {
+            "type": "string",
+            "description": "German name"
+          }
+        }
+      },
+      "PokedexPokemonStats": {
+        "type": "object",
+        "required": [
+          "HP",
+          "Attack",
+          "Defense",
+          "Sp. Attack",
+          "Sp. Defense",
+          "Speed"
+        ],
+        "properties": {
+          "HP": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "Attack": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "Defense": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "Sp. Attack": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "Sp. Defense": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "Speed": {
+            "type": "integer",
+            "minimum": 1
+          }
+        }
+      },
+      "PokedexPokemonEvolution": {
+        "type": "object",
+        "properties": {
+          "prev": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 2,
+            "maxItems": 2,
+            "description": "Previous evolution [id, method]"
+          },
+          "next": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 2,
+              "maxItems": 2
+            },
+            "description": "Next evolution options [[id, method], ...]"
+          }
+        }
+      },
+      "PokedexPokemonProfile": {
+        "type": "object",
+        "required": [
+          "height",
+          "weight",
+          "egg",
+          "ability",
+          "gender"
+        ],
+        "properties": {
+          "height": {
+            "type": "string",
+            "description": "Pokémon height"
+          },
+          "weight": {
+            "type": "string",
+            "description": "Pokémon weight"
+          },
+          "egg": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Egg groups"
+          },
+          "ability": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 2,
+              "maxItems": 2
+            },
+            "description": "Abilities [name, isHidden]"
+          },
+          "gender": {
+            "type": "string",
+            "description": "Gender ratio"
+          }
+        }
+      },
+      "PokedexPokemonImage": {
+        "type": "object",
+        "required": [
+          "sprite"
+        ],
+        "properties": {
+          "sprite": {
+            "type": "string",
+            "format": "uri",
+            "description": "Sprite image URL"
+          },
+          "thumbnail": {
+            "type": "string",
+            "format": "uri",
+            "description": "Thumbnail image URL"
+          },
+          "hires": {
+            "type": "string",
+            "format": "uri",
+            "description": "High resolution image URL"
+          }
+        }
+      },
+      "CreateSessionRequest": {
+        "type": "object",
+        "required": [
+          "name",
+          "description"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateSessionRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/SessionStatus"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreatePokemonRequest": {
+        "type": "object",
+        "required": [
+          "userId",
+          "pokemonId",
+          "status",
+          "routeName",
+          "location",
+          "position"
+        ],
+        "properties": {
+          "userId": {
+            "type": "string",
+            "description": "ID of the user who owns the Pokémon"
+          },
+          "pokemonId": {
+            "type": "number",
+            "description": "Pokémon National Dex number"
+          },
+          "status": {
+            "$ref": "#/components/schemas/PokemonStatus"
+          },
+          "routeName": {
+            "type": "string",
+            "description": "Name of the route where the Pokémon was encountered"
+          },
+          "location": {
+            "$ref": "#/components/schemas/PokemonLocation"
+          },
+          "position": {
+            "type": "integer",
+            "description": "Position in the team or box"
+          }
+        },
+        "additionalProperties": false,
+        "example": {
+          "userId": "user-1",
+          "pokemonId": 1,
+          "status": "CAUGHT",
+          "routeName": "Route 1",
+          "location": "BOX",
+          "position": 1
+        }
+      },
+      "UpdatePokemonRequest": {
+        "type": "object",
+        "required": [
+          "status",
+          "routeName",
+          "location",
+          "position"
+        ],
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/PokemonStatus"
+          },
+          "routeName": {
+            "type": "string",
+            "description": "Name of the route where the Pokémon was encountered"
+          },
+          "location": {
+            "$ref": "#/components/schemas/PokemonLocation"
+          },
+          "position": {
+            "type": "integer",
+            "description": "Position in the team or box"
+          }
+        },
+        "additionalProperties": false,
+        "example": {
+          "status": "DEAD",
+          "routeName": "Route 1",
+          "location": "TEAM",
+          "position": 2
+        }
+      },
+      "LoginRequest": {
+        "type": "object",
+        "required": [
+          "email",
+          "password"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "LoginResponse": {
+        "type": "object",
+        "required": [
+          "user",
+          "token"
+        ],
+        "properties": {
+          "user": {
+            "$ref": "#/components/schemas/User"
+          },
+          "token": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RegisterResponse": {
+        "type": "object",
+        "required": [
+          "user",
+          "token"
+        ],
+        "properties": {
+          "user": {
+            "$ref": "#/components/schemas/User"
+          },
+          "token": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PokemonStatus": {
+        "type": "string",
+        "enum": [
+          "CAUGHT",
+          "NOT_CAUGHT",
+          "DEAD"
+        ],
+        "description": "The status of a Pokémon in a session",
+        "example": "CAUGHT"
+      },
+      "PokemonLocation": {
+        "type": "string",
+        "enum": [
+          "TEAM",
+          "BOX"
+        ],
+        "description": "The location of a Pokémon (TEAM or BOX)",
+        "example": "BOX"
+      },
+      "PokedexStatus": {
+        "type": "string",
+        "enum": [
+          "SEEN",
+          "CAUGHT"
+        ],
+        "description": "The status of a Pokémon in the Pokédex",
+        "example": "SEEN"
+      },
+      "PokedexLocation": {
+        "type": "string",
+        "enum": [
+          "WILD",
+          "CAUGHT"
+        ],
+        "description": "The location of a Pokémon in the Pokédex",
+        "example": "WILD"
+      },
+      "Pokemon": {
+        "type": "object",
+        "required": [
+          "id",
+          "user",
+          "sessionId",
+          "pokemonId",
+          "name",
+          "image",
+          "status",
+          "routeName",
+          "location",
+          "position"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "user": {
+            "$ref": "#/components/schemas/UserRef"
+          },
+          "sessionId": {
+            "type": "string"
+          },
+          "pokemonId": {
+            "type": "number",
+            "description": "Pokémon National Dex number"
+          },
+          "name": {
+            "type": "string",
+            "description": "Pokémon display name"
+          },
+          "image": {
+            "type": "string",
+            "description": "Pokémon image URL"
+          },
+          "status": {
+            "$ref": "#/components/schemas/PokemonStatus"
+          },
+          "routeName": {
+            "type": "string"
+          },
+          "location": {
+            "$ref": "#/components/schemas/PokemonLocation"
+          },
+          "position": {
+            "type": "integer",
+            "description": "Position in the team or box"
+          }
+        },
+        "additionalProperties": false,
+        "example": {
+          "id": "pokemon-1",
+          "user": {
+            "id": "user-1",
+            "username": "Alice"
+          },
+          "sessionId": "session-123",
+          "pokemonId": 1,
+          "name": "Bulbasaur",
+          "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png",
+          "status": "CAUGHT",
+          "routeName": "Route 1",
+          "location": "BOX",
+          "position": 1
+        }
+      },
+      "PokemonListResponse": {
+        "type": "object",
+        "required": [
+          "pokemon"
+        ],
+        "properties": {
+          "pokemon": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Pokemon"
+            }
+          }
+        },
+        "additionalProperties": false,
+        "example": {
+          "pokemon": [
+            {
+              "id": "pokemon-1",
+              "user": {
+                "id": "user-1",
+                "username": "Alice"
+              },
+              "sessionId": "session-123",
+              "pokemonId": 1,
+              "status": "CAUGHT",
+              "routeName": "Route 1"
+            },
+            {
+              "id": "pokemon-2",
+              "user": {
+                "id": "user-1",
+                "username": "Alice"
+              },
+              "sessionId": "session-123",
+              "pokemonId": 4,
+              "status": "DEAD",
+              "routeName": "Route 1"
+            }
+          ]
+        }
+      },
+      "RouteListResponse": {
+        "type": "object",
+        "required": [
+          "routes"
+        ],
+        "properties": {
+          "routes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "example": {
+          "routes": [
+            "Route 1",
+            "Route 2"
+          ]
+        }
+      },
+      "PaginationInfo": {
+        "type": "object",
+        "required": [
+          "total",
+          "limit",
+          "offset",
+          "hasNext",
+          "hasPrevious"
+        ],
+        "properties": {
+          "total": {
+            "type": "integer",
+            "description": "Total number of items"
+          },
+          "limit": {
+            "type": "integer",
+            "description": "Number of items per page"
+          },
+          "offset": {
+            "type": "integer",
+            "description": "Offset for pagination"
+          },
+          "hasNext": {
+            "type": "boolean",
+            "description": "Whether there is a next page"
+          },
+          "hasPrevious": {
+            "type": "boolean",
+            "description": "Whether there is a previous page"
+          }
+        },
+        "example": {
+          "total": 905,
+          "limit": 20,
+          "offset": 0,
+          "hasNext": true,
+          "hasPrevious": false
+        }
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "Bad request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "Resource not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "InternalServerError": {
+        "description": "Internal server error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "System",
+      "description": "System health and monitoring endpoints"
+    },
+    {
+      "name": "Users",
+      "description": "User management endpoints"
+    },
+    {
+      "name": "Session",
+      "description": "Game management endpoints"
+    },
+    {
+      "name": "Pokedex",
+      "description": "Static Pokédex reference data endpoints"
+    },
+    {
+      "name": "Pokemon",
+      "description": "Pokémon management endpoints within a session"
+    }
+  ]
+}

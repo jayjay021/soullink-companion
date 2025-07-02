@@ -1,135 +1,40 @@
-# 🧩 Soullink Companion
+# Turborepo kitchen sink starter
 
-A fullstack web app built for playing local multiplayer **Pokémon Nuzlocke Soullink Challenges** with up to 3 players. Share your emulator screen, manage Pokémon teams, and track linked encounters in real-time.
+This Turborepo starter is maintained by the Turborepo core team.
 
----
+This example also shows how to use [Workspace Configurations](https://turborepo.com/docs/core-concepts/monorepos/configuring-workspaces).
 
-## ✨ Features
+## Using this example
 
-- 🎮 Each player can manage their own team and encounter history
-- 🔄 Real-time syncing of game state via **Server-Sent Events (SSE)**
-- 🎥 Screen sharing via **WebRTC** (each player can stream their emulator window)
-- 🖥️ Fullscreen **viewer dashboard** for TV display
-- 🔗 Built-in logic for **Soullink rules** and team validation
-- 🧠 Smart tooltips for fixing invalid links and syncing teams
-- 🧩 Pokémon autocompletion powered by **PokéAPI**
-- 🌓 Dark mode and responsive UI using **Mantine**
+Run the following command:
 
----
-
-## 🎮 Soullink Rules
-
-- Each player may only catch the **first encounter** per route.
-- If a player **fails to catch** their encounter, all other players **lose their chance** on that route.
-- If all players catch a Pokémon on a route, they become **linked**.
-- If one linked Pokémon **dies**, all partners must be **marked as dead**.
-- If a duplicate species is encountered, it must be **re-rolled**.
-
----
-
-## 🧑‍💻 Player View (Control Panel)
-
-- ✅ **Add Encounter**
-
-  - Pokémon name (autocomplete from PokéAPI)
-  - Route name (autocomplete from others' entries)
-  - Mark as `caught` or `not caught` (fail/death)
-
-- 🟰 **Team Management**
-
-  - 6-slot party + Pokémon box
-  - Drag-and-drop to organize active team
-  - Red border: Dead
-  - Yellow border: Link mismatch
-  - Hover tooltips on invalid Pokémon show partner suggestions
-  - Click suggestion to auto-swap linked Pokémon
-
-- ❌ **Death Marking**
-
-  - Players can manually mark Pokémon as dead
-  - Dead Pokémon cannot be added to the party
-
-- 📺 **Streaming**
-  - Start screen share (app window or entire screen)
-  - Other users can click a stream icon to open your stream
-  - Multiple users can stream and view simultaneously
-
----
-
-## 🖥️ Viewer Mode
-
-- Fullscreen display for shared viewing (TV/projector)
-- Shows only each player's current 6 Pokémon
-- Red border: Dead Pokémon
-- Yellow border: Link mismatch
-- Hover on Pokémon shows their linked partners across players
-- Read-only display
-
----
-
-## 🧑‍🤝‍🧑 Sessions
-
-- Replaces traditional “rooms”
-- Users can **create** or **join** a session by ID
-- First-time users pick a **username**
-- Session state is persisted in a **SQLite database**
-- All player actions are synced across the session
-
----
-
-## 🧠 Tech Stack
-
-- **Framework:** Next.js (App Router, Fullstack)
-- **Language:** TypeScript
-- **UI Library:** Mantine (with custom theme + dark mode)
-- **Realtime:** Server-Sent Events (SSE) for real-time updates
-- **Database:** SQLite (via Prisma ORM)
-- **Streaming:** WebRTC (peer-to-peer)
-- **Styling:** Prettier, ESLint, Commitlint, Husky
-- **Dev Tools:** Docker, GitHub Actions, Seed data
-
----
-
-## 📂 Key Folders
-
-## Getting Started
-
-To run the development server:
-
-```bash
-pnpm dev
+```sh
+npx create-turbo@latest -e kitchen-sink
 ```
 
-## Features
+## What's inside?
 
-- TypeScript support
-- ESLint for code linting
-- App Router for routing
+This Turborepo includes the following packages and apps:
 
-## Installation
+### Apps and Packages
 
-Install dependencies:
+- `api`: an [Express](https://expressjs.com/) server
+- `storefront`: a [Next.js](https://nextjs.org/) app
+- `admin`: a [Vite](https://vitejs.dev/) single page app
+- `blog`: a [Remix](https://remix.run/) blog
+- `@repo/eslint-config`: ESLint configurations used throughout the monorepo
+- `@repo/jest-presets`: Jest configurations
+- `@repo/logger`: isomorphic logger (a small wrapper around console.log)
+- `@repo/ui`: a dummy React UI library (which contains `<CounterButton>` and `<Link>` components)
+- `@repo/typescript-config`: tsconfig.json's used throughout the monorepo
 
-```bash
-pnpm install
-```
+Each package and app is 100% [TypeScript](https://www.typescriptlang.org/).
 
-## Development
+### Utilities
 
-Start the development server:
+This Turborepo has some additional tools already setup for you:
 
-```bash
-pnpm dev
-```
-
-## Build
-
-Build the application for production:
-
-```bash
-pnpm build
-```
-
-## Deployment
-
-Follow Next.js deployment guidelines for hosting your application.
+- [TypeScript](https://www.typescriptlang.org/) for static type checking
+- [ESLint](https://eslint.org/) for code linting
+- [Jest](https://jestjs.io) test runner for all things JavaScript
+- [Prettier](https://prettier.io) for code formatting

@@ -1,0 +1,7 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+this is a pnpm turborepo mono repository
+use all pnpm with the --filter SCOPE. IMPORTANT you have to be at the root of the project to run it
