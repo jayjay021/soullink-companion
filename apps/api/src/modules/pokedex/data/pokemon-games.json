@@ -1,0 +1,149 @@
+[
+    {
+        "id": 1,
+        "name": "Pokémon Red and Green (JP) / Red and Blue (INTL)",
+        "generation": 1,
+        "description": "The games that started the franchise, introducing the Kanto region and 151 Pokémon.",
+        "original_release": "1996‑1999"
+    },
+    {
+        "id": 2,
+        "name": "Pokémon Yellow",
+        "generation": 1,
+        "description": "Special Pikachu edition tying in with the anime; Pikachu follows the player.",
+        "original_release": "1998‑2000"
+    },
+    {
+        "id": 3,
+        "name": "Pokémon Gold and Silver",
+        "generation": 2,
+        "description": "Introduced the Johto region, new Pokémon, day/night cycle, breeding.",
+        "original_release": "1999‑2001"
+    },
+    {
+        "id": 4,
+        "name": "Pokémon Crystal",
+        "generation": 2,
+        "description": "Enhanced version of Gold and Silver; first with animated Pokémon sprites.",
+        "original_release": "2000‑2001"
+    },
+    {
+        "id": 5,
+        "name": "Pokémon Ruby and Sapphire",
+        "generation": 3,
+        "description": "Introduced Hoenn region, double battles, abilities, new Pokémon.",
+        "original_release": "2002‑2003"
+    },
+    {
+        "id": 6,
+        "name": "Pokémon FireRed and LeafGreen",
+        "generation": 3,
+        "description": "Remakes of Gen I games with updated graphics and features.",
+        "original_release": "2004"
+    },
+    {
+        "id": 7,
+        "name": "Pokémon Emerald",
+        "generation": 3,
+        "description": "Enhanced version of Ruby and Sapphire with added story elements.",
+        "original_release": "2004‑2005"
+    },
+    {
+        "id": 8,
+        "name": "Pokémon Diamond and Pearl",
+        "generation": 4,
+        "description": "Introduced Sinnoh region, online battles/trading, physical/special split.",
+        "original_release": "2006‑2007"
+    },
+    {
+        "id": 9,
+        "name": "Pokémon Platinum",
+        "generation": 4,
+        "description": "Enhanced version of Diamond and Pearl with expanded story and features.",
+        "original_release": "2008‑2009"
+    },
+    {
+        "id": 10,
+        "name": "Pokémon HeartGold and SoulSilver",
+        "generation": 4,
+        "description": "Remakes of Gold/Silver with added Pokéwalker support.",
+        "original_release": "2009‑2010"
+    },
+    {
+        "id": 11,
+        "name": "Pokémon Black and White",
+        "generation": 5,
+        "description": "Introduced Unova region and fully animated Pokémon sprites.",
+        "original_release": "2010‑2011"
+    },
+    {
+        "id": 12,
+        "name": "Pokémon Black 2 and White 2",
+        "generation": 5,
+        "description": "Direct sequels set two years after Black/White with expanded story.",
+        "original_release": "2012"
+    },
+    {
+        "id": 13,
+        "name": "Pokémon X and Y",
+        "generation": 6,
+        "description": "Introduced 3D graphics, Mega Evolution, and the Kalos region.",
+        "original_release": "2013"
+    },
+    {
+        "id": 14,
+        "name": "Pokémon Omega Ruby and Alpha Sapphire",
+        "generation": 6,
+        "description": "Remakes of Ruby/Sapphire with updated 3D graphics.",
+        "original_release": "2014"
+    },
+    {
+        "id": 15,
+        "name": "Pokémon Sun and Moon",
+        "generation": 7,
+        "description": "Set in Alola, introduced trials, regional variants, no traditional gyms.",
+        "original_release": "2016‑2017"
+    },
+    {
+        "id": 16,
+        "name": "Pokémon Ultra Sun and Ultra Moon",
+        "generation": 7,
+        "description": "Enhanced versions of Sun and Moon with alternate storylines.",
+        "original_release": "2017"
+    },
+    {
+        "id": 17,
+        "name": "Pokémon Let’s Go, Pikachu! and Let’s Go, Eevee!",
+        "generation": 7,
+        "description": "Remakes of Yellow with simplified catching mechanics.",
+        "original_release": "2018"
+    },
+    {
+        "id": 18,
+        "name": "Pokémon Sword and Shield",
+        "generation": 8,
+        "description": "First main series on Switch; introduced Galar region and Dynamax/Gigantamax.",
+        "original_release": "2019"
+    },
+    {
+        "id": 19,
+        "name": "Pokémon Brilliant Diamond and Shining Pearl",
+        "generation": 8,
+        "description": "Remakes of Diamond/Pearl with modern graphics.",
+        "original_release": "2021"
+    },
+    {
+        "id": 20,
+        "name": "Pokémon Legends: Arceus",
+        "generation": 8,
+        "description": "Prequel open-world RPG set in ancient Sinnoh (Hisui region).",
+        "original_release": "2022"
+    },
+    {
+        "id": 21,
+        "name": "Pokémon Scarlet and Violet",
+        "generation": 9,
+        "description": "Open-world RPG set in Paldea with Terastal phenomenon.",
+        "original_release": "2022"
+    }
+]

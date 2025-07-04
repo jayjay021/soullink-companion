@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { schemas } from '@repo/api-spec/zod';
 import { PokedexMapper } from './pokedex.mapper';
 import { RawPokemonData } from './pokedex.types';
-import pokemonData from './pokemon-data.json';
+import pokemonData from './data/pokemon-data.json';
 
 // Zod schema types for request/response
 type PokedexPokemonResponseDto = z.infer<typeof schemas.PokedexPokemonResponse>;
@@ -56,7 +56,9 @@ class PokedexService {
   /**
    * Get Pokémon data with optional filters and pagination
    */
-  public getPokemon(params: PokedexQueryParams = {}): PokedexPokemonResponseDto {
+  public getPokemon(
+    params: PokedexQueryParams = {}
+  ): PokedexPokemonResponseDto {
     if (!this.isLoaded) {
       throw new Error('Pokédex data not loaded. Call loadData() first.');
     }
@@ -83,8 +85,8 @@ class PokedexService {
 
     // Filter by type if provided
     if (params.type !== undefined) {
-      filteredPokemon = filteredPokemon.filter(
-        (pokemon) => pokemon.type.includes(params.type!)
+      filteredPokemon = filteredPokemon.filter((pokemon) =>
+        pokemon.type.includes(params.type!)
       );
     }
 
@@ -107,23 +109,20 @@ class PokedexService {
     // Apply pagination
     const limit = Math.min(params.limit || 20, 100); // Default 20, max 100
     const offset = params.offset || 0;
-    
+
     const paginatedPokemon = filteredPokemon.slice(offset, offset + limit);
 
     // Calculate pagination info
     const hasNext = offset + limit < total;
     const hasPrevious = offset > 0;
 
-    return PokedexMapper.mapPokemonDataToPokedexResponseDto(
-      paginatedPokemon,
-      {
-        total,
-        limit,
-        offset,
-        hasNext,
-        hasPrevious,
-      }
-    );
+    return PokedexMapper.mapPokemonDataToPokedexResponseDto(paginatedPokemon, {
+      total,
+      limit,
+      offset,
+      hasNext,
+      hasPrevious,
+    });
   }
 
   /**
@@ -134,7 +133,7 @@ class PokedexService {
       throw new Error('Pokédex data not loaded. Call loadData() first.');
     }
 
-    const pokemon = this.pokemonData.find(p => p.id === id);
+    const pokemon = this.pokemonData.find((p) => p.id === id);
     return pokemon || null;
   }
 

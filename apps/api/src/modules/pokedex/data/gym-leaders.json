@@ -1,0 +1,2329 @@
+[
+    {
+        "name": "Brock",
+        "badge": "Boulder Badge",
+        "game_id": 1,
+        "type": "gymleader",
+        "order": 1,
+        "highest_pokemon_level": 14
+    },
+    {
+        "name": "Misty",
+        "badge": "Cascade Badge",
+        "game_id": 1,
+        "type": "gymleader",
+        "order": 2,
+        "highest_pokemon_level": 21
+    },
+    {
+        "name": "Lt. Surge",
+        "badge": "Thunder Badge",
+        "game_id": 1,
+        "type": "gymleader",
+        "order": 3,
+        "highest_pokemon_level": 24
+    },
+    {
+        "name": "Erika",
+        "badge": "Rainbow Badge",
+        "game_id": 1,
+        "type": "gymleader",
+        "order": 4,
+        "highest_pokemon_level": 29
+    },
+    {
+        "name": "Koga",
+        "badge": "Soul Badge",
+        "game_id": 1,
+        "type": "gymleader",
+        "order": 5,
+        "highest_pokemon_level": 43
+    },
+    {
+        "name": "Sabrina",
+        "badge": "Marsh Badge",
+        "game_id": 1,
+        "type": "gymleader",
+        "order": 6,
+        "highest_pokemon_level": 43
+    },
+    {
+        "name": "Blaine",
+        "badge": "Volcano Badge",
+        "game_id": 1,
+        "type": "gymleader",
+        "order": 7,
+        "highest_pokemon_level": 47
+    },
+    {
+        "name": "Giovanni",
+        "badge": "Earth Badge",
+        "game_id": 1,
+        "type": "gymleader",
+        "order": 8,
+        "highest_pokemon_level": 50
+    },
+    {
+        "name": "Lorelei",
+        "badge": "Elite Four",
+        "game_id": 1,
+        "type": "elite4",
+        "order": 9,
+        "highest_pokemon_level": 56
+    },
+    {
+        "name": "Bruno",
+        "badge": "Elite Four",
+        "game_id": 1,
+        "type": "elite4",
+        "order": 10,
+        "highest_pokemon_level": 58
+    },
+    {
+        "name": "Agatha",
+        "badge": "Elite Four",
+        "game_id": 1,
+        "type": "elite4",
+        "order": 11,
+        "highest_pokemon_level": 60
+    },
+    {
+        "name": "Lance",
+        "badge": "Elite Four",
+        "game_id": 1,
+        "type": "elite4",
+        "order": 12,
+        "highest_pokemon_level": 62
+    },
+    {
+        "name": "Blue",
+        "badge": "Champion",
+        "game_id": 1,
+        "type": "champion",
+        "order": 13,
+        "highest_pokemon_level": 65
+    },
+    {
+        "name": "Brock",
+        "badge": "Boulder Badge",
+        "game_id": 2,
+        "type": "gymleader",
+        "order": 1,
+        "highest_pokemon_level": 14
+    },
+    {
+        "name": "Misty",
+        "badge": "Cascade Badge",
+        "game_id": 2,
+        "type": "gymleader",
+        "order": 2,
+        "highest_pokemon_level": 21
+    },
+    {
+        "name": "Lt. Surge",
+        "badge": "Thunder Badge",
+        "game_id": 2,
+        "type": "gymleader",
+        "order": 3,
+        "highest_pokemon_level": 24
+    },
+    {
+        "name": "Erika",
+        "badge": "Rainbow Badge",
+        "game_id": 2,
+        "type": "gymleader",
+        "order": 4,
+        "highest_pokemon_level": 29
+    },
+    {
+        "name": "Koga",
+        "badge": "Soul Badge",
+        "game_id": 2,
+        "type": "gymleader",
+        "order": 5,
+        "highest_pokemon_level": 43
+    },
+    {
+        "name": "Sabrina",
+        "badge": "Marsh Badge",
+        "game_id": 2,
+        "type": "gymleader",
+        "order": 6,
+        "highest_pokemon_level": 43
+    },
+    {
+        "name": "Blaine",
+        "badge": "Volcano Badge",
+        "game_id": 2,
+        "type": "gymleader",
+        "order": 7,
+        "highest_pokemon_level": 47
+    },
+    {
+        "name": "Giovanni",
+        "badge": "Earth Badge",
+        "game_id": 2,
+        "type": "gymleader",
+        "order": 8,
+        "highest_pokemon_level": 50
+    },
+    {
+        "name": "Lorelei",
+        "badge": "Elite Four",
+        "game_id": 2,
+        "type": "elite4",
+        "order": 9,
+        "highest_pokemon_level": 56
+    },
+    {
+        "name": "Bruno",
+        "badge": "Elite Four",
+        "game_id": 2,
+        "type": "elite4",
+        "order": 10,
+        "highest_pokemon_level": 58
+    },
+    {
+        "name": "Agatha",
+        "badge": "Elite Four",
+        "game_id": 2,
+        "type": "elite4",
+        "order": 11,
+        "highest_pokemon_level": 60
+    },
+    {
+        "name": "Lance",
+        "badge": "Elite Four",
+        "game_id": 2,
+        "type": "elite4",
+        "order": 12,
+        "highest_pokemon_level": 62
+    },
+    {
+        "name": "Blue",
+        "badge": "Champion",
+        "game_id": 2,
+        "type": "champion",
+        "order": 13,
+        "highest_pokemon_level": 65
+    },
+    {
+        "name": "Falkner",
+        "badge": "Zephyr Badge",
+        "game_id": 3,
+        "order": 1,
+        "highest_pokemon_level": 9
+    },
+    {
+        "name": "Bugsy",
+        "badge": "Hive Badge",
+        "game_id": 3,
+        "order": 2,
+        "highest_pokemon_level": 16
+    },
+    {
+        "name": "Whitney",
+        "badge": "Plain Badge",
+        "game_id": 3,
+        "order": 3,
+        "highest_pokemon_level": 20
+    },
+    {
+        "name": "Morty",
+        "badge": "Fog Badge",
+        "game_id": 3,
+        "order": 4,
+        "highest_pokemon_level": 25
+    },
+    {
+        "name": "Chuck",
+        "badge": "Storm Badge",
+        "game_id": 3,
+        "order": 5,
+        "highest_pokemon_level": 31
+    },
+    {
+        "name": "Jasmine",
+        "badge": "Mineral Badge",
+        "game_id": 3,
+        "order": 6,
+        "highest_pokemon_level": 35
+    },
+    {
+        "name": "Pryce",
+        "badge": "Glacier Badge",
+        "game_id": 3,
+        "order": 7,
+        "highest_pokemon_level": 31
+    },
+    {
+        "name": "Clair",
+        "badge": "Rising Badge",
+        "game_id": 3,
+        "order": 8,
+        "highest_pokemon_level": 41
+    },
+    {
+        "name": "Will",
+        "badge": "Elite Four",
+        "game_id": 3,
+        "type": "elite4",
+        "order": 9,
+        "highest_pokemon_level": 42
+    },
+    {
+        "name": "Koga",
+        "badge": "Elite Four",
+        "game_id": 3,
+        "type": "elite4",
+        "order": 10,
+        "highest_pokemon_level": 44
+    },
+    {
+        "name": "Bruno",
+        "badge": "Elite Four",
+        "game_id": 3,
+        "type": "elite4",
+        "order": 11,
+        "highest_pokemon_level": 46
+    },
+    {
+        "name": "Karen",
+        "badge": "Elite Four",
+        "game_id": 3,
+        "type": "elite4",
+        "order": 12,
+        "highest_pokemon_level": 47
+    },
+    {
+        "name": "Lance",
+        "badge": "Champion",
+        "game_id": 3,
+        "type": "champion",
+        "order": 13,
+        "highest_pokemon_level": 50
+    },
+    {
+        "name": "Brock",
+        "badge": "Boulder Badge",
+        "game_id": 3,
+        "order": 14,
+        "highest_pokemon_level": 44,
+        "type": "gymleader"
+    },
+    {
+        "name": "Misty",
+        "badge": "Cascade Badge",
+        "game_id": 3,
+        "order": 15,
+        "highest_pokemon_level": 47,
+        "type": "gymleader"
+    },
+    {
+        "name": "Lt. Surge",
+        "badge": "Thunder Badge",
+        "game_id": 3,
+        "order": 16,
+        "highest_pokemon_level": 46,
+        "type": "gymleader"
+    },
+    {
+        "name": "Erika",
+        "badge": "Rainbow Badge",
+        "game_id": 3,
+        "order": 17,
+        "highest_pokemon_level": 46,
+        "type": "gymleader"
+    },
+    {
+        "name": "Janine",
+        "badge": "Soul Badge",
+        "game_id": 3,
+        "order": 18,
+        "highest_pokemon_level": 44,
+        "type": "gymleader"
+    },
+    {
+        "name": "Sabrina",
+        "badge": "Marsh Badge",
+        "game_id": 3,
+        "order": 19,
+        "highest_pokemon_level": 48,
+        "type": "gymleader"
+    },
+    {
+        "name": "Blaine",
+        "badge": "Volcano Badge",
+        "game_id": 3,
+        "order": 20,
+        "highest_pokemon_level": 54,
+        "type": "gymleader"
+    },
+    {
+        "name": "Blue",
+        "badge": "Earth Badge",
+        "game_id": 3,
+        "order": 21,
+        "highest_pokemon_level": 58,
+        "type": "gymleader"
+    },
+    {
+        "name": "Lance",
+        "badge": "Champion",
+        "game_id": 4,
+        "order": "champion",
+        "highest_pokemon_level": 50
+    },
+    {
+        "name": "Brock",
+        "badge": "Boulder Badge",
+        "game_id": 4,
+        "order": 14,
+        "highest_pokemon_level": 44,
+        "type": "gymleader"
+    },
+    {
+        "name": "Misty",
+        "badge": "Cascade Badge",
+        "game_id": 4,
+        "order": 15,
+        "highest_pokemon_level": 47,
+        "type": "gymleader"
+    },
+    {
+        "name": "Lt. Surge",
+        "badge": "Thunder Badge",
+        "game_id": 4,
+        "order": 16,
+        "highest_pokemon_level": 46,
+        "type": "gymleader"
+    },
+    {
+        "name": "Erika",
+        "badge": "Rainbow Badge",
+        "game_id": 4,
+        "order": 17,
+        "highest_pokemon_level": 46,
+        "type": "gymleader"
+    },
+    {
+        "name": "Janine",
+        "badge": "Soul Badge",
+        "game_id": 4,
+        "order": 18,
+        "highest_pokemon_level": 44,
+        "type": "gymleader"
+    },
+    {
+        "name": "Sabrina",
+        "badge": "Marsh Badge",
+        "game_id": 4,
+        "order": 19,
+        "highest_pokemon_level": 48,
+        "type": "gymleader"
+    },
+    {
+        "name": "Blaine",
+        "badge": "Volcano Badge",
+        "game_id": 4,
+        "order": 20,
+        "highest_pokemon_level": 54,
+        "type": "gymleader"
+    },
+    {
+        "name": "Blue",
+        "badge": "Earth Badge",
+        "game_id": 4,
+        "order": 21,
+        "highest_pokemon_level": 58,
+        "type": "gymleader"
+    },
+    {
+        "name": "Lorelei",
+        "badge": "Elite Four",
+        "game_id": 4,
+        "type": "elite4",
+        "order": 6,
+        "highest_pokemon_level": 52
+    },
+    {
+        "name": "Bruno",
+        "badge": "Elite Four",
+        "game_id": 4,
+        "type": "elite4",
+        "order": 7,
+        "highest_pokemon_level": 54
+    },
+    {
+        "name": "Agatha",
+        "badge": "Elite Four",
+        "game_id": 4,
+        "type": "elite4",
+        "order": 8,
+        "highest_pokemon_level": 56
+    },
+    {
+        "name": "Lance",
+        "badge": "Elite Four",
+        "game_id": 4,
+        "type": "elite4",
+        "order": 9,
+        "highest_pokemon_level": 58
+    },
+    {
+        "name": "Blue",
+        "badge": "Champion",
+        "game_id": 4,
+        "type": "champion",
+        "order": 10,
+        "highest_pokemon_level": 60
+    },
+    {
+        "name": "Falkner",
+        "badge": "Zephyr Badge",
+        "game_id": 4,
+        "order": 1,
+        "highest_pokemon_level": 9
+    },
+    {
+        "name": "Bugsy",
+        "badge": "Hive Badge",
+        "game_id": 4,
+        "order": 2,
+        "highest_pokemon_level": 16
+    },
+    {
+        "name": "Whitney",
+        "badge": "Plain Badge",
+        "game_id": 4,
+        "order": 3,
+        "highest_pokemon_level": 20
+    },
+    {
+        "name": "Morty",
+        "badge": "Fog Badge",
+        "game_id": 4,
+        "order": 4,
+        "highest_pokemon_level": 25
+    },
+    {
+        "name": "Chuck",
+        "badge": "Storm Badge",
+        "game_id": 4,
+        "order": 5,
+        "highest_pokemon_level": 31
+    },
+    {
+        "name": "Jasmine",
+        "badge": "Mineral Badge",
+        "game_id": 4,
+        "order": 6,
+        "highest_pokemon_level": 35
+    },
+    {
+        "name": "Pryce",
+        "badge": "Glacier Badge",
+        "game_id": 4,
+        "order": 7,
+        "highest_pokemon_level": 31
+    },
+    {
+        "name": "Clair",
+        "badge": "Rising Badge",
+        "game_id": 4,
+        "order": 8,
+        "highest_pokemon_level": 41
+    },
+    {
+        "name": "Will",
+        "badge": "Elite Four",
+        "game_id": 4,
+        "type": "elite4",
+        "order": 17,
+        "highest_pokemon_level": 42
+    },
+    {
+        "name": "Koga",
+        "badge": "Elite Four",
+        "game_id": 4,
+        "type": "elite4",
+        "order": 18,
+        "highest_pokemon_level": 44
+    },
+    {
+        "name": "Bruno",
+        "badge": "Elite Four",
+        "game_id": 4,
+        "type": "elite4",
+        "order": 19,
+        "highest_pokemon_level": 46
+    },
+    {
+        "name": "Karen",
+        "badge": "Elite Four",
+        "game_id": 4,
+        "type": "elite4",
+        "order": 20,
+        "highest_pokemon_level": 47
+    },
+    {
+        "name": "Sidney",
+        "badge": "Elite Four",
+        "game_id": 5,
+        "type": "elite4",
+        "order": 9,
+        "highest_pokemon_level": 49
+    },
+    {
+        "name": "Phoebe",
+        "badge": "Elite Four",
+        "game_id": 5,
+        "type": "elite4",
+        "order": 10,
+        "highest_pokemon_level": 51
+    },
+    {
+        "name": "Glacia",
+        "badge": "Elite Four",
+        "game_id": 5,
+        "type": "elite4",
+        "order": 11,
+        "highest_pokemon_level": 53
+    },
+    {
+        "name": "Drake",
+        "badge": "Elite Four",
+        "game_id": 5,
+        "type": "elite4",
+        "order": 12,
+        "highest_pokemon_level": 55
+    },
+    {
+        "name": "Steven",
+        "badge": "Champion",
+        "game_id": 5,
+        "type": "champion",
+        "order": 13,
+        "highest_pokemon_level": 58
+    },
+    {
+        "name": "Roxanne",
+        "badge": "Stone Badge",
+        "game_id": 5,
+        "order": 1,
+        "highest_pokemon_level": 15
+    },
+    {
+        "name": "Brawly",
+        "badge": "Knuckle Badge",
+        "game_id": 5,
+        "order": 2,
+        "highest_pokemon_level": 18
+    },
+    {
+        "name": "Wattson",
+        "badge": "Dynamo Badge",
+        "game_id": 5,
+        "order": 3,
+        "highest_pokemon_level": 24
+    },
+    {
+        "name": "Flannery",
+        "badge": "Heat Badge",
+        "game_id": 5,
+        "order": 4,
+        "highest_pokemon_level": 29
+    },
+    {
+        "name": "Norman",
+        "badge": "Balance Badge",
+        "game_id": 5,
+        "order": 5,
+        "highest_pokemon_level": 31
+    },
+    {
+        "name": "Winona",
+        "badge": "Feather Badge",
+        "game_id": 5,
+        "order": 6,
+        "highest_pokemon_level": 33
+    },
+    {
+        "name": "Tate & Liza",
+        "badge": "Mind Badge",
+        "game_id": 5,
+        "order": 7,
+        "highest_pokemon_level": 42
+    },
+    {
+        "name": "Wallace",
+        "badge": "Rain Badge",
+        "game_id": 5,
+        "order": 8,
+        "highest_pokemon_level": 43
+    },
+    {
+        "name": "Sidney",
+        "badge": "Elite Four",
+        "game_id": 6,
+        "type": "elite4",
+        "order": 9,
+        "highest_pokemon_level": 49
+    },
+    {
+        "name": "Phoebe",
+        "badge": "Elite Four",
+        "game_id": 6,
+        "type": "elite4",
+        "order": 10,
+        "highest_pokemon_level": 51
+    },
+    {
+        "name": "Glacia",
+        "badge": "Elite Four",
+        "game_id": 6,
+        "type": "elite4",
+        "order": 11,
+        "highest_pokemon_level": 53
+    },
+    {
+        "name": "Drake",
+        "badge": "Elite Four",
+        "game_id": 6,
+        "type": "elite4",
+        "order": 12,
+        "highest_pokemon_level": 55
+    },
+    {
+        "name": "Lance",
+        "badge": "Champion",
+        "game_id": 6,
+        "type": "champion",
+        "order": 13,
+        "highest_pokemon_level": 60
+    },
+    {
+        "name": "Roxanne",
+        "badge": "Stone Badge",
+        "game_id": 6,
+        "order": 1,
+        "highest_pokemon_level": 15
+    },
+    {
+        "name": "Brawly",
+        "badge": "Knuckle Badge",
+        "game_id": 6,
+        "order": 2,
+        "highest_pokemon_level": 18
+    },
+    {
+        "name": "Wattson",
+        "badge": "Dynamo Badge",
+        "game_id": 6,
+        "order": 3,
+        "highest_pokemon_level": 24
+    },
+    {
+        "name": "Flannery",
+        "badge": "Heat Badge",
+        "game_id": 6,
+        "order": 4,
+        "highest_pokemon_level": 29
+    },
+    {
+        "name": "Norman",
+        "badge": "Balance Badge",
+        "game_id": 6,
+        "order": 5,
+        "highest_pokemon_level": 31
+    },
+    {
+        "name": "Winona",
+        "badge": "Feather Badge",
+        "game_id": 6,
+        "order": 6,
+        "highest_pokemon_level": 33
+    },
+    {
+        "name": "Tate & Liza",
+        "badge": "Mind Badge",
+        "game_id": 6,
+        "order": 7,
+        "highest_pokemon_level": 42
+    },
+    {
+        "name": "Wallace",
+        "badge": "Rain Badge",
+        "game_id": 6,
+        "order": 8,
+        "highest_pokemon_level": 43
+    },
+    {
+        "name": "Sidney",
+        "badge": "Elite Four",
+        "game_id": 7,
+        "type": "elite4",
+        "order": 9,
+        "highest_pokemon_level": 49
+    },
+    {
+        "name": "Phoebe",
+        "badge": "Elite Four",
+        "game_id": 7,
+        "type": "elite4",
+        "order": 10,
+        "highest_pokemon_level": 51
+    },
+    {
+        "name": "Glacia",
+        "badge": "Elite Four",
+        "game_id": 7,
+        "type": "elite4",
+        "order": 11,
+        "highest_pokemon_level": 53
+    },
+    {
+        "name": "Drake",
+        "badge": "Elite Four",
+        "game_id": 7,
+        "type": "elite4",
+        "order": 12,
+        "highest_pokemon_level": 55
+    },
+    {
+        "name": "Wallace",
+        "badge": "Champion",
+        "game_id": 7,
+        "type": "champion",
+        "order": 13,
+        "highest_pokemon_level": 58
+    },
+    {
+        "name": "Roxanne",
+        "badge": "Stone Badge",
+        "game_id": 7,
+        "order": 1,
+        "highest_pokemon_level": 15
+    },
+    {
+        "name": "Brawly",
+        "badge": "Knuckle Badge",
+        "game_id": 7,
+        "order": 2,
+        "highest_pokemon_level": 18
+    },
+    {
+        "name": "Wattson",
+        "badge": "Dynamo Badge",
+        "game_id": 7,
+        "order": 3,
+        "highest_pokemon_level": 24
+    },
+    {
+        "name": "Flannery",
+        "badge": "Heat Badge",
+        "game_id": 7,
+        "order": 4,
+        "highest_pokemon_level": 29
+    },
+    {
+        "name": "Norman",
+        "badge": "Balance Badge",
+        "game_id": 7,
+        "order": 5,
+        "highest_pokemon_level": 31
+    },
+    {
+        "name": "Winona",
+        "badge": "Feather Badge",
+        "game_id": 7,
+        "order": 6,
+        "highest_pokemon_level": 33
+    },
+    {
+        "name": "Tate & Liza",
+        "badge": "Mind Badge",
+        "game_id": 7,
+        "order": 7,
+        "highest_pokemon_level": 42
+    },
+    {
+        "name": "Juan",
+        "badge": "Rain Badge",
+        "game_id": 7,
+        "order": 8,
+        "highest_pokemon_level": 43
+    },
+    {
+        "name": "Roark",
+        "badge": "Coal Badge",
+        "game_id": 8,
+        "order": 1,
+        "highest_pokemon_level": 14
+    },
+    {
+        "name": "Gardenia",
+        "badge": "Forest Badge",
+        "game_id": 8,
+        "order": 2,
+        "highest_pokemon_level": 22
+    },
+    {
+        "name": "Maylene",
+        "badge": "Cobble Badge",
+        "game_id": 8,
+        "order": 3,
+        "highest_pokemon_level": 30
+    },
+    {
+        "name": "Crasher Wake",
+        "badge": "Fen Badge",
+        "game_id": 8,
+        "order": 4,
+        "highest_pokemon_level": 30
+    },
+    {
+        "name": "Fantina",
+        "badge": "Relic Badge",
+        "game_id": 8,
+        "order": 5,
+        "highest_pokemon_level": 36
+    },
+    {
+        "name": "Byron",
+        "badge": "Mine Badge",
+        "game_id": 8,
+        "order": 6,
+        "highest_pokemon_level": 41
+    },
+    {
+        "name": "Candice",
+        "badge": "Icicle Badge",
+        "game_id": 8,
+        "order": 7,
+        "highest_pokemon_level": 44
+    },
+    {
+        "name": "Volkner",
+        "badge": "Beacon Badge",
+        "game_id": 8,
+        "order": 8,
+        "highest_pokemon_level": 49
+    },
+    {
+        "name": "Aaron",
+        "badge": "Elite Four",
+        "game_id": 8,
+        "type": "elite4",
+        "order": 9,
+        "highest_pokemon_level": 53
+    },
+    {
+        "name": "Bertha",
+        "badge": "Elite Four",
+        "game_id": 8,
+        "type": "elite4",
+        "order": 10,
+        "highest_pokemon_level": 55
+    },
+    {
+        "name": "Flint",
+        "badge": "Elite Four",
+        "game_id": 8,
+        "type": "elite4",
+        "order": 11,
+        "highest_pokemon_level": 57
+    },
+    {
+        "name": "Lucian",
+        "badge": "Elite Four",
+        "game_id": 8,
+        "type": "elite4",
+        "order": 12,
+        "highest_pokemon_level": 59
+    },
+    {
+        "name": "Cynthia",
+        "badge": "Champion",
+        "game_id": 8,
+        "type": "champion",
+        "order": 13,
+        "highest_pokemon_level": 66
+    },
+    {
+        "name": "Roark",
+        "badge": "Coal Badge",
+        "game_id": 9,
+        "type": "gymleader",
+        "order": 1,
+        "highest_pokemon_level": 12
+    },
+    {
+        "name": "Gardenia",
+        "badge": "Forest Badge",
+        "game_id": 9,
+        "type": "gymleader",
+        "order": 2,
+        "highest_pokemon_level": 22
+    },
+    {
+        "name": "Maylene",
+        "badge": "Cobble Badge",
+        "game_id": 9,
+        "type": "gymleader",
+        "order": 3,
+        "highest_pokemon_level": 30
+    },
+    {
+        "name": "Crasher Wake",
+        "badge": "Fen Badge",
+        "game_id": 9,
+        "type": "gymleader",
+        "order": 4,
+        "highest_pokemon_level": 37
+    },
+    {
+        "name": "Fantina",
+        "badge": "Relic Badge",
+        "game_id": 9,
+        "type": "gymleader",
+        "order": 5,
+        "highest_pokemon_level": 41
+    },
+    {
+        "name": "Byron",
+        "badge": "Mine Badge",
+        "game_id": 9,
+        "type": "gymleader",
+        "order": 6,
+        "highest_pokemon_level": 41
+    },
+    {
+        "name": "Candice",
+        "badge": "Icicle Badge",
+        "game_id": 9,
+        "type": "gymleader",
+        "order": 7,
+        "highest_pokemon_level": 44
+    },
+    {
+        "name": "Volkner",
+        "badge": "Beacon Badge",
+        "game_id": 9,
+        "type": "gymleader",
+        "order": 8,
+        "highest_pokemon_level": 49
+    },
+    {
+        "name": "Aaron",
+        "badge": "Elite Four",
+        "game_id": 9,
+        "type": "elite4",
+        "order": 9,
+        "highest_pokemon_level": 53
+    },
+    {
+        "name": "Bertha",
+        "badge": "Elite Four",
+        "game_id": 9,
+        "type": "elite4",
+        "order": 10,
+        "highest_pokemon_level": 55
+    },
+    {
+        "name": "Flint",
+        "badge": "Elite Four",
+        "game_id": 9,
+        "type": "elite4",
+        "order": 11,
+        "highest_pokemon_level": 57
+    },
+    {
+        "name": "Lucian",
+        "badge": "Elite Four",
+        "game_id": 9,
+        "type": "elite4",
+        "order": 12,
+        "highest_pokemon_level": 59
+    },
+    {
+        "name": "Cynthia",
+        "badge": "Champion",
+        "game_id": 9,
+        "type": "champion",
+        "order": 13,
+        "highest_pokemon_level": 66
+    },
+    {
+        "name": "Falkner",
+        "badge": "Zephyr Badge",
+        "game_id": 10,
+        "type": "gymleader",
+        "order": 1,
+        "highest_pokemon_level": 13
+    },
+    {
+        "name": "Bugsy",
+        "badge": "Hive Badge",
+        "game_id": 10,
+        "type": "gymleader",
+        "order": 2,
+        "highest_pokemon_level": 17
+    },
+    {
+        "name": "Whitney",
+        "badge": "Plain Badge",
+        "game_id": 10,
+        "type": "gymleader",
+        "order": 3,
+        "highest_pokemon_level": 19
+    },
+    {
+        "name": "Morty",
+        "badge": "Fog Badge",
+        "game_id": 10,
+        "type": "gymleader",
+        "order": 4,
+        "highest_pokemon_level": 25
+    },
+    {
+        "name": "Chuck",
+        "badge": "Storm Badge",
+        "game_id": 10,
+        "type": "gymleader",
+        "order": 5,
+        "highest_pokemon_level": 31
+    },
+    {
+        "name": "Jasmine",
+        "badge": "Mineral Badge",
+        "game_id": 10,
+        "type": "gymleader",
+        "order": 6,
+        "highest_pokemon_level": 35
+    },
+    {
+        "name": "Pryce",
+        "badge": "Glacier Badge",
+        "game_id": 10,
+        "type": "gymleader",
+        "order": 7,
+        "highest_pokemon_level": 34
+    },
+    {
+        "name": "Clair",
+        "badge": "Rising Badge",
+        "game_id": 10,
+        "type": "gymleader",
+        "order": 8,
+        "highest_pokemon_level": 41
+    },
+    {
+        "name": "Will",
+        "badge": "Elite Four",
+        "game_id": 10,
+        "type": "elite4",
+        "order": 9,
+        "highest_pokemon_level": 42
+    },
+    {
+        "name": "Koga",
+        "badge": "Elite Four",
+        "game_id": 10,
+        "type": "elite4",
+        "order": 10,
+        "highest_pokemon_level": 44
+    },
+    {
+        "name": "Bruno",
+        "badge": "Elite Four",
+        "game_id": 10,
+        "type": "elite4",
+        "order": 11,
+        "highest_pokemon_level": 46
+    },
+    {
+        "name": "Karen",
+        "badge": "Elite Four",
+        "game_id": 10,
+        "type": "elite4",
+        "order": 12,
+        "highest_pokemon_level": 47
+    },
+    {
+        "name": "Lance",
+        "badge": "Champion",
+        "game_id": 10,
+        "type": "champion",
+        "order": 13,
+        "highest_pokemon_level": 50
+    },
+    {
+        "name": "Brock",
+        "badge": "Boulder Badge",
+        "game_id": 10,
+        "type": "gymleader",
+        "order": 14,
+        "highest_pokemon_level": 44
+    },
+    {
+        "name": "Misty",
+        "badge": "Cascade Badge",
+        "game_id": 10,
+        "type": "gymleader",
+        "order": 15,
+        "highest_pokemon_level": 47
+    },
+    {
+        "name": "Lt. Surge",
+        "badge": "Thunder Badge",
+        "game_id": 10,
+        "type": "gymleader",
+        "order": 16,
+        "highest_pokemon_level": 46
+    },
+    {
+        "name": "Erika",
+        "badge": "Rainbow Badge",
+        "game_id": 10,
+        "type": "gymleader",
+        "order": 17,
+        "highest_pokemon_level": 46
+    },
+    {
+        "name": "Janine",
+        "badge": "Soul Badge",
+        "game_id": 10,
+        "type": "gymleader",
+        "order": 18,
+        "highest_pokemon_level": 44
+    },
+    {
+        "name": "Sabrina",
+        "badge": "Marsh Badge",
+        "game_id": 10,
+        "type": "gymleader",
+        "order": 19,
+        "highest_pokemon_level": 48
+    },
+    {
+        "name": "Blaine",
+        "badge": "Volcano Badge",
+        "game_id": 10,
+        "type": "gymleader",
+        "order": 20,
+        "highest_pokemon_level": 54
+    },
+    {
+        "name": "Blue",
+        "badge": "Earth Badge",
+        "game_id": 10,
+        "type": "gymleader",
+        "order": 21,
+        "highest_pokemon_level": 58
+    },
+    {
+        "name": "Lorelei",
+        "badge": "Elite Four",
+        "game_id": 10,
+        "type": "elite4",
+        "order": 22,
+        "highest_pokemon_level": 52
+    },
+    {
+        "name": "Bruno",
+        "badge": "Elite Four",
+        "game_id": 10,
+        "type": "elite4",
+        "order": 23,
+        "highest_pokemon_level": 54
+    },
+    {
+        "name": "Agatha",
+        "badge": "Elite Four",
+        "game_id": 10,
+        "type": "elite4",
+        "order": 24,
+        "highest_pokemon_level": 56
+    },
+    {
+        "name": "Lance",
+        "badge": "Elite Four",
+        "game_id": 10,
+        "type": "elite4",
+        "order": 25,
+        "highest_pokemon_level": 58
+    },
+    {
+        "name": "Blue",
+        "badge": "Champion",
+        "game_id": 10,
+        "type": "champion",
+        "order": 26,
+        "highest_pokemon_level": 60
+    },
+    {
+        "name": "Cilan/Chili/Cress",
+        "badge": "Trio Badge",
+        "game_id": 11,
+        "type": "gymleader",
+        "order": 1,
+        "highest_pokemon_level": 14
+    },
+    {
+        "name": "Lenora",
+        "badge": "Basic Badge",
+        "game_id": 11,
+        "type": "gymleader",
+        "order": 2,
+        "highest_pokemon_level": 20
+    },
+    {
+        "name": "Burgh",
+        "badge": "Insect Badge",
+        "game_id": 11,
+        "type": "gymleader",
+        "order": 3,
+        "highest_pokemon_level": 23
+    },
+    {
+        "name": "Elesa",
+        "badge": "Bolt Badge",
+        "game_id": 11,
+        "type": "gymleader",
+        "order": 4,
+        "highest_pokemon_level": 27
+    },
+    {
+        "name": "Clay",
+        "badge": "Quake Badge",
+        "game_id": 11,
+        "type": "gymleader",
+        "order": 5,
+        "highest_pokemon_level": 31
+    },
+    {
+        "name": "Skyla",
+        "badge": "Jet Badge",
+        "game_id": 11,
+        "type": "gymleader",
+        "order": 6,
+        "highest_pokemon_level": 35
+    },
+    {
+        "name": "Brycen",
+        "badge": "Freeze Badge",
+        "game_id": 11,
+        "type": "gymleader",
+        "order": 7,
+        "highest_pokemon_level": 39
+    },
+    {
+        "name": "Drayden/Iris",
+        "badge": "Legend Badge",
+        "game_id": 11,
+        "type": "gymleader",
+        "order": 8,
+        "highest_pokemon_level": 43
+    },
+    {
+        "name": "Shauntal",
+        "badge": "Elite Four",
+        "game_id": 11,
+        "type": "elite4",
+        "order": 9,
+        "highest_pokemon_level": 50
+    },
+    {
+        "name": "Marshal",
+        "badge": "Elite Four",
+        "game_id": 11,
+        "type": "elite4",
+        "order": 10,
+        "highest_pokemon_level": 50
+    },
+    {
+        "name": "Grimsley",
+        "badge": "Elite Four",
+        "game_id": 11,
+        "type": "elite4",
+        "order": 11,
+        "highest_pokemon_level": 50
+    },
+    {
+        "name": "Caitlin",
+        "badge": "Elite Four",
+        "game_id": 11,
+        "type": "elite4",
+        "order": 12,
+        "highest_pokemon_level": 50
+    },
+    {
+        "name": "Alder",
+        "badge": "Champion",
+        "game_id": 11,
+        "type": "champion",
+        "order": 13,
+        "highest_pokemon_level": 50
+    },
+    {
+        "name": "Cheren",
+        "badge": "Basic Badge",
+        "game_id": 12,
+        "type": "gymleader",
+        "order": 1,
+        "highest_pokemon_level": 13
+    },
+    {
+        "name": "Roxie",
+        "badge": "Toxic Badge",
+        "game_id": 12,
+        "type": "gymleader",
+        "order": 2,
+        "highest_pokemon_level": 18
+    },
+    {
+        "name": "Burgh",
+        "badge": "Insect Badge",
+        "game_id": 12,
+        "type": "gymleader",
+        "order": 3,
+        "highest_pokemon_level": 24
+    },
+    {
+        "name": "Elesa",
+        "badge": "Bolt Badge",
+        "game_id": 12,
+        "type": "gymleader",
+        "order": 4,
+        "highest_pokemon_level": 30
+    },
+    {
+        "name": "Clay",
+        "badge": "Quake Badge",
+        "game_id": 12,
+        "type": "gymleader",
+        "order": 5,
+        "highest_pokemon_level": 33
+    },
+    {
+        "name": "Skyla",
+        "badge": "Jet Badge",
+        "game_id": 12,
+        "type": "gymleader",
+        "order": 6,
+        "highest_pokemon_level": 39
+    },
+    {
+        "name": "Drayden",
+        "badge": "Legend Badge",
+        "game_id": 12,
+        "type": "gymleader",
+        "order": 7,
+        "highest_pokemon_level": 48
+    },
+    {
+        "name": "Marlon",
+        "badge": "Wave Badge",
+        "game_id": 12,
+        "type": "gymleader",
+        "order": 8,
+        "highest_pokemon_level": 51
+    },
+    {
+        "name": "Shauntal",
+        "badge": "Elite Four",
+        "game_id": 12,
+        "type": "elite4",
+        "order": 9,
+        "highest_pokemon_level": 58
+    },
+    {
+        "name": "Marshal",
+        "badge": "Elite Four",
+        "game_id": 12,
+        "type": "elite4",
+        "order": 10,
+        "highest_pokemon_level": 56
+    },
+    {
+        "name": "Grimsley",
+        "badge": "Elite Four",
+        "game_id": 12,
+        "type": "elite4",
+        "order": 11,
+        "highest_pokemon_level": 58
+    },
+    {
+        "name": "Caitlin",
+        "badge": "Elite Four",
+        "game_id": 12,
+        "type": "elite4",
+        "order": 12,
+        "highest_pokemon_level": 56
+    },
+    {
+        "name": "Iris",
+        "badge": "Champion",
+        "game_id": 12,
+        "type": "champion",
+        "order": 13,
+        "highest_pokemon_level": 59
+    },
+    {
+        "name": "Viola",
+        "badge": "Bug Badge",
+        "game_id": 13,
+        "type": "gymleader",
+        "order": 1,
+        "highest_pokemon_level": 12
+    },
+    {
+        "name": "Grant",
+        "badge": "Cliff Badge",
+        "game_id": 13,
+        "type": "gymleader",
+        "order": 2,
+        "highest_pokemon_level": 25
+    },
+    {
+        "name": "Korrina",
+        "badge": "Rumble Badge",
+        "game_id": 13,
+        "type": "gymleader",
+        "order": 3,
+        "highest_pokemon_level": 32
+    },
+    {
+        "name": "Ramos",
+        "badge": "Plant Badge",
+        "game_id": 13,
+        "type": "gymleader",
+        "order": 4,
+        "highest_pokemon_level": 34
+    },
+    {
+        "name": "Clemont",
+        "badge": "Voltage Badge",
+        "game_id": 13,
+        "type": "gymleader",
+        "order": 5,
+        "highest_pokemon_level": 37
+    },
+    {
+        "name": "Valerie",
+        "badge": "Fairy Badge",
+        "game_id": 13,
+        "type": "gymleader",
+        "order": 6,
+        "highest_pokemon_level": 42
+    },
+    {
+        "name": "Olympia",
+        "badge": "Psychic Badge",
+        "game_id": 13,
+        "type": "gymleader",
+        "order": 7,
+        "highest_pokemon_level": 48
+    },
+    {
+        "name": "Wulfric",
+        "badge": "Iceberg Badge",
+        "game_id": 13,
+        "type": "gymleader",
+        "order": 8,
+        "highest_pokemon_level": 59
+    },
+    {
+        "name": "Malva",
+        "badge": "Elite Four",
+        "game_id": 13,
+        "type": "elite4",
+        "order": 9,
+        "highest_pokemon_level": 63
+    },
+    {
+        "name": "Siebold",
+        "badge": "Elite Four",
+        "game_id": 13,
+        "type": "elite4",
+        "order": 10,
+        "highest_pokemon_level": 63
+    },
+    {
+        "name": "Wikstrom",
+        "badge": "Elite Four",
+        "game_id": 13,
+        "type": "elite4",
+        "order": 11,
+        "highest_pokemon_level": 63
+    },
+    {
+        "name": "Drasna",
+        "badge": "Elite Four",
+        "game_id": 13,
+        "type": "elite4",
+        "order": 12,
+        "highest_pokemon_level": 63
+    },
+    {
+        "name": "Diantha",
+        "badge": "Champion",
+        "game_id": 13,
+        "type": "champion",
+        "order": 13,
+        "highest_pokemon_level": 68
+    },
+    {
+        "name": "Roxanne",
+        "badge": "Stone Badge",
+        "game_id": 14,
+        "type": "gymleader",
+        "order": 1,
+        "highest_pokemon_level": 14
+    },
+    {
+        "name": "Brawly",
+        "badge": "Knuckle Badge",
+        "game_id": 14,
+        "type": "gymleader",
+        "order": 2,
+        "highest_pokemon_level": 16
+    },
+    {
+        "name": "Wattson",
+        "badge": "Dynamo Badge",
+        "game_id": 14,
+        "type": "gymleader",
+        "order": 3,
+        "highest_pokemon_level": 21
+    },
+    {
+        "name": "Flannery",
+        "badge": "Heat Badge",
+        "game_id": 14,
+        "type": "gymleader",
+        "order": 4,
+        "highest_pokemon_level": 28
+    },
+    {
+        "name": "Norman",
+        "badge": "Balance Badge",
+        "game_id": 14,
+        "type": "gymleader",
+        "order": 5,
+        "highest_pokemon_level": 30
+    },
+    {
+        "name": "Winona",
+        "badge": "Feather Badge",
+        "game_id": 14,
+        "type": "gymleader",
+        "order": 6,
+        "highest_pokemon_level": 35
+    },
+    {
+        "name": "Tate & Liza",
+        "badge": "Mind Badge",
+        "game_id": 14,
+        "type": "gymleader",
+        "order": 7,
+        "highest_pokemon_level": 45
+    },
+    {
+        "name": "Wallace",
+        "badge": "Rain Badge",
+        "game_id": 14,
+        "type": "gymleader",
+        "order": 8,
+        "highest_pokemon_level": 46
+    },
+    {
+        "name": "Sidney",
+        "badge": "Elite Four",
+        "game_id": 14,
+        "type": "elite4",
+        "order": 9,
+        "highest_pokemon_level": 50
+    },
+    {
+        "name": "Phoebe",
+        "badge": "Elite Four",
+        "game_id": 14,
+        "type": "elite4",
+        "order": 10,
+        "highest_pokemon_level": 52
+    },
+    {
+        "name": "Glacia",
+        "badge": "Elite Four",
+        "game_id": 14,
+        "type": "elite4",
+        "order": 11,
+        "highest_pokemon_level": 54
+    },
+    {
+        "name": "Drake",
+        "badge": "Elite Four",
+        "game_id": 14,
+        "type": "elite4",
+        "order": 12,
+        "highest_pokemon_level": 56
+    },
+    {
+        "name": "Steven",
+        "badge": "Champion",
+        "game_id": 14,
+        "type": "champion",
+        "order": 13,
+        "highest_pokemon_level": 59
+    },
+    {
+        "name": "Ilima",
+        "badge": "Trial Captain",
+        "game_id": 21,
+        "order": 1,
+        "highest_pokemon_level": 15,
+        "type": "gymleader"
+    },
+    {
+        "name": "Lana",
+        "badge": "Trial Captain",
+        "game_id": 21,
+        "order": 2,
+        "highest_pokemon_level": 20,
+        "type": "gymleader"
+    },
+    {
+        "name": "Kiawe",
+        "badge": "Trial Captain",
+        "game_id": 21,
+        "order": 3,
+        "highest_pokemon_level": 22,
+        "type": "gymleader"
+    },
+    {
+        "name": "Mallow",
+        "badge": "Trial Captain",
+        "game_id": 21,
+        "order": 4,
+        "highest_pokemon_level": 24,
+        "type": "gymleader"
+    },
+    {
+        "name": "Sophocles",
+        "badge": "Trial Captain",
+        "game_id": 21,
+        "order": 5,
+        "highest_pokemon_level": 29,
+        "type": "gymleader"
+    },
+    {
+        "name": "Acerola",
+        "badge": "Trial Captain",
+        "game_id": 21,
+        "order": 6,
+        "highest_pokemon_level": 33,
+        "type": "gymleader"
+    },
+    {
+        "name": "Nanu",
+        "badge": "Kahuna",
+        "game_id": 21,
+        "order": 7,
+        "highest_pokemon_level": 43,
+        "type": "gymleader"
+    },
+    {
+        "name": "Hapu",
+        "badge": "Kahuna",
+        "game_id": 21,
+        "order": 8,
+        "highest_pokemon_level": 48,
+        "type": "gymleader"
+    },
+    {
+        "name": "Hala",
+        "badge": "Kahuna",
+        "game_id": 21,
+        "order": 9,
+        "highest_pokemon_level": 15,
+        "type": "elite4"
+    },
+    {
+        "name": "Olivia",
+        "badge": "Kahuna",
+        "game_id": 21,
+        "order": 10,
+        "highest_pokemon_level": 27,
+        "type": "elite4"
+    },
+    {
+        "name": "Nanu",
+        "badge": "Kahuna",
+        "game_id": 21,
+        "order": 11,
+        "highest_pokemon_level": 43,
+        "type": "elite4"
+    },
+    {
+        "name": "Hapu",
+        "badge": "Kahuna",
+        "game_id": 21,
+        "order": 12,
+        "highest_pokemon_level": 48,
+        "type": "elite4"
+    },
+    {
+        "name": "Kukui",
+        "badge": "Champion",
+        "game_id": 21,
+        "order": 13,
+        "highest_pokemon_level": 60,
+        "type": "champion"
+    },
+    {
+        "name": "Ilima",
+        "badge": "Trial Captain",
+        "game_id": 16,
+        "order": 1,
+        "highest_pokemon_level": 16,
+        "type": "gymleader"
+    },
+    {
+        "name": "Lana",
+        "badge": "Trial Captain",
+        "game_id": 16,
+        "order": 2,
+        "highest_pokemon_level": 20,
+        "type": "gymleader"
+    },
+    {
+        "name": "Kiawe",
+        "badge": "Trial Captain",
+        "game_id": 16,
+        "order": 3,
+        "highest_pokemon_level": 22,
+        "type": "gymleader"
+    },
+    {
+        "name": "Mallow",
+        "badge": "Trial Captain",
+        "game_id": 16,
+        "order": 4,
+        "highest_pokemon_level": 24,
+        "type": "gymleader"
+    },
+    {
+        "name": "Sophocles",
+        "badge": "Trial Captain",
+        "game_id": 16,
+        "order": 5,
+        "highest_pokemon_level": 29,
+        "type": "gymleader"
+    },
+    {
+        "name": "Acerola",
+        "badge": "Trial Captain",
+        "game_id": 16,
+        "order": 6,
+        "highest_pokemon_level": 33,
+        "type": "gymleader"
+    },
+    {
+        "name": "Nanu",
+        "badge": "Kahuna",
+        "game_id": 16,
+        "order": 7,
+        "highest_pokemon_level": 43,
+        "type": "gymleader"
+    },
+    {
+        "name": "Hapu",
+        "badge": "Kahuna",
+        "game_id": 16,
+        "order": 8,
+        "highest_pokemon_level": 53,
+        "type": "gymleader"
+    },
+    {
+        "name": "Molayne",
+        "badge": "Elite Four",
+        "game_id": 16,
+        "order": 9,
+        "highest_pokemon_level": 56,
+        "type": "elite4"
+    },
+    {
+        "name": "Olivia",
+        "badge": "Elite Four",
+        "game_id": 16,
+        "order": 10,
+        "highest_pokemon_level": 56,
+        "type": "elite4"
+    },
+    {
+        "name": "Acerola",
+        "badge": "Elite Four",
+        "game_id": 16,
+        "order": 11,
+        "highest_pokemon_level": 56,
+        "type": "elite4"
+    },
+    {
+        "name": "Kahili",
+        "badge": "Elite Four",
+        "game_id": 16,
+        "order": 12,
+        "highest_pokemon_level": 56,
+        "type": "elite4"
+    },
+    {
+        "name": "Hau",
+        "badge": "Champion",
+        "game_id": 16,
+        "order": 13,
+        "highest_pokemon_level": 60,
+        "type": "champion"
+    },
+    {
+        "name": "Brock",
+        "badge": "Boulder Badge",
+        "game_id": 17,
+        "order": 1,
+        "highest_pokemon_level": 12,
+        "type": "gymleader"
+    },
+    {
+        "name": "Misty",
+        "badge": "Cascade Badge",
+        "game_id": 17,
+        "order": 2,
+        "highest_pokemon_level": 15,
+        "type": "gymleader"
+    },
+    {
+        "name": "Lt. Surge",
+        "badge": "Thunder Badge",
+        "game_id": 17,
+        "order": 3,
+        "highest_pokemon_level": 25,
+        "type": "gymleader"
+    },
+    {
+        "name": "Erika",
+        "badge": "Rainbow Badge",
+        "game_id": 17,
+        "order": 4,
+        "highest_pokemon_level": 34,
+        "type": "gymleader"
+    },
+    {
+        "name": "Koga",
+        "badge": "Soul Badge",
+        "game_id": 17,
+        "order": 5,
+        "highest_pokemon_level": 44,
+        "type": "gymleader"
+    },
+    {
+        "name": "Sabrina",
+        "badge": "Marsh Badge",
+        "game_id": 17,
+        "order": 6,
+        "highest_pokemon_level": 43,
+        "type": "gymleader"
+    },
+    {
+        "name": "Blaine",
+        "badge": "Volcano Badge",
+        "game_id": 17,
+        "order": 7,
+        "highest_pokemon_level": 47,
+        "type": "gymleader"
+    },
+    {
+        "name": "Giovanni",
+        "badge": "Earth Badge",
+        "game_id": 17,
+        "order": 8,
+        "highest_pokemon_level": 50,
+        "type": "gymleader"
+    },
+    {
+        "name": "Lorelei",
+        "badge": null,
+        "game_id": 17,
+        "order": 9,
+        "highest_pokemon_level": 51,
+        "type": "elite4"
+    },
+    {
+        "name": "Bruno",
+        "badge": null,
+        "game_id": 17,
+        "order": 10,
+        "highest_pokemon_level": 53,
+        "type": "elite4"
+    },
+    {
+        "name": "Agatha",
+        "badge": null,
+        "game_id": 17,
+        "order": 11,
+        "highest_pokemon_level": 54,
+        "type": "elite4"
+    },
+    {
+        "name": "Lance",
+        "badge": null,
+        "game_id": 17,
+        "order": 12,
+        "highest_pokemon_level": 56,
+        "type": "elite4"
+    },
+    {
+        "name": "Trace",
+        "badge": null,
+        "game_id": 17,
+        "order": 13,
+        "highest_pokemon_level": 57,
+        "type": "champion"
+    },
+    {
+        "name": "Milo",
+        "badge": "Grass Badge",
+        "game_id": 18,
+        "order": 1,
+        "highest_pokemon_level": 20,
+        "type": "gymleader"
+    },
+    {
+        "name": "Nessa",
+        "badge": "Water Badge",
+        "game_id": 18,
+        "order": 2,
+        "highest_pokemon_level": 24,
+        "type": "gymleader"
+    },
+    {
+        "name": "Kabu",
+        "badge": "Fire Badge",
+        "game_id": 18,
+        "order": 3,
+        "highest_pokemon_level": 27,
+        "type": "gymleader"
+    },
+    {
+        "name": "Bea/Allister",
+        "badge": "Fighting/Ghost Badge",
+        "game_id": 18,
+        "order": 4,
+        "highest_pokemon_level": 36,
+        "type": "gymleader"
+    },
+    {
+        "name": "Opal",
+        "badge": "Fairy Badge",
+        "game_id": 18,
+        "order": 5,
+        "highest_pokemon_level": 38,
+        "type": "gymleader"
+    },
+    {
+        "name": "Gordie/Melony",
+        "badge": "Rock/Ice Badge",
+        "game_id": 18,
+        "order": 6,
+        "highest_pokemon_level": 42,
+        "type": "gymleader"
+    },
+    {
+        "name": "Piers",
+        "badge": "Dark Badge",
+        "game_id": 18,
+        "order": 7,
+        "highest_pokemon_level": 46,
+        "type": "gymleader"
+    },
+    {
+        "name": "Raihan",
+        "badge": "Dragon Badge",
+        "game_id": 18,
+        "order": 8,
+        "highest_pokemon_level": 48,
+        "type": "gymleader"
+    },
+    {
+        "name": "Melony",
+        "badge": null,
+        "game_id": 18,
+        "order": 9,
+        "highest_pokemon_level": 53,
+        "type": "elite4"
+    },
+    {
+        "name": "Bea",
+        "badge": null,
+        "game_id": 18,
+        "order": 10,
+        "highest_pokemon_level": 54,
+        "type": "elite4"
+    },
+    {
+        "name": "Piers",
+        "badge": null,
+        "game_id": 18,
+        "order": 11,
+        "highest_pokemon_level": 55,
+        "type": "elite4"
+    },
+    {
+        "name": "Raihan",
+        "badge": null,
+        "game_id": 18,
+        "order": 12,
+        "highest_pokemon_level": 56,
+        "type": "elite4"
+    },
+    {
+        "name": "Leon",
+        "badge": null,
+        "game_id": 18,
+        "order": 13,
+        "highest_pokemon_level": 65,
+        "type": "champion"
+    },
+    {
+        "name": "Roark",
+        "badge": "Coal Badge",
+        "game_id": 19,
+        "order": 1,
+        "highest_pokemon_level": 14,
+        "type": "gymleader"
+    },
+    {
+        "name": "Gardenia",
+        "badge": "Forest Badge",
+        "game_id": 19,
+        "order": 2,
+        "highest_pokemon_level": 22,
+        "type": "gymleader"
+    },
+    {
+        "name": "Maylene",
+        "badge": "Cobble Badge",
+        "game_id": 19,
+        "order": 3,
+        "highest_pokemon_level": 30,
+        "type": "gymleader"
+    },
+    {
+        "name": "Crasher Wake",
+        "badge": "Fen Badge",
+        "game_id": 19,
+        "order": 4,
+        "highest_pokemon_level": 30,
+        "type": "gymleader"
+    },
+    {
+        "name": "Fantina",
+        "badge": "Relic Badge",
+        "game_id": 19,
+        "order": 5,
+        "highest_pokemon_level": 36,
+        "type": "gymleader"
+    },
+    {
+        "name": "Byron",
+        "badge": "Mine Badge",
+        "game_id": 19,
+        "order": 6,
+        "highest_pokemon_level": 41,
+        "type": "gymleader"
+    },
+    {
+        "name": "Candice",
+        "badge": "Icicle Badge",
+        "game_id": 19,
+        "order": 7,
+        "highest_pokemon_level": 44,
+        "type": "gymleader"
+    },
+    {
+        "name": "Volkner",
+        "badge": "Beacon Badge",
+        "game_id": 19,
+        "order": 8,
+        "highest_pokemon_level": 49,
+        "type": "gymleader"
+    },
+    {
+        "name": "Aaron",
+        "badge": null,
+        "game_id": 19,
+        "order": 9,
+        "highest_pokemon_level": 53,
+        "type": "elite4"
+    },
+    {
+        "name": "Bertha",
+        "badge": null,
+        "game_id": 19,
+        "order": 10,
+        "highest_pokemon_level": 55,
+        "type": "elite4"
+    },
+    {
+        "name": "Flint",
+        "badge": null,
+        "game_id": 19,
+        "order": 11,
+        "highest_pokemon_level": 57,
+        "type": "elite4"
+    },
+    {
+        "name": "Lucian",
+        "badge": null,
+        "game_id": 19,
+        "order": 12,
+        "highest_pokemon_level": 59,
+        "type": "elite4"
+    },
+    {
+        "name": "Cynthia",
+        "badge": null,
+        "game_id": 19,
+        "order": 13,
+        "highest_pokemon_level": 66,
+        "type": "champion"
+    },
+    {
+        "name": "Adaman",
+        "badge": "Diamond Clan",
+        "game_id": 20,
+        "order": 1,
+        "highest_pokemon_level": 68,
+        "type": "gymleader"
+    },
+    {
+        "name": "Irida",
+        "badge": "Pearl Clan",
+        "game_id": 20,
+        "order": 2,
+        "highest_pokemon_level": 68,
+        "type": "gymleader"
+    },
+    {
+        "name": "Kamado",
+        "badge": "Champion",
+        "game_id": 20,
+        "order": 3,
+        "highest_pokemon_level": 70,
+        "type": "champion"
+    },
+    {
+        "name": "Katy",
+        "badge": "Bug",
+        "game_id": 21,
+        "order": 1,
+        "highest_pokemon_level": 15,
+        "type": "gymleader"
+    },
+    {
+        "name": "Brassius",
+        "badge": "Grass",
+        "game_id": 21,
+        "order": 2,
+        "highest_pokemon_level": 17,
+        "type": "gymleader"
+    },
+    {
+        "name": "Iono",
+        "badge": "Electric",
+        "game_id": 21,
+        "order": 3,
+        "highest_pokemon_level": 24,
+        "type": "gymleader"
+    },
+    {
+        "name": "Kofu",
+        "badge": "Water",
+        "game_id": 21,
+        "order": 4,
+        "highest_pokemon_level": 30,
+        "type": "gymleader"
+    },
+    {
+        "name": "Larry",
+        "badge": "Normal",
+        "game_id": 21,
+        "order": 5,
+        "highest_pokemon_level": 36,
+        "type": "gymleader"
+    },
+    {
+        "name": "Ryme",
+        "badge": "Ghost",
+        "game_id": 21,
+        "order": 6,
+        "highest_pokemon_level": 42,
+        "type": "gymleader"
+    },
+    {
+        "name": "Tulip",
+        "badge": "Psychic",
+        "game_id": 21,
+        "order": 7,
+        "highest_pokemon_level": 45,
+        "type": "gymleader"
+    },
+    {
+        "name": "Grusha",
+        "badge": "Ice",
+        "game_id": 15,
+        "order": 8,
+        "highest_pokemon_level": 48,
+        "type": "gymleader"
+    },
+    {
+        "name": "Rika",
+        "badge": null,
+        "game_id": 15,
+        "order": 9,
+        "highest_pokemon_level": 58,
+        "type": "elite4"
+    },
+    {
+        "name": "Poppy",
+        "badge": null,
+        "game_id": 15,
+        "order": 10,
+        "highest_pokemon_level": 59,
+        "type": "elite4"
+    },
+    {
+        "name": "Larry",
+        "badge": null,
+        "game_id": 15,
+        "order": 11,
+        "highest_pokemon_level": 60,
+        "type": "elite4"
+    },
+    {
+        "name": "Hassel",
+        "badge": null,
+        "game_id": 15,
+        "order": 12,
+        "highest_pokemon_level": 61,
+        "type": "elite4"
+    },
+    {
+        "name": "Geeta",
+        "badge": null,
+        "game_id": 15,
+        "order": 13,
+        "highest_pokemon_level": 62,
+        "type": "champion"
+    }
+]
