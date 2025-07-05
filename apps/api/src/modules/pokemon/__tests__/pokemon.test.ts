@@ -602,6 +602,68 @@ describe('Pokemon API', () => {
         .expect('Content-Type', /json/)
         .expect(400);
     });
+    it('should move pokemon to box when set status to DEAD', async () => {
+      // Create a user first
+      const userResponse = await supertest(app)
+        .post('/api/v1/users')
+        .send({ username: 'TestUser9' })
+        .expect(201);
+      const user = userResponse.body.user;
+
+      // Create a session
+      const sessionResponse = await supertest(app)
+        .post('/api/v1/session')
+        .send({ name: 'Test Session 8', description: 'Test Description 8' })
+        .expect(201);
+      const sessionId = sessionResponse.body.id;
+
+      // Start the session
+      await supertest(app)
+        .put(`/api/v1/session/${sessionId}`)
+        .send({ status: 'STARTED' })
+        .expect(200);
+
+      // Join the session
+      await supertest(app)
+        .post(`/api/v1/session/${sessionId}/join`)
+        .send({ userId: user.id })
+        .expect(200);
+
+      // Add a Pokémon
+      const addRes = await supertest(app)
+        .post(`/api/v1/pokemon/${sessionId}`)
+        .send({
+          userId: user.id,
+          pokemonId: 25,
+          status: 'CAUGHT',
+          routeName: 'Route 1',
+          location: 'TEAM',
+          position: 1,
+        })
+        .expect(201);
+
+      const pokemonId = addRes.body.id;
+
+      // Update the Pokémon to DEAD status
+      const updateData: UpdatePokemonRequest = {
+        status: 'DEAD',
+        routeName: 'Route 1',
+        location: 'TEAM',
+        position: 1,
+      };
+
+      const response = await supertest(app)
+        .patch(`/api/v1/pokemon/${sessionId}/${pokemonId}`)
+        .send(updateData)
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(200);
+
+      //validate new location and position
+      expect(response.body.location).toBe('BOX');
+      expect(response.body.position).toBe(0);
+      expect(response.body.status).toBe('DEAD');
+    });
   });
 
   describe('GET /api/v1/pokemon/:sessionId/routes', () => {

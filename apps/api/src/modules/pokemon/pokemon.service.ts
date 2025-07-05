@@ -190,12 +190,85 @@ export class PokemonService {
         where: { sessionId, id },
         select: {
           id: true,
+          status: true,
+          location: true,
+          position: true,
+          user: {
+            select: { id: true, username: true },
+          },
         },
       });
 
       if (!existingPokemon) {
         throw new Error('Pokemon not found');
       }
+
+      // If status is being set to DEAD, automatically move to BOX
+      if (data.status === 'DEAD' && existingPokemon.location === 'TEAM') {
+        // Get all pokemon for position management
+        const allPokemon = await prisma.pokemon.findMany({
+          where: { sessionId },
+          orderBy: { position: 'asc' },
+          select: {
+            id: true,
+            sessionId: true,
+            pokemonId: true,
+            status: true,
+            routeName: true,
+            location: true,
+            position: true,
+            user: {
+              select: { id: true, username: true },
+            },
+          },
+        });
+
+        // Map to the structure for PokemonPositionManager
+        const mappedPokemon = allPokemon.map((poke) => ({
+          ...poke,
+          name: `Pokemon #${poke.pokemonId}`, // Fallback name
+          image: '', // Fallback image
+        }));
+
+        // Get next available box position
+        const nextBoxPosition = PokemonPositionManager.getNextBoxPosition(
+          mappedPokemon,
+          existingPokemon.user.id
+        );
+
+        // Force move to BOX with status DEAD
+        const updateData = {
+          status: 'DEAD' as PrismaPokemonStatus,
+          location: 'BOX' as const,
+          position: nextBoxPosition,
+          ...(data.routeName !== undefined && { routeName: data.routeName }),
+        };
+
+        const updated = await prisma.pokemon.update({
+          where: { id },
+          data: updateData,
+          select: {
+            id: true,
+            sessionId: true,
+            pokemonId: true,
+            status: true,
+            routeName: true,
+            location: true,
+            position: true,
+            user: {
+              select: { id: true, username: true },
+            },
+          },
+        });
+
+        return PokemonMapper.mapPrismaToPokemonDtoEnriched(updated);
+      }
+
+      // Prevent dead Pokemon from being moved to TEAM
+      if (data.location === 'TEAM' && existingPokemon.status === 'DEAD') {
+        throw new Error('Dead Pokemon cannot be moved to team');
+      }
+
       // If moving (location or position is present), use PokemonPositionManager
       if (data.location !== undefined || data.position !== undefined) {
         // Get all pokemon for the session
@@ -224,8 +297,15 @@ export class PokemonService {
         // Find the current pokemon
         const current = mappedPokemon.find((p) => p.id === id);
         if (!current) throw new Error('Pokemon not found');
+
         const newLocation = data.location ?? current.location;
         const newPosition = data.position ?? current.position;
+
+        // Prevent dead Pokemon from being moved to TEAM
+        if (newLocation === 'TEAM' && current.status === 'DEAD') {
+          throw new Error('Dead Pokemon cannot be moved to team');
+        }
+
         const { valid, adjustedPokemon, error } =
           PokemonPositionManager.validateMove(
             mappedPokemon,
