@@ -38,6 +38,12 @@ describe('Pokemon API', () => {
         .send({ userId: user.id })
         .expect(200);
 
+      // Start the session
+      await supertest(app)
+        .put(`/api/v1/session/${sessionId}`)
+        .send({ status: 'STARTED' })
+        .expect(200);
+
       const requestBody: AddPokemonRequest = {
         userId: user.id,
         pokemonId: 25,
@@ -89,6 +95,150 @@ describe('Pokemon API', () => {
         .expect('Content-Type', /json/)
         .expect(400);
     });
+    it('should return 400 when trying to add Pokémon to a non-started session', async () => {
+      // Create a user first
+      const userResponse = await supertest(app)
+        .post('/api/v1/users')
+        .send({ username: 'TestUser3' })
+        .expect(201);
+      const user = userResponse.body.user;
+
+      // Create a session (defaults to WAITING status)
+      const sessionResponse = await supertest(app)
+        .post('/api/v1/session')
+        .send({ name: 'Test Session 3', description: 'Test Description 3' })
+        .expect(201);
+      const sessionId = sessionResponse.body.id;
+
+      // Join the session
+      await supertest(app)
+        .post(`/api/v1/session/${sessionId}/join`)
+        .send({ userId: user.id })
+        .expect(200);
+
+      // Try to add a Pokémon while session is in WAITING status
+      const requestBody: AddPokemonRequest = {
+        userId: user.id,
+        pokemonId: 25,
+        status: 'CAUGHT',
+        routeName: 'Route 1',
+        location: 'BOX',
+        position: 1,
+      };
+
+      const response = await supertest(app)
+        .post(`/api/v1/pokemon/${sessionId}`)
+        .send(requestBody)
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(400);
+
+      expect(response.body).toHaveProperty('success', false);
+      expect(response.body).toHaveProperty('error');
+      expect(response.body.error.message).toContain(
+        'Pokemon can only be added to sessions that are currently running'
+      );
+    });
+    it('should allow adding Pokémon to a started session', async () => {
+      // Create a user first
+      const userResponse = await supertest(app)
+        .post('/api/v1/users')
+        .send({ username: 'TestUser4' })
+        .expect(201);
+      const user = userResponse.body.user;
+
+      // Create a session
+      const sessionResponse = await supertest(app)
+        .post('/api/v1/session')
+        .send({ name: 'Test Session 4', description: 'Test Description 4' })
+        .expect(201);
+      const sessionId = sessionResponse.body.id;
+
+      // Start the session
+      await supertest(app)
+        .put(`/api/v1/session/${sessionId}`)
+        .send({ status: 'STARTED' })
+        .expect(200);
+
+      // Join the session
+      await supertest(app)
+        .post(`/api/v1/session/${sessionId}/join`)
+        .send({ userId: user.id })
+        .expect(200);
+
+      // Now try to add a Pokémon while session is in STARTED status
+      const requestBody: AddPokemonRequest = {
+        userId: user.id,
+        pokemonId: 25,
+        status: 'CAUGHT',
+        routeName: 'Route 1',
+        location: 'BOX',
+        position: 1,
+      };
+
+      const response = await supertest(app)
+        .post(`/api/v1/pokemon/${sessionId}`)
+        .send(requestBody)
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(201);
+
+      // Validate the response using Zod schema
+      const validation = schemas.Pokemon.strict().safeParse(response.body);
+      expect(validation.success).toBe(true);
+      expect(response.body.user.id).toBe(user.id);
+      expect(response.body.pokemonId).toBe(25);
+    });
+    it('should return 400 when trying to add Pokémon to a finished session', async () => {
+      // Create a user first
+      const userResponse = await supertest(app)
+        .post('/api/v1/users')
+        .send({ username: 'TestUser5' })
+        .expect(201);
+      const user = userResponse.body.user;
+
+      // Create a session
+      const sessionResponse = await supertest(app)
+        .post('/api/v1/session')
+        .send({ name: 'Test Session 5', description: 'Test Description 5' })
+        .expect(201);
+      const sessionId = sessionResponse.body.id;
+
+      // Finish the session
+      await supertest(app)
+        .put(`/api/v1/session/${sessionId}`)
+        .send({ status: 'FINISHED' })
+        .expect(200);
+
+      // Join the session
+      await supertest(app)
+        .post(`/api/v1/session/${sessionId}/join`)
+        .send({ userId: user.id })
+        .expect(200);
+
+      // Try to add a Pokémon while session is in FINISHED status
+      const requestBody: AddPokemonRequest = {
+        userId: user.id,
+        pokemonId: 25,
+        status: 'CAUGHT',
+        routeName: 'Route 1',
+        location: 'BOX',
+        position: 1,
+      };
+
+      const response = await supertest(app)
+        .post(`/api/v1/pokemon/${sessionId}`)
+        .send(requestBody)
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(400);
+
+      expect(response.body).toHaveProperty('success', false);
+      expect(response.body).toHaveProperty('error');
+      expect(response.body.error.message).toContain(
+        'Pokemon can only be added to sessions that are currently running'
+      );
+    });
   });
 
   describe('GET /api/v1/pokemon/:sessionId', () => {
@@ -106,6 +256,12 @@ describe('Pokemon API', () => {
         .send({ name: 'Test Session 3', description: 'Test Description 3' })
         .expect(201);
       const sessionId = sessionResponse.body.id;
+
+      // Start the session
+      await supertest(app)
+        .put(`/api/v1/session/${sessionId}`)
+        .send({ status: 'STARTED' })
+        .expect(200);
 
       // Join the session
       await supertest(app)
@@ -133,7 +289,9 @@ describe('Pokemon API', () => {
         .expect(200);
 
       // Validate the response using Zod schema
-      const validation = schemas.PokemonListResponse.strict().safeParse(response.body);
+      const validation = schemas.PokemonListResponse.strict().safeParse(
+        response.body
+      );
       expect(validation.success).toBe(true);
       expect(response.body.pokemon).toHaveLength(1);
       expect(response.body.pokemon[0].user.id).toBe(user.id);
@@ -158,6 +316,12 @@ describe('Pokemon API', () => {
         .send({ name: 'Test Session 4', description: 'Test Description 4' })
         .expect(201);
       const sessionId = sessionResponse.body.id;
+
+      // Start the session
+      await supertest(app)
+        .put(`/api/v1/session/${sessionId}`)
+        .send({ status: 'STARTED' })
+        .expect(200);
 
       // Both users join the session
       await supertest(app)
@@ -237,6 +401,12 @@ describe('Pokemon API', () => {
         .expect(201);
       const sessionId = sessionResponse.body.id;
 
+      // Start the session
+      await supertest(app)
+        .put(`/api/v1/session/${sessionId}`)
+        .send({ status: 'STARTED' })
+        .expect(200);
+
       // Join the session
       await supertest(app)
         .post(`/api/v1/session/${sessionId}/join`)
@@ -295,6 +465,12 @@ describe('Pokemon API', () => {
         .expect(201);
       const sessionId = sessionResponse.body.id;
 
+      // Start the session
+      await supertest(app)
+        .put(`/api/v1/session/${sessionId}`)
+        .send({ status: 'STARTED' })
+        .expect(200);
+
       // Join the session
       await supertest(app)
         .post(`/api/v1/session/${sessionId}/join`)
@@ -342,6 +518,12 @@ describe('Pokemon API', () => {
         .expect(201);
       const sessionId = sessionResponse.body.id;
 
+      // Start the session
+      await supertest(app)
+        .put(`/api/v1/session/${sessionId}`)
+        .send({ status: 'STARTED' })
+        .expect(200);
+
       // Join the session
       await supertest(app)
         .post(`/api/v1/session/${sessionId}/join`)
@@ -380,7 +562,9 @@ describe('Pokemon API', () => {
         .expect(200);
 
       // Validate the response using Zod schema
-      const validation = schemas.RouteListResponse.strict().safeParse(response.body);
+      const validation = schemas.RouteListResponse.strict().safeParse(
+        response.body
+      );
       expect(validation.success).toBe(true);
       expect(response.body.routes).toContain('Route 1');
       expect(response.body.routes).toContain('Route 2');
@@ -406,6 +590,12 @@ describe('Pokemon API', () => {
         .send({ name: 'Test Session 8', description: 'Test Description 8' })
         .expect(201);
       const sessionId = sessionResponse.body.id;
+
+      // Start the session
+      await supertest(app)
+        .put(`/api/v1/session/${sessionId}`)
+        .send({ status: 'STARTED' })
+        .expect(200);
 
       // Both users join the session
       await supertest(app)

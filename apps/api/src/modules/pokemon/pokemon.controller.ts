@@ -101,6 +101,30 @@ export const addPokemon = async (
         },
       });
     }
+    if (error instanceof Error) {
+      // Handle specific business logic errors
+      if (error.message.includes('Session not found')) {
+        return (res as Response<unknown>).status(404).json({
+          success: false,
+          error: {
+            message: error.message,
+            code: 'NOT_FOUND',
+          },
+        });
+      }
+      if (
+        error.message.includes('Pokemon can only be added') ||
+        error.message.includes('User cannot catch')
+      ) {
+        return (res as Response<unknown>).status(400).json({
+          success: false,
+          error: {
+            message: error.message,
+            code: 'BAD_REQUEST',
+          },
+        });
+      }
+    }
     next(error);
   }
 };

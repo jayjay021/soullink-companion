@@ -40,7 +40,7 @@ export function SessionHeader({ session }: SessionHeaderProps) {
       const newStatus = session.status === 'WAITING' ? 'STARTED' : 'FINISHED';
       await updateSession({
         sessionId: session.id,
-        updateSessionRequest: { status: newStatus }
+        updateSessionRequest: { status: newStatus },
       }).unwrap();
     } catch (error) {
       console.error('Failed to update session status:', error);
@@ -49,10 +49,8 @@ export function SessionHeader({ session }: SessionHeaderProps) {
 
   const getStatusButtonProps = () => {
     if (session.status === 'WAITING') {
-      const canStart = session.users.length > 1;
       return {
         children: 'Start Session',
-        disabled: !canStart,
         color: 'green' as const,
         variant: 'filled' as const,
       };
@@ -70,20 +68,20 @@ export function SessionHeader({ session }: SessionHeaderProps) {
   const buttonProps = getStatusButtonProps();
 
   return (
-    <Card withBorder p="xl" mb="lg">
-      <Stack gap="lg">
+    <Card withBorder p='xl' mb='lg'>
+      <Stack gap='lg'>
         {/* Main header with title, status, and action button */}
-        <Group justify="space-between" align="flex-start">
-          <Stack gap="xs" style={{ flex: 1 }}>
+        <Group justify='space-between' align='flex-start'>
+          <Stack gap='xs' style={{ flex: 1 }}>
             <Title order={1}>{session.name}</Title>
-            <Text size="sm" c="dimmed" style={{ maxWidth: '600px' }}>
+            <Text size='sm' c='dimmed' style={{ maxWidth: '600px' }}>
               {session.description}
             </Text>
-            <Group gap="md">
-              <Text size="sm" c="dimmed">
+            <Group gap='md'>
+              <Text size='sm' c='dimmed'>
                 Created: {new Date(session.createdAt).toLocaleDateString()}
               </Text>
-              <Badge 
+              <Badge
                 variant={getStatusVariant(session.status)}
                 color={getStatusColor(session.status)}
               >
@@ -91,7 +89,7 @@ export function SessionHeader({ session }: SessionHeaderProps) {
               </Badge>
             </Group>
           </Stack>
-          
+
           {/* Status change button in top right */}
           {buttonProps && (
             <Button
@@ -104,4 +102,4 @@ export function SessionHeader({ session }: SessionHeaderProps) {
       </Stack>
     </Card>
   );
-} 
+}

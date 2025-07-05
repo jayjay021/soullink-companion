@@ -16,6 +16,7 @@ interface PlayerDashboardProps {
   onAddPokemon?: (inBox: boolean, position?: number) => void;
   sessionPlayers?: { id: string; username: string }[];
   allSessionPokemon?: EnhancedPokemon[];
+  canAddPokemon?: boolean;
 }
 
 export function PlayerDashboard({
@@ -26,11 +27,16 @@ export function PlayerDashboard({
   onAddPokemon,
   sessionPlayers,
   allSessionPokemon,
+  canAddPokemon = true,
 }: PlayerDashboardProps) {
   const [isUpdating, setIsUpdating] = useState(false);
   const [updatePokemon] = useUpdatePokemonMutation();
 
   const handleEmptySlotClick = (isTeam: boolean, position?: number) => {
+    if (!canAddPokemon) {
+      // Optionally show a notification or do nothing
+      return;
+    }
     if (onAddPokemon) {
       const inBox = !isTeam;
       onAddPokemon(inBox, position);
@@ -47,20 +53,21 @@ export function PlayerDashboard({
         // Combine all Pokémon for validation
         const allPokemon = [...team, ...box];
         const newLocation = toTeam ? 'TEAM' : 'BOX';
-        console.log("newPosition", newPosition);
-        const { valid, error: validationError } = PokemonPositionManager.validateMove(
-          allPokemon,
-          pokemonId,
-          newLocation,
-          newPosition
-        );
+        console.log('newPosition', newPosition);
+        const { valid, error: validationError } =
+          PokemonPositionManager.validateMove(
+            allPokemon,
+            pokemonId,
+            newLocation,
+            newPosition
+          );
         if (!valid) {
           alert(validationError || 'Invalid move');
           setIsUpdating(false);
           return;
         }
         // Find the Pokémon to move
-        const pokemon = allPokemon.find(p => p.id === pokemonId);
+        const pokemon = allPokemon.find((p) => p.id === pokemonId);
         if (!pokemon) {
           alert('Pokémon not found');
           setIsUpdating(false);
@@ -89,9 +96,9 @@ export function PlayerDashboard({
   );
 
   return (
-    <Stack>
-      <Card>
-        <Title order={3} mb="md">
+    <Stack gap='md'>
+      <Card p={0}>
+        <Title order={3} mb='md'>
           Your Team
         </Title>
         <PokemonGrid
@@ -102,10 +109,11 @@ export function PlayerDashboard({
           sessionPlayers={sessionPlayers}
           allSessionPokemon={allSessionPokemon}
           sessionId={sessionId}
+          canAddPokemon={canAddPokemon}
         />
       </Card>
-      <Card>
-        <Title order={3} mb="md">
+      <Card p={0}>
+        <Title order={3} mb='md'>
           Box
         </Title>
         <PokemonGrid
@@ -116,8 +124,9 @@ export function PlayerDashboard({
           sessionPlayers={sessionPlayers}
           allSessionPokemon={allSessionPokemon}
           sessionId={sessionId}
+          canAddPokemon={canAddPokemon}
         />
       </Card>
     </Stack>
   );
-} 
+}

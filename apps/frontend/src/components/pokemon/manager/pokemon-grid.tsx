@@ -22,6 +22,7 @@ interface PokemonGridProps {
   sessionPlayers?: SessionPlayer[];
   allSessionPokemon?: EnhancedPokemon[];
   sessionId: string;
+  canAddPokemon?: boolean;
 }
 
 const getBoxClass = (
@@ -64,6 +65,7 @@ export function PokemonGrid({
   sessionPlayers,
   allSessionPokemon,
   sessionId,
+  canAddPokemon = true,
 }: PokemonGridProps) {
   const [draggedPokemon, setDraggedPokemon] = useState<string | null>(null);
   const [dragOverSlot, setDragOverSlot] = useState<number | null>(null);
@@ -207,8 +209,8 @@ export function PokemonGrid({
           {pokemon ? (
             <HoverCard
               withArrow
-              position="top"
-              shadow="md"
+              position='top'
+              shadow='md'
               openDelay={500}
               closeDelay={200}
               disabled={
@@ -245,7 +247,9 @@ export function PokemonGrid({
               }
               withArrow
               openDelay={1000}
-              disabled={draggedPokemon === null && !onEmptySlotClick}
+              disabled={
+                draggedPokemon === null && (!onEmptySlotClick || !canAddPokemon)
+              }
             >
               <div
                 style={{
@@ -256,10 +260,15 @@ export function PokemonGrid({
                   justifyContent: 'center',
                   color: 'var(--mantine-color-gray-5)',
                   fontSize: isTeam ? '0.8rem' : '1.5rem',
-                  cursor: onEmptySlotClick ? 'pointer' : 'default',
+                  cursor:
+                    onEmptySlotClick && canAddPokemon ? 'pointer' : 'default',
                 }}
                 onClick={() => {
-                  if (onEmptySlotClick && draggedPokemon === null) {
+                  if (
+                    onEmptySlotClick &&
+                    canAddPokemon &&
+                    draggedPokemon === null
+                  ) {
                     // For team slots, pass the position. For box, only pass undefined for the last slot
                     const position = isTeam
                       ? index

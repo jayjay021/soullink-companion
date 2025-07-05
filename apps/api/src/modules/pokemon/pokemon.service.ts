@@ -3,10 +3,11 @@ import { log } from '@repo/logger';
 import { z } from 'zod';
 import { schemas } from '@repo/api-spec/zod';
 import { PokemonMapper } from './pokemon.mapper';
-import { PokemonPositionManager, PokemonValidationManager } from '@repo/pokemon-utils';
 import {
-  PokemonStatus as PrismaPokemonStatus,
-} from '@prisma/client';
+  PokemonPositionManager,
+  PokemonValidationManager,
+} from '@repo/pokemon-utils';
+import { PokemonStatus as PrismaPokemonStatus } from '@prisma/client';
 import { pokedexService } from '../pokedex/pokedex.service';
 
 // Zod schema types for request/response
@@ -33,7 +34,7 @@ export class PokemonService {
       if (userId) where.userId = userId;
       if (routeName) where.routeName = routeName;
       if (status) where.status = status as PrismaPokemonStatus;
-      
+
       const pokes = await prisma.pokemon.findMany({
         where,
         orderBy: { position: 'asc' },
@@ -81,7 +82,26 @@ export class PokemonService {
     }
   }
 
-  async addPokemon(sessionId: string, data: CreatePokemonData): Promise<PokemonDto> {
+  async addPokemon(
+    sessionId: string,
+    data: CreatePokemonData
+  ): Promise<PokemonDto> {
+    // First check if session exists and is in STARTED status
+    const session = await prisma.session.findUnique({
+      where: { id: sessionId },
+      select: { status: true },
+    });
+
+    if (!session) {
+      throw new Error('Session not found');
+    }
+
+    if (session.status !== 'STARTED') {
+      throw new Error(
+        'Pokemon can only be added to sessions that are currently running (STARTED status)'
+      );
+    }
+
     // get all pokemon for the session with user data
     const allPokemon = await prisma.pokemon.findMany({
       where: { sessionId },
@@ -98,7 +118,7 @@ export class PokemonService {
         },
       },
     });
-    const allPokemonMapped = allPokemon.map(poke => ({
+    const allPokemonMapped = allPokemon.map((poke) => ({
       ...poke,
       name: `Pokemon #${poke.pokemonId}`, // Fallback name
       image: '', // Fallback image
@@ -109,8 +129,14 @@ export class PokemonService {
     const pokedexData = pokedexService.getPokemon();
 
     // check if user can catch pokemon
-    const canCatch = PokemonValidationManager.canCatchSpecies(data.pokemonId, data.userId, allPokemonMapped, pokedexData.pokemon);
-    if (!canCatch.canCatch) throw new Error(canCatch.reason || 'User cannot catch this pokemon');
+    const canCatch = PokemonValidationManager.canCatchSpecies(
+      data.pokemonId,
+      data.userId,
+      allPokemonMapped,
+      pokedexData.pokemon
+    );
+    if (!canCatch.canCatch)
+      throw new Error(canCatch.reason || 'User cannot catch this pokemon');
     try {
       const poke = await prisma.pokemon.create({
         data: {
@@ -168,7 +194,7 @@ export class PokemonService {
           },
         });
         // Map to the new structure for PokemonPositionManager
-        const mappedPokemon = allPokemon.map(poke => ({
+        const mappedPokemon = allPokemon.map((poke) => ({
           ...poke,
           name: `Pokemon #${poke.pokemonId}`, // Fallback name
           image: '', // Fallback image
