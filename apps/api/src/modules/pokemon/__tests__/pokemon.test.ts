@@ -288,7 +288,7 @@ describe('Pokemon API', () => {
         userId: user.id,
         pokemonId: 26,
         status: 'CAUGHT',
-        routeName: 'Route 1',
+        routeName: 'Route 2',
         location: 'BOX',
         position: 1, // Same position as before
       };

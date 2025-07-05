@@ -75,7 +75,8 @@ export function PokemonGrid({
 }: PokemonGridProps) {
   const [draggedPokemon, setDraggedPokemon] = useState<string | null>(null);
   const [dragOverSlot, setDragOverSlot] = useState<number | null>(null);
-  const [isInvalidDropTarget, setIsInvalidDropTarget] = useState<boolean>(false);
+  const [isInvalidDropTarget, setIsInvalidDropTarget] =
+    useState<boolean>(false);
   const [justFinishedDragging, setJustFinishedDragging] = useState<
     string | null
   >(null);
@@ -127,7 +128,7 @@ export function PokemonGrid({
 
   const handleDragOver = (e: React.DragEvent, slotIndex: number) => {
     e.preventDefault();
-    
+
     // Get the drag data to check if Pokemon is dead
     const dataStr = e.dataTransfer.getData('text/plain');
     let isDead = false;

@@ -3,6 +3,7 @@ import { paths } from '@repo/api-spec/types';
 import { Request, Response, NextFunction } from 'express';
 import { z } from 'zod';
 import { pokemonService } from './pokemon.service';
+import { ApiError } from '../../middleware/errorHandler';
 
 // Types from OpenAPI spec
 // GET /pokemon/{sessionId}
@@ -74,6 +75,15 @@ export const listPokemon = async (
         },
       });
     }
+    if (error instanceof ApiError) {
+      return (res as Response<unknown>).status(error.statusCode).json({
+        success: false,
+        error: {
+          message: error.message,
+          code: error.statusCode === 404 ? 'NOT_FOUND' : 'VALIDATION_ERROR',
+        },
+      });
+    }
     next(error);
   }
 };
@@ -101,8 +111,17 @@ export const addPokemon = async (
         },
       });
     }
+    if (error instanceof ApiError) {
+      return (res as Response<unknown>).status(error.statusCode).json({
+        success: false,
+        error: {
+          message: error.message,
+          code: error.statusCode === 404 ? 'NOT_FOUND' : 'VALIDATION_ERROR',
+        },
+      });
+    }
     if (error instanceof Error) {
-      // Handle specific business logic errors
+      // Handle specific business logic errors that might still be plain Error objects
       if (error.message.includes('Session not found')) {
         return (res as Response<unknown>).status(404).json({
           success: false,
@@ -115,13 +134,23 @@ export const addPokemon = async (
       if (
         error.message.includes('Pokemon can only be added') ||
         error.message.includes('User cannot catch') ||
-        error.message.includes('Position is already taken')
+        error.message.includes('Position is already taken') ||
+        error.message.includes(
+          'A Pokemon in this evolution line is already caught'
+        ) ||
+        error.message.includes('evolution line') ||
+        error.message.includes('already caught') ||
+        error.message.includes('already used') ||
+        error.message.includes('Route') ||
+        error.message.includes('duplicate') ||
+        error.message.includes('validation') ||
+        error.message.includes('invalid')
       ) {
         return (res as Response<unknown>).status(400).json({
           success: false,
           error: {
             message: error.message,
-            code: 'BAD_REQUEST',
+            code: 'VALIDATION_ERROR',
           },
         });
       }
@@ -151,6 +180,15 @@ export const updatePokemon = async (
           message: 'Invalid request data',
           code: 'VALIDATION_ERROR',
           details: error.errors,
+        },
+      });
+    }
+    if (error instanceof ApiError) {
+      return (res as Response<unknown>).status(error.statusCode).json({
+        success: false,
+        error: {
+          message: error.message,
+          code: error.statusCode === 404 ? 'NOT_FOUND' : 'VALIDATION_ERROR',
         },
       });
     }
@@ -185,6 +223,15 @@ export const getRoutes = async (
           message: 'Invalid request data',
           code: 'VALIDATION_ERROR',
           details: error.errors,
+        },
+      });
+    }
+    if (error instanceof ApiError) {
+      return (res as Response<unknown>).status(error.statusCode).json({
+        success: false,
+        error: {
+          message: error.message,
+          code: error.statusCode === 404 ? 'NOT_FOUND' : 'VALIDATION_ERROR',
         },
       });
     }

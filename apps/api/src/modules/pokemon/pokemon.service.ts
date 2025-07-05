@@ -9,6 +9,7 @@ import {
 } from '@repo/pokemon-utils';
 import { PokemonStatus as PrismaPokemonStatus } from '@prisma/client';
 import { pokedexService } from '../pokedex/pokedex.service';
+import { ApiError } from '../../middleware/errorHandler';
 
 // Zod schema types for request/response
 type CreatePokemonData = z.infer<typeof schemas.CreatePokemonRequest>;
@@ -93,12 +94,13 @@ export class PokemonService {
     });
 
     if (!session) {
-      throw new Error('Session not found');
+      throw new ApiError('Session not found', 404);
     }
 
     if (session.status !== 'STARTED') {
-      throw new Error(
-        'Pokemon can only be added to sessions that are currently running (STARTED status)'
+      throw new ApiError(
+        'Pokemon can only be added to sessions that are currently running (STARTED status)',
+        400
       );
     }
 
@@ -136,7 +138,21 @@ export class PokemonService {
       pokedexData.pokemon
     );
     if (!canCatch.canCatch)
-      throw new Error(canCatch.reason || 'User cannot catch this pokemon');
+      throw new ApiError(
+        canCatch.reason || 'User cannot catch this pokemon',
+        400
+      );
+
+    // Check if route is already taken by this user in this session
+    const existingRouteUsage = allPokemon.find(
+      (p) => p.user.id === data.userId && p.routeName === data.routeName
+    );
+    if (existingRouteUsage) {
+      throw new ApiError(
+        `Route "${data.routeName}" is already used by this player in this session`,
+        400
+      );
+    }
 
     // Check if position is already taken for this user/session/location
     const existingPokemonAtPosition = allPokemon.find(
@@ -146,7 +162,7 @@ export class PokemonService {
         p.position === data.position
     );
     if (existingPokemonAtPosition) {
-      throw new Error('Position is already taken');
+      throw new ApiError('Position is already taken', 400);
     }
     try {
       const poke = await prisma.pokemon.create({
@@ -173,8 +189,37 @@ export class PokemonService {
         },
       });
       return PokemonMapper.mapPrismaToPokemonDtoEnriched(poke);
-    } catch (error) {
+    } catch (error: unknown) {
       log('Error adding pokemon:', error);
+
+      // Handle Prisma unique constraint violations
+      if (
+        error &&
+        typeof error === 'object' &&
+        'code' in error &&
+        error.code === 'P2002'
+      ) {
+        const target =
+          'meta' in error &&
+          error.meta &&
+          typeof error.meta === 'object' &&
+          'target' in error.meta
+            ? error.meta.target
+            : undefined;
+        if (target && Array.isArray(target)) {
+          if (target.includes('routeName')) {
+            throw new ApiError(
+              `Route "${data.routeName}" is already used by this player in this session`,
+              400
+            );
+          }
+          if (target.includes('position')) {
+            throw new ApiError('Position is already taken', 400);
+          }
+        }
+        throw new ApiError('Duplicate entry detected', 400);
+      }
+
       throw new Error('Failed to add pokemon');
     }
   }
@@ -200,7 +245,7 @@ export class PokemonService {
       });
 
       if (!existingPokemon) {
-        throw new Error('Pokemon not found');
+        throw new ApiError('Pokemon not found', 404);
       }
 
       // If status is being set to DEAD, automatically move to BOX
@@ -266,7 +311,7 @@ export class PokemonService {
 
       // Prevent dead Pokemon from being moved to TEAM
       if (data.location === 'TEAM' && existingPokemon.status === 'DEAD') {
-        throw new Error('Dead Pokemon cannot be moved to team');
+        throw new ApiError('Dead Pokemon cannot be moved to team', 400);
       }
 
       // If moving (location or position is present), use PokemonPositionManager
@@ -296,14 +341,14 @@ export class PokemonService {
         }));
         // Find the current pokemon
         const current = mappedPokemon.find((p) => p.id === id);
-        if (!current) throw new Error('Pokemon not found');
+        if (!current) throw new ApiError('Pokemon not found', 404);
 
         const newLocation = data.location ?? current.location;
         const newPosition = data.position ?? current.position;
 
         // Prevent dead Pokemon from being moved to TEAM
         if (newLocation === 'TEAM' && current.status === 'DEAD') {
-          throw new Error('Dead Pokemon cannot be moved to team');
+          throw new ApiError('Dead Pokemon cannot be moved to team', 400);
         }
 
         const { valid, adjustedPokemon, error } =
@@ -313,7 +358,7 @@ export class PokemonService {
             newLocation,
             newPosition
           );
-        if (!valid) throw new Error(error);
+        if (!valid) throw new ApiError(error || 'Invalid move', 400);
         await Promise.all(
           adjustedPokemon.map((poke) =>
             prisma.pokemon.update({
@@ -347,7 +392,7 @@ export class PokemonService {
             },
           },
         });
-        if (!updated) throw new Error('Pokemon not found after update');
+        if (!updated) throw new ApiError('Pokemon not found after update', 404);
         return PokemonMapper.mapPrismaToPokemonDtoEnriched(updated);
       } else {
         // Simple update without position management

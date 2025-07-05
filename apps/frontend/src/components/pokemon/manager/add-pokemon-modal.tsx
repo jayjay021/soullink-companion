@@ -33,6 +33,8 @@ export function AddPokemonModal({
   const [selectedPokemon, setSelectedPokemon] = useState<PokedexPokemon | null>(
     null
   );
+  const [pokemonError, setPokemonError] = useState<string | null>(null);
+  const [routeError, setRouteError] = useState<string | null>(null);
   const [addPokemon, { isLoading: isAdding }] = useAddPokemonMutation();
   const {
     data: usedRoutes,
@@ -48,10 +50,16 @@ export function AddPokemonModal({
 
   const handleRouteChange = (value: string) => {
     setRoute(value);
+    setRouteError(null); // Clear route error when user types
   };
 
   const handleAdd = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
+
+    // Clear previous errors
+    setPokemonError(null);
+    setRouteError(null);
+
     if (name && route && selectedPokemon && playerId) {
       try {
         const req: CreatePokemonRequest = {
@@ -73,11 +81,56 @@ export function AddPokemonModal({
           color: 'green',
         });
       } catch (error: unknown) {
-        notifications.show({
-          title: 'Error',
-          message: error instanceof Error ? error.message : 'An error occurred',
-          color: 'red',
-        });
+        // Handle field-specific errors
+        if (error && typeof error === 'object' && 'data' in error) {
+          const errorData = error as {
+            data?: { error?: { message?: string } };
+          };
+          const errorMessage = errorData.data?.error?.message;
+
+          if (errorMessage) {
+            if (
+              errorMessage.includes('evolution line') ||
+              errorMessage.includes('already caught')
+            ) {
+              setPokemonError(errorMessage);
+            } else if (
+              errorMessage.includes('route') ||
+              errorMessage.includes('duplicate')
+            ) {
+              setRouteError(errorMessage);
+            } else if (
+              errorMessage.includes('position') ||
+              errorMessage.includes('already taken')
+            ) {
+              // This is a position error, show general notification
+              notifications.show({
+                title: 'Error',
+                message: errorMessage,
+                color: 'red',
+              });
+            } else {
+              // General error
+              notifications.show({
+                title: 'Error',
+                message: errorMessage,
+                color: 'red',
+              });
+            }
+          } else {
+            notifications.show({
+              title: 'Error',
+              message: 'An error occurred while adding the Pokémon',
+              color: 'red',
+            });
+          }
+        } else {
+          notifications.show({
+            title: 'Error',
+            message: 'An error occurred while adding the Pokémon',
+            color: 'red',
+          });
+        }
       }
     }
   };
@@ -86,6 +139,8 @@ export function AddPokemonModal({
     setName('');
     setRoute('');
     setSelectedPokemon(null);
+    setPokemonError(null);
+    setRouteError(null);
     onClose();
   };
 
@@ -97,6 +152,7 @@ export function AddPokemonModal({
             value={name}
             onChange={setSelectedPokemon}
             onNameChange={setName}
+            error={pokemonError}
           />
           <Autocomplete
             label='Route'
@@ -105,6 +161,7 @@ export function AddPokemonModal({
             data={usedRoutes?.routes || []}
             placeholder='Enter or select a route'
             disabled={routesLoading}
+            error={routeError}
           />
           <Button
             type='submit'
