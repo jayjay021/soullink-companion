@@ -239,6 +239,73 @@ describe('Pokemon API', () => {
         'Pokemon can only be added to sessions that are currently running'
       );
     });
+    it('should return 400 when position is already taken', async () => {
+      // Create a user first
+      const userResponse = await supertest(app)
+        .post('/api/v1/users')
+        .send({ username: 'TestUser6' })
+        .expect(201);
+      const user = userResponse.body.user;
+
+      // Create a session
+      const sessionResponse = await supertest(app)
+        .post('/api/v1/session')
+        .send({ name: 'Test Session 6', description: 'Test Description 6' })
+        .expect(201);
+      const sessionId = sessionResponse.body.id;
+
+      // Start the session
+      await supertest(app)
+        .put(`/api/v1/session/${sessionId}`)
+        .send({ status: 'STARTED' })
+        .expect(200);
+
+      // Join the session
+      await supertest(app)
+        .post(`/api/v1/session/${sessionId}/join`)
+        .send({ userId: user.id })
+        .expect(200);
+
+      // Add a Pokémon to position 1
+      const requestBody1: AddPokemonRequest = {
+        userId: user.id,
+        pokemonId: 25,
+        status: 'CAUGHT',
+        routeName: 'Route 1',
+        location: 'BOX',
+        position: 1,
+      };
+
+      await supertest(app)
+        .post(`/api/v1/pokemon/${sessionId}`)
+        .send(requestBody1)
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(201);
+
+      // Try to add another Pokémon to the same position
+      const requestBody2: AddPokemonRequest = {
+        userId: user.id,
+        pokemonId: 26,
+        status: 'CAUGHT',
+        routeName: 'Route 1',
+        location: 'BOX',
+        position: 1, // Same position as before
+      };
+
+      const response = await supertest(app)
+        .post(`/api/v1/pokemon/${sessionId}`)
+        .send(requestBody2)
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(400);
+
+      expect(response.body).toHaveProperty('success', false);
+      expect(response.body).toHaveProperty('error');
+      expect(response.body.error.message).toContain(
+        'Position is already taken'
+      );
+    });
   });
 
   describe('GET /api/v1/pokemon/:sessionId', () => {
@@ -500,6 +567,41 @@ describe('Pokemon API', () => {
         .expect('Content-Type', /json/)
         .expect(400);
     });
+    it('should return 400 for non-existent Pokémon', async () => {
+      // Create a user first
+      const userResponse = await supertest(app)
+        .post('/api/v1/users')
+        .send({ username: 'TestUser8' })
+        .expect(201);
+      const user = userResponse.body.user;
+
+      // Create a session
+      const sessionResponse = await supertest(app)
+        .post('/api/v1/session')
+        .send({ name: 'Test Session 7', description: 'Test Description 7' })
+        .expect(201);
+      const sessionId = sessionResponse.body.id;
+
+      // Start the session
+      await supertest(app)
+        .put(`/api/v1/session/${sessionId}`)
+        .send({ status: 'STARTED' })
+        .expect(200);
+
+      // Join the session
+      await supertest(app)
+        .post(`/api/v1/session/${sessionId}/join`)
+        .send({ userId: user.id })
+        .expect(200);
+
+      // Try to update a non-existent Pokémon
+      await supertest(app)
+        .patch(`/api/v1/pokemon/${sessionId}/999999`)
+        .send({ status: 'DEAD' })
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(400);
+    });
   });
 
   describe('GET /api/v1/pokemon/:sessionId/routes', () => {
@@ -551,7 +653,7 @@ describe('Pokemon API', () => {
           status: 'CAUGHT',
           routeName: 'Route 2',
           location: 'BOX',
-          position: 1,
+          position: 2,
         })
         .expect(201);
 

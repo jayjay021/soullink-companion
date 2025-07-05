@@ -114,7 +114,8 @@ export const addPokemon = async (
       }
       if (
         error.message.includes('Pokemon can only be added') ||
-        error.message.includes('User cannot catch')
+        error.message.includes('User cannot catch') ||
+        error.message.includes('Position is already taken')
       ) {
         return (res as Response<unknown>).status(400).json({
           success: false,

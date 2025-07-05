@@ -32,7 +32,7 @@ export function PlayerDashboard({
   const [isUpdating, setIsUpdating] = useState(false);
   const [updatePokemon] = useUpdatePokemonMutation();
 
-  const handleEmptySlotClick = (isTeam: boolean, position?: number) => {
+  const handleEmptySlotClick = (isTeam: boolean, position: number) => {
     if (!canAddPokemon) {
       // Optionally show a notification or do nothing
       return;

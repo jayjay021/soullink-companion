@@ -2,8 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Modal, Button, Autocomplete, Stack } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { PokemonAutocomplete } from './pokemon-autocomplete';
-import { useAddPokemonMutation, useGetPokemonRoutesQuery } from '../../../lib/api-client/generated.api';
-import type { CreatePokemonRequest, PokedexPokemon } from '../../../lib/api-client/generated.api';
+import {
+  useAddPokemonMutation,
+  useGetPokemonRoutesQuery,
+} from '../../../lib/api-client/generated.api';
+import type {
+  CreatePokemonRequest,
+  PokedexPokemon,
+} from '../../../lib/api-client/generated.api';
 
 interface AddPokemonModalProps {
   sessionId: string;
@@ -11,7 +17,7 @@ interface AddPokemonModalProps {
   opened: boolean;
   onClose: () => void;
   defaultInBox?: boolean;
-  position?: number;
+  position: number;
 }
 
 export function AddPokemonModal({
@@ -20,13 +26,19 @@ export function AddPokemonModal({
   opened,
   onClose,
   defaultInBox = true,
-  position = 0,
+  position,
 }: AddPokemonModalProps) {
   const [name, setName] = useState('');
   const [route, setRoute] = useState('');
-  const [selectedPokemon, setSelectedPokemon] = useState<PokedexPokemon | null>(null);
+  const [selectedPokemon, setSelectedPokemon] = useState<PokedexPokemon | null>(
+    null
+  );
   const [addPokemon, { isLoading: isAdding }] = useAddPokemonMutation();
-  const { data: usedRoutes, isLoading: routesLoading, refetch } = useGetPokemonRoutesQuery({ sessionId }, { skip: !opened });
+  const {
+    data: usedRoutes,
+    isLoading: routesLoading,
+    refetch,
+  } = useGetPokemonRoutesQuery({ sessionId }, { skip: !opened });
 
   useEffect(() => {
     if (opened) {
@@ -78,7 +90,7 @@ export function AddPokemonModal({
   };
 
   return (
-    <Modal opened={opened} onClose={handleClose} title="Add Pokémon">
+    <Modal opened={opened} onClose={handleClose} title='Add Pokémon'>
       <form onSubmit={handleAdd}>
         <Stack>
           <PokemonAutocomplete
@@ -87,15 +99,15 @@ export function AddPokemonModal({
             onNameChange={setName}
           />
           <Autocomplete
-            label="Route"
+            label='Route'
             value={route}
             onChange={handleRouteChange}
             data={usedRoutes?.routes || []}
-            placeholder="Enter or select a route"
+            placeholder='Enter or select a route'
             disabled={routesLoading}
           />
           <Button
-            type="submit"
+            type='submit'
             disabled={!name || !route || !selectedPokemon || isAdding}
             loading={isAdding}
           >
@@ -105,4 +117,4 @@ export function AddPokemonModal({
       </form>
     </Modal>
   );
-} 
+}

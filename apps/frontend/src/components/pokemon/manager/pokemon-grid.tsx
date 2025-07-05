@@ -18,7 +18,7 @@ interface PokemonGridProps {
     newPosition: number,
     toTeam: boolean
   ) => void;
-  onEmptySlotClick?: (isTeam: boolean, position?: number) => void;
+  onEmptySlotClick?: (isTeam: boolean, position: number) => void;
   sessionPlayers?: SessionPlayer[];
   allSessionPokemon?: EnhancedPokemon[];
   sessionId: string;
@@ -269,13 +269,7 @@ export function PokemonGrid({
                     canAddPokemon &&
                     draggedPokemon === null
                   ) {
-                    // For team slots, pass the position. For box, only pass undefined for the last slot
-                    const position = isTeam
-                      ? index
-                      : index >= pokemons.length
-                        ? undefined
-                        : index;
-                    onEmptySlotClick(isTeam, position);
+                    onEmptySlotClick(isTeam, index);
                   }
                 }}
               >

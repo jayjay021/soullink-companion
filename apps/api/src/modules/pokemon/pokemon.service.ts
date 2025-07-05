@@ -137,6 +137,17 @@ export class PokemonService {
     );
     if (!canCatch.canCatch)
       throw new Error(canCatch.reason || 'User cannot catch this pokemon');
+
+    // Check if position is already taken for this user/session/location
+    const existingPokemonAtPosition = allPokemon.find(
+      (p) =>
+        p.user.id === data.userId &&
+        p.location === data.location &&
+        p.position === data.position
+    );
+    if (existingPokemonAtPosition) {
+      throw new Error('Position is already taken');
+    }
     try {
       const poke = await prisma.pokemon.create({
         data: {
@@ -174,6 +185,17 @@ export class PokemonService {
     data: UpdatePokemonData
   ): Promise<PokemonDto> {
     try {
+      // Check if Pokemon exists
+      const existingPokemon = await prisma.pokemon.findFirst({
+        where: { sessionId, id },
+        select: {
+          id: true,
+        },
+      });
+
+      if (!existingPokemon) {
+        throw new Error('Pokemon not found');
+      }
       // If moving (location or position is present), use PokemonPositionManager
       if (data.location !== undefined || data.position !== undefined) {
         // Get all pokemon for the session
