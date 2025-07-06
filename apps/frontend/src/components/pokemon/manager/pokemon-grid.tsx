@@ -18,16 +18,18 @@ interface PokemonGridProps {
     newPosition: number,
     toTeam: boolean
   ) => void;
-  onEmptySlotClick?: (isTeam: boolean, position?: number) => void;
+  onEmptySlotClick?: (isTeam: boolean, position: number) => void;
   sessionPlayers?: SessionPlayer[];
   allSessionPokemon?: EnhancedPokemon[];
   sessionId: string;
+  canAddPokemon?: boolean;
 }
 
 const getBoxClass = (
   poke: EnhancedPokemon | null,
   isDragging: boolean,
-  isDragOver: boolean
+  isDragOver: boolean,
+  isInvalidDropTarget?: boolean
 ) => {
   let classes = styles.pokemonBox;
 
@@ -51,7 +53,12 @@ const getBoxClass = (
   }
 
   if (isDragging) classes += ` ${styles.dragging}`;
-  if (isDragOver) classes += ` ${styles.dragOver}`;
+  if (isDragOver) {
+    classes += ` ${styles.dragOver}`;
+    if (isInvalidDropTarget) {
+      classes += ` ${styles.invalidDropTarget}`;
+    }
+  }
 
   return classes;
 };
@@ -64,9 +71,12 @@ export function PokemonGrid({
   sessionPlayers,
   allSessionPokemon,
   sessionId,
+  canAddPokemon = true,
 }: PokemonGridProps) {
   const [draggedPokemon, setDraggedPokemon] = useState<string | null>(null);
   const [dragOverSlot, setDragOverSlot] = useState<number | null>(null);
+  const [isInvalidDropTarget, setIsInvalidDropTarget] =
+    useState<boolean>(false);
   const [justFinishedDragging, setJustFinishedDragging] = useState<
     string | null
   >(null);
@@ -110,6 +120,7 @@ export function PokemonGrid({
       JSON.stringify({
         pokemonId: pokemon.id,
         fromTeam: isTeam,
+        isDead: pokemon.isDead,
       })
     );
     e.dataTransfer.effectAllowed = 'move';
@@ -117,18 +128,44 @@ export function PokemonGrid({
 
   const handleDragOver = (e: React.DragEvent, slotIndex: number) => {
     e.preventDefault();
+
+    // Get the drag data to check if Pokemon is dead
+    const dataStr = e.dataTransfer.getData('text/plain');
+    let isDead = false;
+    if (dataStr) {
+      try {
+        const data = JSON.parse(dataStr);
+        isDead = data.isDead;
+      } catch {
+        // If we can't parse, assume not dead
+        isDead = false;
+      }
+    }
+
+    // Check if we're trying to drop a dead Pokemon into a team slot
+    if (isDead && isTeam) {
+      // Prevent dropping dead Pokemon into team slots
+      e.dataTransfer.dropEffect = 'none';
+      setDragOverSlot(slotIndex); // Still set for visual feedback
+      setIsInvalidDropTarget(true);
+      return;
+    }
+
     e.dataTransfer.dropEffect = 'move';
     setDragOverSlot(slotIndex);
+    setIsInvalidDropTarget(false);
   };
 
   const handleDragLeave = () => {
     setDragOverSlot(null);
+    setIsInvalidDropTarget(false);
   };
 
   const handleDrop = async (e: React.DragEvent, slotIndex: number) => {
     e.preventDefault();
     setDragOverSlot(null);
     setDraggedPokemon(null);
+    setIsInvalidDropTarget(false);
 
     try {
       const dataStr = e.dataTransfer.getData('text/plain');
@@ -139,7 +176,13 @@ export function PokemonGrid({
       }
 
       const data = JSON.parse(dataStr);
-      const { pokemonId, fromTeam } = data;
+      const { pokemonId, fromTeam, isDead } = data;
+
+      // Prevent dropping dead Pokemon into team slots
+      if (isDead && isTeam) {
+        console.warn('Cannot move dead Pokemon to team');
+        return;
+      }
 
       // Prevent dropping Pokemon on its own slot
       const currentPokemon = slots[slotIndex];
@@ -179,6 +222,7 @@ export function PokemonGrid({
     const draggedId = draggedPokemon;
     setDraggedPokemon(null);
     setDragOverSlot(null);
+    setIsInvalidDropTarget(false);
 
     // Temporarily disable hover card for the just-dragged Pokemon
     if (draggedId) {
@@ -198,7 +242,8 @@ export function PokemonGrid({
           className={getBoxClass(
             pokemon,
             draggedPokemon === pokemon?.id,
-            dragOverSlot === index
+            dragOverSlot === index,
+            isInvalidDropTarget && dragOverSlot === index
           )}
           onDragOver={(e) => handleDragOver(e, index)}
           onDragLeave={handleDragLeave}
@@ -207,8 +252,8 @@ export function PokemonGrid({
           {pokemon ? (
             <HoverCard
               withArrow
-              position="top"
-              shadow="md"
+              position='top'
+              shadow='md'
               openDelay={500}
               closeDelay={200}
               disabled={
@@ -245,7 +290,9 @@ export function PokemonGrid({
               }
               withArrow
               openDelay={1000}
-              disabled={draggedPokemon === null && !onEmptySlotClick}
+              disabled={
+                draggedPokemon === null && (!onEmptySlotClick || !canAddPokemon)
+              }
             >
               <div
                 style={{
@@ -256,17 +303,16 @@ export function PokemonGrid({
                   justifyContent: 'center',
                   color: 'var(--mantine-color-gray-5)',
                   fontSize: isTeam ? '0.8rem' : '1.5rem',
-                  cursor: onEmptySlotClick ? 'pointer' : 'default',
+                  cursor:
+                    onEmptySlotClick && canAddPokemon ? 'pointer' : 'default',
                 }}
                 onClick={() => {
-                  if (onEmptySlotClick && draggedPokemon === null) {
-                    // For team slots, pass the position. For box, only pass undefined for the last slot
-                    const position = isTeam
-                      ? index
-                      : index >= pokemons.length
-                        ? undefined
-                        : index;
-                    onEmptySlotClick(isTeam, position);
+                  if (
+                    onEmptySlotClick &&
+                    canAddPokemon &&
+                    draggedPokemon === null
+                  ) {
+                    onEmptySlotClick(isTeam, index);
                   }
                 }}
               >

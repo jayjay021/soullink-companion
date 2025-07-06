@@ -45,11 +45,6 @@
   z-index: 1000;
 }
 
-.pokemonBox.dragOver {
-  border-color: var(--mantine-color-blue-6);
-  background-color: var(--mantine-color-blue-1);
-}
-
 .pokemonBox.empty {
   border-style: dashed;
   background-color: var(--mantine-color-gray-1);
@@ -64,17 +59,34 @@
   color: var(--mantine-color-green-7);
 }
 
-.pokemonBox.dragOver:not(.empty) {
+.pokemonBox.dragOver {
   border-color: var(--mantine-color-blue-6);
   background-color: var(--mantine-color-blue-1);
   transform: scale(1.05);
+}
+
+/* Invalid drop target styles - must come after dragOver to override */
+.pokemonBox.invalidDropTarget {
+  border-color: var(--mantine-color-red-6) !important;
+  background-color: var(--mantine-color-red-1) !important;
+  cursor: not-allowed !important;
+  transform: scale(1.05);
+  border-width: 3px !important;
+}
+
+.pokemonBox.invalidDropTarget.empty {
+  border-color: var(--mantine-color-red-6) !important;
+  background-color: var(--mantine-color-red-1) !important;
+  color: var(--mantine-color-red-7) !important;
+  cursor: not-allowed !important;
+  border-width: 3px !important;
 }
 
 .teamContainer {
   display: flex;
   gap: 0.75rem;
   padding: 1rem;
-  border: 2px dashed var(--mantine-color-gray-3);
+  border: 2px solid var(--mantine-color-gray-3);
   border-radius: 8px;
   background-color: var(--mantine-color-gray-0);
   min-height: 88px;

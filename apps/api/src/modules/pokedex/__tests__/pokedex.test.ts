@@ -30,13 +30,7 @@ describe('Pokédex API', () => {
       const validationResult = schemas.PokedexPokemonResponse.safeParse(
         response.body
       );
-      if (!validationResult.success) {
-        console.log('Validation errors:', validationResult.error.errors);
-        console.log(
-          'First Pokemon sample:',
-          JSON.stringify(response.body.pokemon[0], null, 2)
-        );
-      }
+
       expect(validationResult.success).toBe(true);
     });
 
@@ -235,7 +229,9 @@ describe('Pokédex API', () => {
       });
 
       // Verify different Pokemon on different pages
-      expect(response.body.pokemon[0].id).not.toBe(response2.body.pokemon[0].id);
+      expect(response.body.pokemon[0].id).not.toBe(
+        response2.body.pokemon[0].id
+      );
     });
 
     it('should filter by type correctly', async () => {
@@ -246,9 +242,11 @@ describe('Pokédex API', () => {
         .expect(200);
 
       expect(response.body.pokemon.length).toBeGreaterThan(0);
-      response.body.pokemon.forEach((pokemon: components['schemas']['PokedexPokemon']) => {
-        expect(pokemon.type).toContain('Fire');
-      });
+      response.body.pokemon.forEach(
+        (pokemon: components['schemas']['PokedexPokemon']) => {
+          expect(pokemon.type).toContain('Fire');
+        }
+      );
     });
 
     it('should filter by ID range correctly', async () => {
@@ -259,10 +257,12 @@ describe('Pokédex API', () => {
         .expect(200);
 
       expect(response.body.pokemon.length).toBeGreaterThan(0);
-      response.body.pokemon.forEach((pokemon: components['schemas']['PokedexPokemon']) => {
-        expect(pokemon.id).toBeGreaterThanOrEqual(1);
-        expect(pokemon.id).toBeLessThanOrEqual(10);
-      });
+      response.body.pokemon.forEach(
+        (pokemon: components['schemas']['PokedexPokemon']) => {
+          expect(pokemon.id).toBeGreaterThanOrEqual(1);
+          expect(pokemon.id).toBeLessThanOrEqual(10);
+        }
+      );
     });
 
     it('should combine filters with pagination', async () => {
@@ -274,9 +274,11 @@ describe('Pokédex API', () => {
 
       expect(response.body.pokemon).toHaveLength(3);
       expect(response.body.pagination.hasNext).toBe(true);
-      response.body.pokemon.forEach((pokemon: components['schemas']['PokedexPokemon']) => {
-        expect(pokemon.type).toContain('Water');
-      });
+      response.body.pokemon.forEach(
+        (pokemon: components['schemas']['PokedexPokemon']) => {
+          expect(pokemon.type).toContain('Water');
+        }
+      );
     });
 
     it('should validate pagination parameters', async () => {

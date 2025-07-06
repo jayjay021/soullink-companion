@@ -284,10 +284,7 @@ describe('PokemonPositionManager', () => {
     });
 
     it('should return 0 for empty box', () => {
-      const result = PokemonPositionManager.getNextBoxPosition(
-        [],
-        'player1'
-      );
+      const result = PokemonPositionManager.getNextBoxPosition([], 'player1');
       expect(result).toBe(0);
     });
   });
@@ -300,7 +297,7 @@ describe('PokemonValidationManager', () => {
       name: {
         english: 'Bulbasaur',
         japanese: 'フシギダネ',
-        german: 'Bisasam'
+        german: 'Bisasam',
       },
       type: ['Grass', 'Poison'],
       base: {
@@ -309,32 +306,35 @@ describe('PokemonValidationManager', () => {
         Defense: 49,
         'Sp. Attack': 65,
         'Sp. Defense': 65,
-        Speed: 45
+        Speed: 45,
       },
       species: 'Seed Pokémon',
       description: 'Bulbasaur can be seen napping in bright sunlight.',
       evolution: {
-        next: [['2', 'Level 16']]
+        next: [['2', 'Level 16']],
       },
       profile: {
         height: '0.7 m',
         weight: '6.9 kg',
         egg: ['Monster', 'Grass'],
-        ability: [['Overgrow', 'false'], ['Chlorophyll', 'true']],
-        gender: '87.5:12.5'
+        ability: [
+          ['Overgrow', 'false'],
+          ['Chlorophyll', 'true'],
+        ],
+        gender: '87.5:12.5',
       },
       image: {
         sprite: 'bulbasaur-sprite.png',
         thumbnail: 'bulbasaur-thumb.png',
-        hires: 'bulbasaur-hires.png'
-      }
+        hires: 'bulbasaur-hires.png',
+      },
     },
     {
       id: 2,
       name: {
         english: 'Ivysaur',
         japanese: 'フシギソウ',
-        german: 'Bisaknosp'
+        german: 'Bisaknosp',
       },
       type: ['Grass', 'Poison'],
       base: {
@@ -343,33 +343,36 @@ describe('PokemonValidationManager', () => {
         Defense: 63,
         'Sp. Attack': 80,
         'Sp. Defense': 80,
-        Speed: 60
+        Speed: 60,
       },
       species: 'Seed Pokémon',
       description: 'Ivysaur has a flower bud on its back.',
       evolution: {
         prev: ['1', 'Level 16'],
-        next: [['3', 'Level 32']]
+        next: [['3', 'Level 32']],
       },
       profile: {
         height: '1.0 m',
         weight: '13.0 kg',
         egg: ['Monster', 'Grass'],
-        ability: [['Overgrow', 'false'], ['Chlorophyll', 'true']],
-        gender: '87.5:12.5'
+        ability: [
+          ['Overgrow', 'false'],
+          ['Chlorophyll', 'true'],
+        ],
+        gender: '87.5:12.5',
       },
       image: {
         sprite: 'ivysaur-sprite.png',
         thumbnail: 'ivysaur-thumb.png',
-        hires: 'ivysaur-hires.png'
-      }
+        hires: 'ivysaur-hires.png',
+      },
     },
     {
       id: 3,
       name: {
         english: 'Venusaur',
         japanese: 'フシギバナ',
-        german: 'Bisaflor'
+        german: 'Bisaflor',
       },
       type: ['Grass', 'Poison'],
       base: {
@@ -378,32 +381,35 @@ describe('PokemonValidationManager', () => {
         Defense: 83,
         'Sp. Attack': 100,
         'Sp. Defense': 100,
-        Speed: 80
+        Speed: 80,
       },
       species: 'Seed Pokémon',
       description: 'Venusaur has a large flower on its back.',
       evolution: {
-        prev: ['2', 'Level 32']
+        prev: ['2', 'Level 32'],
       },
       profile: {
         height: '2.0 m',
         weight: '100.0 kg',
         egg: ['Monster', 'Grass'],
-        ability: [['Overgrow', 'false'], ['Chlorophyll', 'true']],
-        gender: '87.5:12.5'
+        ability: [
+          ['Overgrow', 'false'],
+          ['Chlorophyll', 'true'],
+        ],
+        gender: '87.5:12.5',
       },
       image: {
         sprite: 'venusaur-sprite.png',
         thumbnail: 'venusaur-thumb.png',
-        hires: 'venusaur-hires.png'
-      }
+        hires: 'venusaur-hires.png',
+      },
     },
     {
       id: 4,
       name: {
         english: 'Charmander',
         japanese: 'ヒトカゲ',
-        german: 'Glumanda'
+        german: 'Glumanda',
       },
       type: ['Fire'],
       base: {
@@ -412,32 +418,35 @@ describe('PokemonValidationManager', () => {
         Defense: 43,
         'Sp. Attack': 60,
         'Sp. Defense': 50,
-        Speed: 65
+        Speed: 65,
       },
       species: 'Lizard Pokémon',
       description: 'Charmander has a flame on its tail.',
       evolution: {
-        next: [['5', 'Level 16']]
+        next: [['5', 'Level 16']],
       },
       profile: {
         height: '0.6 m',
         weight: '8.5 kg',
         egg: ['Monster', 'Dragon'],
-        ability: [['Blaze', 'false'], ['Solar Power', 'true']],
-        gender: '87.5:12.5'
+        ability: [
+          ['Blaze', 'false'],
+          ['Solar Power', 'true'],
+        ],
+        gender: '87.5:12.5',
       },
       image: {
         sprite: 'charmander-sprite.png',
         thumbnail: 'charmander-thumb.png',
-        hires: 'charmander-hires.png'
-      }
+        hires: 'charmander-hires.png',
+      },
     },
     {
       id: 5,
       name: {
         english: 'Charmeleon',
         japanese: 'リザード',
-        german: 'Glutexo'
+        german: 'Glutexo',
       },
       type: ['Fire'],
       base: {
@@ -446,33 +455,36 @@ describe('PokemonValidationManager', () => {
         Defense: 58,
         'Sp. Attack': 80,
         'Sp. Defense': 65,
-        Speed: 80
+        Speed: 80,
       },
       species: 'Flame Pokémon',
       description: 'Charmeleon has a more aggressive nature.',
       evolution: {
         prev: ['4', 'Level 16'],
-        next: [['6', 'Level 36']]
+        next: [['6', 'Level 36']],
       },
       profile: {
         height: '1.1 m',
         weight: '19.0 kg',
         egg: ['Monster', 'Dragon'],
-        ability: [['Blaze', 'false'], ['Solar Power', 'true']],
-        gender: '87.5:12.5'
+        ability: [
+          ['Blaze', 'false'],
+          ['Solar Power', 'true'],
+        ],
+        gender: '87.5:12.5',
       },
       image: {
         sprite: 'charmeleon-sprite.png',
         thumbnail: 'charmeleon-thumb.png',
-        hires: 'charmeleon-hires.png'
-      }
+        hires: 'charmeleon-hires.png',
+      },
     },
     {
       id: 6,
       name: {
         english: 'Charizard',
         japanese: 'リザードン',
-        german: 'Glurak'
+        german: 'Glurak',
       },
       type: ['Fire', 'Flying'],
       base: {
@@ -481,25 +493,28 @@ describe('PokemonValidationManager', () => {
         Defense: 78,
         'Sp. Attack': 109,
         'Sp. Defense': 85,
-        Speed: 100
+        Speed: 100,
       },
       species: 'Flame Pokémon',
       description: 'Charizard is a powerful flying and fire type.',
       evolution: {
-        prev: ['5', 'Level 36']
+        prev: ['5', 'Level 36'],
       },
       profile: {
         height: '1.7 m',
         weight: '90.5 kg',
         egg: ['Monster', 'Dragon'],
-        ability: [['Blaze', 'false'], ['Solar Power', 'true']],
-        gender: '87.5:12.5'
+        ability: [
+          ['Blaze', 'false'],
+          ['Solar Power', 'true'],
+        ],
+        gender: '87.5:12.5',
       },
       image: {
         sprite: 'charizard-sprite.png',
         thumbnail: 'charizard-thumb.png',
-        hires: 'charizard-hires.png'
-      }
+        hires: 'charizard-hires.png',
+      },
     },
   ];
 
@@ -532,24 +547,38 @@ describe('PokemonValidationManager', () => {
 
   describe('getEvolutionLine', () => {
     it('should return evolution line for Bulbasaur', () => {
-      const result = PokemonValidationManager.getEvolutionLine(1, mockPokemonData);
+      const result = PokemonValidationManager.getEvolutionLine(
+        1,
+        mockPokemonData
+      );
       expect(result).toEqual([1, 2, 3]);
     });
 
     it('should return evolution line for Charmander', () => {
-      const result = PokemonValidationManager.getEvolutionLine(4, mockPokemonData);
+      const result = PokemonValidationManager.getEvolutionLine(
+        4,
+        mockPokemonData
+      );
       expect(result).toEqual([4, 5, 6]);
     });
 
     it('should return single Pokemon for non-evolving species', () => {
-      const result = PokemonValidationManager.getEvolutionLine(999, mockPokemonData);
+      const result = PokemonValidationManager.getEvolutionLine(
+        999,
+        mockPokemonData
+      );
       expect(result).toEqual([999]);
     });
   });
 
   describe('canCatchSpecies', () => {
     it('should allow catching new species', () => {
-      const result = PokemonValidationManager.canCatchSpecies(4, 'player1', [], mockPokemonData);
+      const result = PokemonValidationManager.canCatchSpecies(
+        4,
+        'player1',
+        [],
+        mockPokemonData
+      );
       expect(result.canCatch).toBe(true);
     });
 
@@ -569,9 +598,16 @@ describe('PokemonValidationManager', () => {
         },
       ];
 
-      const result = PokemonValidationManager.canCatchSpecies(2, 'player1', existingPokemon, mockPokemonData);
+      const result = PokemonValidationManager.canCatchSpecies(
+        2,
+        'player1',
+        existingPokemon,
+        mockPokemonData
+      );
       expect(result.canCatch).toBe(false);
-      expect(result.reason).toBe('A Pokemon in this evolution line is already caught');
+      expect(result.reason).toBe(
+        'A Pokemon in this evolution line is already caught'
+      );
     });
 
     it('should prevent catching pre-evolution of already caught Pokemon', () => {
@@ -590,32 +626,45 @@ describe('PokemonValidationManager', () => {
         },
       ];
 
-      const result = PokemonValidationManager.canCatchSpecies(2, 'player1', existingPokemon, mockPokemonData);
+      const result = PokemonValidationManager.canCatchSpecies(
+        2,
+        'player1',
+        existingPokemon,
+        mockPokemonData
+      );
       expect(result.canCatch).toBe(false);
-      expect(result.reason).toBe('A Pokemon in this evolution line is already caught');
+      expect(result.reason).toBe(
+        'A Pokemon in this evolution line is already caught'
+      );
     });
     it('should prevent catching same species', () => {
       const existingPokemon: Pokemon[] = [
         {
           id: '1',
           user: { id: 'player1', username: 'Player 1' },
-            sessionId: 'session1',
-            pokemonId: 1,
-            name: 'Bulbasaur',
-            image: 'bulbasaur.png',
-            routeName: 'Route 1',
-            status: 'CAUGHT',
-            location: 'TEAM',
-            position: 1,
+          sessionId: 'session1',
+          pokemonId: 1,
+          name: 'Bulbasaur',
+          image: 'bulbasaur.png',
+          routeName: 'Route 1',
+          status: 'CAUGHT',
+          location: 'TEAM',
+          position: 1,
         },
       ];
 
-      const result = PokemonValidationManager.canCatchSpecies(1, 'player1', existingPokemon, mockPokemonData);
+      const result = PokemonValidationManager.canCatchSpecies(
+        1,
+        'player1',
+        existingPokemon,
+        mockPokemonData
+      );
       expect(result.canCatch).toBe(false);
-      expect(result.reason).toBe('A Pokemon in this evolution line is already caught');
+      expect(result.reason).toBe(
+        'A Pokemon in this evolution line is already caught'
+      );
     });
   });
-
 
   describe('isLinkedToDead', () => {
     it('should detect link to dead Pokemon', () => {
@@ -745,7 +794,10 @@ describe('PokemonValidationManager', () => {
         },
       ];
 
-      const result = PokemonValidationManager.isTeamValid('player1', invalidTeam);
+      const result = PokemonValidationManager.isTeamValid(
+        'player1',
+        invalidTeam
+      );
       expect(result).toBe(false);
     });
   });
@@ -786,7 +838,9 @@ describe('PokemonValidationManager', () => {
       );
 
       expect(result.canCatch).toBe(false);
-      expect(result.reason).toBe('A Pokemon in this evolution line is already caught');
+      expect(result.reason).toBe(
+        'A Pokemon in this evolution line is already caught'
+      );
     });
 
     it('should prevent catching pre-evolution of already caught Pokemon', () => {
@@ -813,7 +867,9 @@ describe('PokemonValidationManager', () => {
       );
 
       expect(result.canCatch).toBe(false);
-      expect(result.reason).toBe('A Pokemon in this evolution line is already caught');
+      expect(result.reason).toBe(
+        'A Pokemon in this evolution line is already caught'
+      );
     });
   });
 
@@ -863,7 +919,10 @@ describe('PokemonValidationManager', () => {
         position: 1,
       };
 
-      const result = PokemonValidationManager.canMoveToTeam('box-1', [...fullTeam, pokemon]);
+      const result = PokemonValidationManager.canMoveToTeam('box-1', [
+        ...fullTeam,
+        pokemon,
+      ]);
       expect(result.canMove).toBe(false);
       expect(result.reason).toBe('Team is full');
     });
@@ -891,6 +950,25 @@ describe('PokemonValidationManager', () => {
       const result = PokemonValidationManager.canMoveToTeam('999', []);
       expect(result.canMove).toBe(false);
       expect(result.reason).toBe('Pokemon not found');
+    });
+
+    it('should prevent moving dead Pokemon to team', () => {
+      const deadPokemon: Pokemon = {
+        id: '1',
+        user: { id: 'player1', username: 'Player 1' },
+        sessionId: 'session1',
+        pokemonId: 1,
+        name: 'Bulbasaur',
+        image: 'bulbasaur.png',
+        routeName: 'Route 1',
+        status: 'DEAD',
+        location: 'BOX',
+        position: 1,
+      };
+
+      const result = PokemonValidationManager.canMoveToTeam('1', [deadPokemon]);
+      expect(result.canMove).toBe(false);
+      expect(result.reason).toBe('Dead Pokemon cannot be moved to team');
     });
   });
 

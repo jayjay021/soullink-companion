@@ -132,6 +132,14 @@ const injectedRtkApi = api
         }),
         invalidatesTags: ["Pokemon"],
       }),
+      swapPokemon: build.mutation<SwapPokemonApiResponse, SwapPokemonApiArg>({
+        query: (queryArg) => ({
+          url: `/pokemon/${queryArg.sessionId}/swap`,
+          method: "POST",
+          body: queryArg.swapPokemonRequest,
+        }),
+        invalidatesTags: ["Pokemon"],
+      }),
       getPokemonRoutes: build.query<
         GetPokemonRoutesApiResponse,
         GetPokemonRoutesApiArg
@@ -232,6 +240,12 @@ export type UpdatePokemonApiArg = {
   sessionId: string;
   id: string;
   updatePokemonRequest: UpdatePokemonRequest;
+};
+export type SwapPokemonApiResponse =
+  /** status 200 Pokémon positions swapped successfully */ SwapPokemonResponse;
+export type SwapPokemonApiArg = {
+  sessionId: string;
+  swapPokemonRequest: SwapPokemonRequest;
 };
 export type GetPokemonRoutesApiResponse =
   /** status 200 List of unique routes */ RouteListResponse;
@@ -438,6 +452,16 @@ export type UpdatePokemonRequest = {
   /** Position in the team or box */
   position: number;
 };
+export type SwapPokemonResponse = {
+  pokemon1: Pokemon;
+  pokemon2: Pokemon;
+};
+export type SwapPokemonRequest = {
+  /** ID of the first Pokémon to swap */
+  pokemon1Id: string;
+  /** ID of the second Pokémon to swap */
+  pokemon2Id: string;
+};
 export type RouteListResponse = {
   routes: string[];
 };
@@ -456,5 +480,6 @@ export const {
   useAddPokemonMutation,
   useListPokemonQuery,
   useUpdatePokemonMutation,
+  useSwapPokemonMutation,
   useGetPokemonRoutesQuery,
 } = injectedRtkApi;

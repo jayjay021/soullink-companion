@@ -3,6 +3,7 @@ import { paths } from '@repo/api-spec/types';
 import { Request, Response, NextFunction } from 'express';
 import { z } from 'zod';
 import { pokemonService } from './pokemon.service';
+import { ApiError } from '../../middleware/errorHandler';
 
 // Types from OpenAPI spec
 // GET /pokemon/{sessionId}
@@ -23,6 +24,12 @@ type UpdatePokemonParams =
   paths['/pokemon/{sessionId}/{id}']['patch']['parameters']['path'];
 type UpdatePokemonBody = z.infer<typeof schemas.UpdatePokemonRequest>;
 type UpdatePokemonResponse = z.infer<typeof schemas.Pokemon>;
+
+// POST /pokemon/{sessionId}/swap
+type SwapPokemonParams =
+  paths['/pokemon/{sessionId}/swap']['post']['parameters']['path'];
+type SwapPokemonBody = z.infer<typeof schemas.SwapPokemonRequest>;
+type SwapPokemonResponse = z.infer<typeof schemas.SwapPokemonResponse>;
 
 // GET /pokemon/{sessionId}
 export const listPokemon = async (
@@ -74,6 +81,15 @@ export const listPokemon = async (
         },
       });
     }
+    if (error instanceof ApiError) {
+      return (res as Response<unknown>).status(error.statusCode).json({
+        success: false,
+        error: {
+          message: error.message,
+          code: error.statusCode === 404 ? 'NOT_FOUND' : 'VALIDATION_ERROR',
+        },
+      });
+    }
     next(error);
   }
 };
@@ -100,6 +116,50 @@ export const addPokemon = async (
           details: error.errors,
         },
       });
+    }
+    if (error instanceof ApiError) {
+      return (res as Response<unknown>).status(error.statusCode).json({
+        success: false,
+        error: {
+          message: error.message,
+          code: error.statusCode === 404 ? 'NOT_FOUND' : 'VALIDATION_ERROR',
+        },
+      });
+    }
+    if (error instanceof Error) {
+      // Handle specific business logic errors that might still be plain Error objects
+      if (error.message.includes('Session not found')) {
+        return (res as Response<unknown>).status(404).json({
+          success: false,
+          error: {
+            message: error.message,
+            code: 'NOT_FOUND',
+          },
+        });
+      }
+      if (
+        error.message.includes('Pokemon can only be added') ||
+        error.message.includes('User cannot catch') ||
+        error.message.includes('Position is already taken') ||
+        error.message.includes(
+          'A Pokemon in this evolution line is already caught'
+        ) ||
+        error.message.includes('evolution line') ||
+        error.message.includes('already caught') ||
+        error.message.includes('already used') ||
+        error.message.includes('Route') ||
+        error.message.includes('duplicate') ||
+        error.message.includes('validation') ||
+        error.message.includes('invalid')
+      ) {
+        return (res as Response<unknown>).status(400).json({
+          success: false,
+          error: {
+            message: error.message,
+            code: 'VALIDATION_ERROR',
+          },
+        });
+      }
     }
     next(error);
   }
@@ -128,6 +188,82 @@ export const updatePokemon = async (
           details: error.errors,
         },
       });
+    }
+    if (error instanceof ApiError) {
+      return (res as Response<unknown>).status(error.statusCode).json({
+        success: false,
+        error: {
+          message: error.message,
+          code: error.statusCode === 404 ? 'NOT_FOUND' : 'VALIDATION_ERROR',
+        },
+      });
+    }
+    next(error);
+  }
+};
+
+// POST /pokemon/{sessionId}/swap
+export const swapPokemon = async (
+  req: Request<SwapPokemonParams, SwapPokemonResponse, SwapPokemonBody>,
+  res: Response<SwapPokemonResponse>,
+  next: NextFunction
+) => {
+  try {
+    const { sessionId } = req.params;
+    z.string().min(1).parse(sessionId);
+    schemas.SwapPokemonRequest.parse(req.body);
+
+    const result = await pokemonService.swapPokemon(sessionId, req.body);
+    res.status(200).json(result);
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return (res as Response<unknown>).status(400).json({
+        success: false,
+        error: {
+          message: 'Invalid request data',
+          code: 'VALIDATION_ERROR',
+          details: error.errors,
+        },
+      });
+    }
+    if (error instanceof ApiError) {
+      return (res as Response<unknown>).status(error.statusCode).json({
+        success: false,
+        error: {
+          message: error.message,
+          code:
+            error.statusCode === 404
+              ? 'NOT_FOUND'
+              : error.statusCode === 409
+                ? 'CONFLICT'
+                : 'VALIDATION_ERROR',
+        },
+      });
+    }
+    if (error instanceof Error) {
+      // Handle specific business logic errors
+      if (error.message.includes('not found')) {
+        return (res as Response<unknown>).status(404).json({
+          success: false,
+          error: {
+            message: error.message,
+            code: 'NOT_FOUND',
+          },
+        });
+      }
+      if (
+        error.message.includes('different users') ||
+        error.message.includes('same Pokemon') ||
+        error.message.includes('Cannot swap')
+      ) {
+        return (res as Response<unknown>).status(409).json({
+          success: false,
+          error: {
+            message: error.message,
+            code: 'CONFLICT',
+          },
+        });
+      }
     }
     next(error);
   }
@@ -160,6 +296,15 @@ export const getRoutes = async (
           message: 'Invalid request data',
           code: 'VALIDATION_ERROR',
           details: error.errors,
+        },
+      });
+    }
+    if (error instanceof ApiError) {
+      return (res as Response<unknown>).status(error.statusCode).json({
+        success: false,
+        error: {
+          message: error.message,
+          code: error.statusCode === 404 ? 'NOT_FOUND' : 'VALIDATION_ERROR',
         },
       });
     }

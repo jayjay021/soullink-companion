@@ -1680,6 +1680,178 @@ export declare const schemas: {
         status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
         routeName?: string;
     }>;
+    SwapPokemonRequest: z.ZodObject<{
+        pokemon1Id: z.ZodString;
+        pokemon2Id: z.ZodString;
+    }, "strip", z.ZodTypeAny, {
+        pokemon1Id?: string;
+        pokemon2Id?: string;
+    }, {
+        pokemon1Id?: string;
+        pokemon2Id?: string;
+    }>;
+    SwapPokemonResponse: z.ZodObject<{
+        pokemon1: z.ZodObject<{
+            id: z.ZodString;
+            user: z.ZodObject<{
+                id: z.ZodString;
+                username: z.ZodString;
+            }, "strip", z.ZodTypeAny, {
+                id?: string;
+                username?: string;
+            }, {
+                id?: string;
+                username?: string;
+            }>;
+            sessionId: z.ZodString;
+            pokemonId: z.ZodNumber;
+            name: z.ZodString;
+            image: z.ZodString;
+            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
+            routeName: z.ZodString;
+            location: z.ZodEnum<["TEAM", "BOX"]>;
+            position: z.ZodNumber;
+        }, "strip", z.ZodTypeAny, {
+            name?: string;
+            location?: "TEAM" | "BOX";
+            id?: string;
+            position?: number;
+            image?: string;
+            status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+            user?: {
+                id?: string;
+                username?: string;
+            };
+            pokemonId?: number;
+            routeName?: string;
+            sessionId?: string;
+        }, {
+            name?: string;
+            location?: "TEAM" | "BOX";
+            id?: string;
+            position?: number;
+            image?: string;
+            status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+            user?: {
+                id?: string;
+                username?: string;
+            };
+            pokemonId?: number;
+            routeName?: string;
+            sessionId?: string;
+        }>;
+        pokemon2: z.ZodObject<{
+            id: z.ZodString;
+            user: z.ZodObject<{
+                id: z.ZodString;
+                username: z.ZodString;
+            }, "strip", z.ZodTypeAny, {
+                id?: string;
+                username?: string;
+            }, {
+                id?: string;
+                username?: string;
+            }>;
+            sessionId: z.ZodString;
+            pokemonId: z.ZodNumber;
+            name: z.ZodString;
+            image: z.ZodString;
+            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
+            routeName: z.ZodString;
+            location: z.ZodEnum<["TEAM", "BOX"]>;
+            position: z.ZodNumber;
+        }, "strip", z.ZodTypeAny, {
+            name?: string;
+            location?: "TEAM" | "BOX";
+            id?: string;
+            position?: number;
+            image?: string;
+            status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+            user?: {
+                id?: string;
+                username?: string;
+            };
+            pokemonId?: number;
+            routeName?: string;
+            sessionId?: string;
+        }, {
+            name?: string;
+            location?: "TEAM" | "BOX";
+            id?: string;
+            position?: number;
+            image?: string;
+            status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+            user?: {
+                id?: string;
+                username?: string;
+            };
+            pokemonId?: number;
+            routeName?: string;
+            sessionId?: string;
+        }>;
+    }, "strip", z.ZodTypeAny, {
+        pokemon1?: {
+            name?: string;
+            location?: "TEAM" | "BOX";
+            id?: string;
+            position?: number;
+            image?: string;
+            status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+            user?: {
+                id?: string;
+                username?: string;
+            };
+            pokemonId?: number;
+            routeName?: string;
+            sessionId?: string;
+        };
+        pokemon2?: {
+            name?: string;
+            location?: "TEAM" | "BOX";
+            id?: string;
+            position?: number;
+            image?: string;
+            status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+            user?: {
+                id?: string;
+                username?: string;
+            };
+            pokemonId?: number;
+            routeName?: string;
+            sessionId?: string;
+        };
+    }, {
+        pokemon1?: {
+            name?: string;
+            location?: "TEAM" | "BOX";
+            id?: string;
+            position?: number;
+            image?: string;
+            status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+            user?: {
+                id?: string;
+                username?: string;
+            };
+            pokemonId?: number;
+            routeName?: string;
+            sessionId?: string;
+        };
+        pokemon2?: {
+            name?: string;
+            location?: "TEAM" | "BOX";
+            id?: string;
+            position?: number;
+            image?: string;
+            status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+            user?: {
+                id?: string;
+                username?: string;
+            };
+            pokemonId?: number;
+            routeName?: string;
+            sessionId?: string;
+        };
+    }>;
     RouteListResponse: z.ZodObject<{
         routes: z.ZodArray<z.ZodString, "many">;
     }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
@@ -3462,6 +3634,340 @@ export declare const api: import("@zodios/core").ZodiosInstance<[{
     }, {
         status: 404;
         description: "Resource not found";
+        schema: z.ZodObject<{
+            success: z.ZodLiteral<false>;
+            error: z.ZodObject<{
+                message: z.ZodString;
+                code: z.ZodOptional<z.ZodString>;
+                details: z.ZodOptional<z.ZodObject<{}, "passthrough", z.ZodTypeAny, z.objectOutputType<{}, z.ZodTypeAny, "passthrough">, z.objectInputType<{}, z.ZodTypeAny, "passthrough">>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                message: z.ZodString;
+                code: z.ZodOptional<z.ZodString>;
+                details: z.ZodOptional<z.ZodObject<{}, "passthrough", z.ZodTypeAny, z.objectOutputType<{}, z.ZodTypeAny, "passthrough">, z.objectInputType<{}, z.ZodTypeAny, "passthrough">>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                message: z.ZodString;
+                code: z.ZodOptional<z.ZodString>;
+                details: z.ZodOptional<z.ZodObject<{}, "passthrough", z.ZodTypeAny, z.objectOutputType<{}, z.ZodTypeAny, "passthrough">, z.objectInputType<{}, z.ZodTypeAny, "passthrough">>>;
+            }, z.ZodTypeAny, "passthrough">>;
+        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+            success: z.ZodLiteral<false>;
+            error: z.ZodObject<{
+                message: z.ZodString;
+                code: z.ZodOptional<z.ZodString>;
+                details: z.ZodOptional<z.ZodObject<{}, "passthrough", z.ZodTypeAny, z.objectOutputType<{}, z.ZodTypeAny, "passthrough">, z.objectInputType<{}, z.ZodTypeAny, "passthrough">>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                message: z.ZodString;
+                code: z.ZodOptional<z.ZodString>;
+                details: z.ZodOptional<z.ZodObject<{}, "passthrough", z.ZodTypeAny, z.objectOutputType<{}, z.ZodTypeAny, "passthrough">, z.objectInputType<{}, z.ZodTypeAny, "passthrough">>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                message: z.ZodString;
+                code: z.ZodOptional<z.ZodString>;
+                details: z.ZodOptional<z.ZodObject<{}, "passthrough", z.ZodTypeAny, z.objectOutputType<{}, z.ZodTypeAny, "passthrough">, z.objectInputType<{}, z.ZodTypeAny, "passthrough">>>;
+            }, z.ZodTypeAny, "passthrough">>;
+        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+            success: z.ZodLiteral<false>;
+            error: z.ZodObject<{
+                message: z.ZodString;
+                code: z.ZodOptional<z.ZodString>;
+                details: z.ZodOptional<z.ZodObject<{}, "passthrough", z.ZodTypeAny, z.objectOutputType<{}, z.ZodTypeAny, "passthrough">, z.objectInputType<{}, z.ZodTypeAny, "passthrough">>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                message: z.ZodString;
+                code: z.ZodOptional<z.ZodString>;
+                details: z.ZodOptional<z.ZodObject<{}, "passthrough", z.ZodTypeAny, z.objectOutputType<{}, z.ZodTypeAny, "passthrough">, z.objectInputType<{}, z.ZodTypeAny, "passthrough">>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                message: z.ZodString;
+                code: z.ZodOptional<z.ZodString>;
+                details: z.ZodOptional<z.ZodObject<{}, "passthrough", z.ZodTypeAny, z.objectOutputType<{}, z.ZodTypeAny, "passthrough">, z.objectInputType<{}, z.ZodTypeAny, "passthrough">>>;
+            }, z.ZodTypeAny, "passthrough">>;
+        }, z.ZodTypeAny, "passthrough">>;
+    }];
+}, {
+    method: "post";
+    path: "/pokemon/:sessionId/swap";
+    alias: "swapPokemon";
+    description: "Atomically swap the position and location of two Pokémon within a session";
+    requestFormat: "json";
+    parameters: [{
+        name: "body";
+        type: "Body";
+        schema: z.ZodObject<{
+            pokemon1Id: z.ZodString;
+            pokemon2Id: z.ZodString;
+        }, "strip", z.ZodTypeAny, {
+            pokemon1Id?: string;
+            pokemon2Id?: string;
+        }, {
+            pokemon1Id?: string;
+            pokemon2Id?: string;
+        }>;
+    }, {
+        name: "sessionId";
+        type: "Path";
+        schema: z.ZodString;
+    }];
+    response: z.ZodObject<{
+        pokemon1: z.ZodObject<{
+            id: z.ZodString;
+            user: z.ZodObject<{
+                id: z.ZodString;
+                username: z.ZodString;
+            }, "strip", z.ZodTypeAny, {
+                id?: string;
+                username?: string;
+            }, {
+                id?: string;
+                username?: string;
+            }>;
+            sessionId: z.ZodString;
+            pokemonId: z.ZodNumber;
+            name: z.ZodString;
+            image: z.ZodString;
+            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
+            routeName: z.ZodString;
+            location: z.ZodEnum<["TEAM", "BOX"]>;
+            position: z.ZodNumber;
+        }, "strip", z.ZodTypeAny, {
+            name?: string;
+            location?: "TEAM" | "BOX";
+            id?: string;
+            position?: number;
+            image?: string;
+            status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+            user?: {
+                id?: string;
+                username?: string;
+            };
+            pokemonId?: number;
+            routeName?: string;
+            sessionId?: string;
+        }, {
+            name?: string;
+            location?: "TEAM" | "BOX";
+            id?: string;
+            position?: number;
+            image?: string;
+            status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+            user?: {
+                id?: string;
+                username?: string;
+            };
+            pokemonId?: number;
+            routeName?: string;
+            sessionId?: string;
+        }>;
+        pokemon2: z.ZodObject<{
+            id: z.ZodString;
+            user: z.ZodObject<{
+                id: z.ZodString;
+                username: z.ZodString;
+            }, "strip", z.ZodTypeAny, {
+                id?: string;
+                username?: string;
+            }, {
+                id?: string;
+                username?: string;
+            }>;
+            sessionId: z.ZodString;
+            pokemonId: z.ZodNumber;
+            name: z.ZodString;
+            image: z.ZodString;
+            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
+            routeName: z.ZodString;
+            location: z.ZodEnum<["TEAM", "BOX"]>;
+            position: z.ZodNumber;
+        }, "strip", z.ZodTypeAny, {
+            name?: string;
+            location?: "TEAM" | "BOX";
+            id?: string;
+            position?: number;
+            image?: string;
+            status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+            user?: {
+                id?: string;
+                username?: string;
+            };
+            pokemonId?: number;
+            routeName?: string;
+            sessionId?: string;
+        }, {
+            name?: string;
+            location?: "TEAM" | "BOX";
+            id?: string;
+            position?: number;
+            image?: string;
+            status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+            user?: {
+                id?: string;
+                username?: string;
+            };
+            pokemonId?: number;
+            routeName?: string;
+            sessionId?: string;
+        }>;
+    }, "strip", z.ZodTypeAny, {
+        pokemon1?: {
+            name?: string;
+            location?: "TEAM" | "BOX";
+            id?: string;
+            position?: number;
+            image?: string;
+            status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+            user?: {
+                id?: string;
+                username?: string;
+            };
+            pokemonId?: number;
+            routeName?: string;
+            sessionId?: string;
+        };
+        pokemon2?: {
+            name?: string;
+            location?: "TEAM" | "BOX";
+            id?: string;
+            position?: number;
+            image?: string;
+            status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+            user?: {
+                id?: string;
+                username?: string;
+            };
+            pokemonId?: number;
+            routeName?: string;
+            sessionId?: string;
+        };
+    }, {
+        pokemon1?: {
+            name?: string;
+            location?: "TEAM" | "BOX";
+            id?: string;
+            position?: number;
+            image?: string;
+            status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+            user?: {
+                id?: string;
+                username?: string;
+            };
+            pokemonId?: number;
+            routeName?: string;
+            sessionId?: string;
+        };
+        pokemon2?: {
+            name?: string;
+            location?: "TEAM" | "BOX";
+            id?: string;
+            position?: number;
+            image?: string;
+            status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+            user?: {
+                id?: string;
+                username?: string;
+            };
+            pokemonId?: number;
+            routeName?: string;
+            sessionId?: string;
+        };
+    }>;
+    errors: [{
+        status: 400;
+        description: "Bad request";
+        schema: z.ZodObject<{
+            success: z.ZodLiteral<false>;
+            error: z.ZodObject<{
+                message: z.ZodString;
+                code: z.ZodOptional<z.ZodString>;
+                details: z.ZodOptional<z.ZodObject<{}, "passthrough", z.ZodTypeAny, z.objectOutputType<{}, z.ZodTypeAny, "passthrough">, z.objectInputType<{}, z.ZodTypeAny, "passthrough">>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                message: z.ZodString;
+                code: z.ZodOptional<z.ZodString>;
+                details: z.ZodOptional<z.ZodObject<{}, "passthrough", z.ZodTypeAny, z.objectOutputType<{}, z.ZodTypeAny, "passthrough">, z.objectInputType<{}, z.ZodTypeAny, "passthrough">>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                message: z.ZodString;
+                code: z.ZodOptional<z.ZodString>;
+                details: z.ZodOptional<z.ZodObject<{}, "passthrough", z.ZodTypeAny, z.objectOutputType<{}, z.ZodTypeAny, "passthrough">, z.objectInputType<{}, z.ZodTypeAny, "passthrough">>>;
+            }, z.ZodTypeAny, "passthrough">>;
+        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+            success: z.ZodLiteral<false>;
+            error: z.ZodObject<{
+                message: z.ZodString;
+                code: z.ZodOptional<z.ZodString>;
+                details: z.ZodOptional<z.ZodObject<{}, "passthrough", z.ZodTypeAny, z.objectOutputType<{}, z.ZodTypeAny, "passthrough">, z.objectInputType<{}, z.ZodTypeAny, "passthrough">>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                message: z.ZodString;
+                code: z.ZodOptional<z.ZodString>;
+                details: z.ZodOptional<z.ZodObject<{}, "passthrough", z.ZodTypeAny, z.objectOutputType<{}, z.ZodTypeAny, "passthrough">, z.objectInputType<{}, z.ZodTypeAny, "passthrough">>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                message: z.ZodString;
+                code: z.ZodOptional<z.ZodString>;
+                details: z.ZodOptional<z.ZodObject<{}, "passthrough", z.ZodTypeAny, z.objectOutputType<{}, z.ZodTypeAny, "passthrough">, z.objectInputType<{}, z.ZodTypeAny, "passthrough">>>;
+            }, z.ZodTypeAny, "passthrough">>;
+        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+            success: z.ZodLiteral<false>;
+            error: z.ZodObject<{
+                message: z.ZodString;
+                code: z.ZodOptional<z.ZodString>;
+                details: z.ZodOptional<z.ZodObject<{}, "passthrough", z.ZodTypeAny, z.objectOutputType<{}, z.ZodTypeAny, "passthrough">, z.objectInputType<{}, z.ZodTypeAny, "passthrough">>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                message: z.ZodString;
+                code: z.ZodOptional<z.ZodString>;
+                details: z.ZodOptional<z.ZodObject<{}, "passthrough", z.ZodTypeAny, z.objectOutputType<{}, z.ZodTypeAny, "passthrough">, z.objectInputType<{}, z.ZodTypeAny, "passthrough">>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                message: z.ZodString;
+                code: z.ZodOptional<z.ZodString>;
+                details: z.ZodOptional<z.ZodObject<{}, "passthrough", z.ZodTypeAny, z.objectOutputType<{}, z.ZodTypeAny, "passthrough">, z.objectInputType<{}, z.ZodTypeAny, "passthrough">>>;
+            }, z.ZodTypeAny, "passthrough">>;
+        }, z.ZodTypeAny, "passthrough">>;
+    }, {
+        status: 404;
+        description: "Resource not found";
+        schema: z.ZodObject<{
+            success: z.ZodLiteral<false>;
+            error: z.ZodObject<{
+                message: z.ZodString;
+                code: z.ZodOptional<z.ZodString>;
+                details: z.ZodOptional<z.ZodObject<{}, "passthrough", z.ZodTypeAny, z.objectOutputType<{}, z.ZodTypeAny, "passthrough">, z.objectInputType<{}, z.ZodTypeAny, "passthrough">>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                message: z.ZodString;
+                code: z.ZodOptional<z.ZodString>;
+                details: z.ZodOptional<z.ZodObject<{}, "passthrough", z.ZodTypeAny, z.objectOutputType<{}, z.ZodTypeAny, "passthrough">, z.objectInputType<{}, z.ZodTypeAny, "passthrough">>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                message: z.ZodString;
+                code: z.ZodOptional<z.ZodString>;
+                details: z.ZodOptional<z.ZodObject<{}, "passthrough", z.ZodTypeAny, z.objectOutputType<{}, z.ZodTypeAny, "passthrough">, z.objectInputType<{}, z.ZodTypeAny, "passthrough">>>;
+            }, z.ZodTypeAny, "passthrough">>;
+        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+            success: z.ZodLiteral<false>;
+            error: z.ZodObject<{
+                message: z.ZodString;
+                code: z.ZodOptional<z.ZodString>;
+                details: z.ZodOptional<z.ZodObject<{}, "passthrough", z.ZodTypeAny, z.objectOutputType<{}, z.ZodTypeAny, "passthrough">, z.objectInputType<{}, z.ZodTypeAny, "passthrough">>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                message: z.ZodString;
+                code: z.ZodOptional<z.ZodString>;
+                details: z.ZodOptional<z.ZodObject<{}, "passthrough", z.ZodTypeAny, z.objectOutputType<{}, z.ZodTypeAny, "passthrough">, z.objectInputType<{}, z.ZodTypeAny, "passthrough">>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                message: z.ZodString;
+                code: z.ZodOptional<z.ZodString>;
+                details: z.ZodOptional<z.ZodObject<{}, "passthrough", z.ZodTypeAny, z.objectOutputType<{}, z.ZodTypeAny, "passthrough">, z.objectInputType<{}, z.ZodTypeAny, "passthrough">>>;
+            }, z.ZodTypeAny, "passthrough">>;
+        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+            success: z.ZodLiteral<false>;
+            error: z.ZodObject<{
+                message: z.ZodString;
+                code: z.ZodOptional<z.ZodString>;
+                details: z.ZodOptional<z.ZodObject<{}, "passthrough", z.ZodTypeAny, z.objectOutputType<{}, z.ZodTypeAny, "passthrough">, z.objectInputType<{}, z.ZodTypeAny, "passthrough">>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                message: z.ZodString;
+                code: z.ZodOptional<z.ZodString>;
+                details: z.ZodOptional<z.ZodObject<{}, "passthrough", z.ZodTypeAny, z.objectOutputType<{}, z.ZodTypeAny, "passthrough">, z.objectInputType<{}, z.ZodTypeAny, "passthrough">>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                message: z.ZodString;
+                code: z.ZodOptional<z.ZodString>;
+                details: z.ZodOptional<z.ZodObject<{}, "passthrough", z.ZodTypeAny, z.objectOutputType<{}, z.ZodTypeAny, "passthrough">, z.objectInputType<{}, z.ZodTypeAny, "passthrough">>>;
+            }, z.ZodTypeAny, "passthrough">>;
+        }, z.ZodTypeAny, "passthrough">>;
+    }, {
+        status: 409;
+        description: "Conflict - Cannot swap Pokémon (e.g., different users, invalid positions)";
         schema: z.ZodObject<{
             success: z.ZodLiteral<false>;
             error: z.ZodObject<{
@@ -6892,6 +7398,340 @@ export declare function createApiClient(baseUrl: string, options?: ZodiosOptions
     }, {
         status: 404;
         description: "Resource not found";
+        schema: z.ZodObject<{
+            success: z.ZodLiteral<false>;
+            error: z.ZodObject<{
+                message: z.ZodString;
+                code: z.ZodOptional<z.ZodString>;
+                details: z.ZodOptional<z.ZodObject<{}, "passthrough", z.ZodTypeAny, z.objectOutputType<{}, z.ZodTypeAny, "passthrough">, z.objectInputType<{}, z.ZodTypeAny, "passthrough">>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                message: z.ZodString;
+                code: z.ZodOptional<z.ZodString>;
+                details: z.ZodOptional<z.ZodObject<{}, "passthrough", z.ZodTypeAny, z.objectOutputType<{}, z.ZodTypeAny, "passthrough">, z.objectInputType<{}, z.ZodTypeAny, "passthrough">>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                message: z.ZodString;
+                code: z.ZodOptional<z.ZodString>;
+                details: z.ZodOptional<z.ZodObject<{}, "passthrough", z.ZodTypeAny, z.objectOutputType<{}, z.ZodTypeAny, "passthrough">, z.objectInputType<{}, z.ZodTypeAny, "passthrough">>>;
+            }, z.ZodTypeAny, "passthrough">>;
+        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+            success: z.ZodLiteral<false>;
+            error: z.ZodObject<{
+                message: z.ZodString;
+                code: z.ZodOptional<z.ZodString>;
+                details: z.ZodOptional<z.ZodObject<{}, "passthrough", z.ZodTypeAny, z.objectOutputType<{}, z.ZodTypeAny, "passthrough">, z.objectInputType<{}, z.ZodTypeAny, "passthrough">>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                message: z.ZodString;
+                code: z.ZodOptional<z.ZodString>;
+                details: z.ZodOptional<z.ZodObject<{}, "passthrough", z.ZodTypeAny, z.objectOutputType<{}, z.ZodTypeAny, "passthrough">, z.objectInputType<{}, z.ZodTypeAny, "passthrough">>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                message: z.ZodString;
+                code: z.ZodOptional<z.ZodString>;
+                details: z.ZodOptional<z.ZodObject<{}, "passthrough", z.ZodTypeAny, z.objectOutputType<{}, z.ZodTypeAny, "passthrough">, z.objectInputType<{}, z.ZodTypeAny, "passthrough">>>;
+            }, z.ZodTypeAny, "passthrough">>;
+        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+            success: z.ZodLiteral<false>;
+            error: z.ZodObject<{
+                message: z.ZodString;
+                code: z.ZodOptional<z.ZodString>;
+                details: z.ZodOptional<z.ZodObject<{}, "passthrough", z.ZodTypeAny, z.objectOutputType<{}, z.ZodTypeAny, "passthrough">, z.objectInputType<{}, z.ZodTypeAny, "passthrough">>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                message: z.ZodString;
+                code: z.ZodOptional<z.ZodString>;
+                details: z.ZodOptional<z.ZodObject<{}, "passthrough", z.ZodTypeAny, z.objectOutputType<{}, z.ZodTypeAny, "passthrough">, z.objectInputType<{}, z.ZodTypeAny, "passthrough">>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                message: z.ZodString;
+                code: z.ZodOptional<z.ZodString>;
+                details: z.ZodOptional<z.ZodObject<{}, "passthrough", z.ZodTypeAny, z.objectOutputType<{}, z.ZodTypeAny, "passthrough">, z.objectInputType<{}, z.ZodTypeAny, "passthrough">>>;
+            }, z.ZodTypeAny, "passthrough">>;
+        }, z.ZodTypeAny, "passthrough">>;
+    }];
+}, {
+    method: "post";
+    path: "/pokemon/:sessionId/swap";
+    alias: "swapPokemon";
+    description: "Atomically swap the position and location of two Pokémon within a session";
+    requestFormat: "json";
+    parameters: [{
+        name: "body";
+        type: "Body";
+        schema: z.ZodObject<{
+            pokemon1Id: z.ZodString;
+            pokemon2Id: z.ZodString;
+        }, "strip", z.ZodTypeAny, {
+            pokemon1Id?: string;
+            pokemon2Id?: string;
+        }, {
+            pokemon1Id?: string;
+            pokemon2Id?: string;
+        }>;
+    }, {
+        name: "sessionId";
+        type: "Path";
+        schema: z.ZodString;
+    }];
+    response: z.ZodObject<{
+        pokemon1: z.ZodObject<{
+            id: z.ZodString;
+            user: z.ZodObject<{
+                id: z.ZodString;
+                username: z.ZodString;
+            }, "strip", z.ZodTypeAny, {
+                id?: string;
+                username?: string;
+            }, {
+                id?: string;
+                username?: string;
+            }>;
+            sessionId: z.ZodString;
+            pokemonId: z.ZodNumber;
+            name: z.ZodString;
+            image: z.ZodString;
+            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
+            routeName: z.ZodString;
+            location: z.ZodEnum<["TEAM", "BOX"]>;
+            position: z.ZodNumber;
+        }, "strip", z.ZodTypeAny, {
+            name?: string;
+            location?: "TEAM" | "BOX";
+            id?: string;
+            position?: number;
+            image?: string;
+            status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+            user?: {
+                id?: string;
+                username?: string;
+            };
+            pokemonId?: number;
+            routeName?: string;
+            sessionId?: string;
+        }, {
+            name?: string;
+            location?: "TEAM" | "BOX";
+            id?: string;
+            position?: number;
+            image?: string;
+            status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+            user?: {
+                id?: string;
+                username?: string;
+            };
+            pokemonId?: number;
+            routeName?: string;
+            sessionId?: string;
+        }>;
+        pokemon2: z.ZodObject<{
+            id: z.ZodString;
+            user: z.ZodObject<{
+                id: z.ZodString;
+                username: z.ZodString;
+            }, "strip", z.ZodTypeAny, {
+                id?: string;
+                username?: string;
+            }, {
+                id?: string;
+                username?: string;
+            }>;
+            sessionId: z.ZodString;
+            pokemonId: z.ZodNumber;
+            name: z.ZodString;
+            image: z.ZodString;
+            status: z.ZodEnum<["CAUGHT", "NOT_CAUGHT", "DEAD"]>;
+            routeName: z.ZodString;
+            location: z.ZodEnum<["TEAM", "BOX"]>;
+            position: z.ZodNumber;
+        }, "strip", z.ZodTypeAny, {
+            name?: string;
+            location?: "TEAM" | "BOX";
+            id?: string;
+            position?: number;
+            image?: string;
+            status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+            user?: {
+                id?: string;
+                username?: string;
+            };
+            pokemonId?: number;
+            routeName?: string;
+            sessionId?: string;
+        }, {
+            name?: string;
+            location?: "TEAM" | "BOX";
+            id?: string;
+            position?: number;
+            image?: string;
+            status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+            user?: {
+                id?: string;
+                username?: string;
+            };
+            pokemonId?: number;
+            routeName?: string;
+            sessionId?: string;
+        }>;
+    }, "strip", z.ZodTypeAny, {
+        pokemon1?: {
+            name?: string;
+            location?: "TEAM" | "BOX";
+            id?: string;
+            position?: number;
+            image?: string;
+            status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+            user?: {
+                id?: string;
+                username?: string;
+            };
+            pokemonId?: number;
+            routeName?: string;
+            sessionId?: string;
+        };
+        pokemon2?: {
+            name?: string;
+            location?: "TEAM" | "BOX";
+            id?: string;
+            position?: number;
+            image?: string;
+            status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+            user?: {
+                id?: string;
+                username?: string;
+            };
+            pokemonId?: number;
+            routeName?: string;
+            sessionId?: string;
+        };
+    }, {
+        pokemon1?: {
+            name?: string;
+            location?: "TEAM" | "BOX";
+            id?: string;
+            position?: number;
+            image?: string;
+            status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+            user?: {
+                id?: string;
+                username?: string;
+            };
+            pokemonId?: number;
+            routeName?: string;
+            sessionId?: string;
+        };
+        pokemon2?: {
+            name?: string;
+            location?: "TEAM" | "BOX";
+            id?: string;
+            position?: number;
+            image?: string;
+            status?: "CAUGHT" | "NOT_CAUGHT" | "DEAD";
+            user?: {
+                id?: string;
+                username?: string;
+            };
+            pokemonId?: number;
+            routeName?: string;
+            sessionId?: string;
+        };
+    }>;
+    errors: [{
+        status: 400;
+        description: "Bad request";
+        schema: z.ZodObject<{
+            success: z.ZodLiteral<false>;
+            error: z.ZodObject<{
+                message: z.ZodString;
+                code: z.ZodOptional<z.ZodString>;
+                details: z.ZodOptional<z.ZodObject<{}, "passthrough", z.ZodTypeAny, z.objectOutputType<{}, z.ZodTypeAny, "passthrough">, z.objectInputType<{}, z.ZodTypeAny, "passthrough">>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                message: z.ZodString;
+                code: z.ZodOptional<z.ZodString>;
+                details: z.ZodOptional<z.ZodObject<{}, "passthrough", z.ZodTypeAny, z.objectOutputType<{}, z.ZodTypeAny, "passthrough">, z.objectInputType<{}, z.ZodTypeAny, "passthrough">>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                message: z.ZodString;
+                code: z.ZodOptional<z.ZodString>;
+                details: z.ZodOptional<z.ZodObject<{}, "passthrough", z.ZodTypeAny, z.objectOutputType<{}, z.ZodTypeAny, "passthrough">, z.objectInputType<{}, z.ZodTypeAny, "passthrough">>>;
+            }, z.ZodTypeAny, "passthrough">>;
+        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+            success: z.ZodLiteral<false>;
+            error: z.ZodObject<{
+                message: z.ZodString;
+                code: z.ZodOptional<z.ZodString>;
+                details: z.ZodOptional<z.ZodObject<{}, "passthrough", z.ZodTypeAny, z.objectOutputType<{}, z.ZodTypeAny, "passthrough">, z.objectInputType<{}, z.ZodTypeAny, "passthrough">>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                message: z.ZodString;
+                code: z.ZodOptional<z.ZodString>;
+                details: z.ZodOptional<z.ZodObject<{}, "passthrough", z.ZodTypeAny, z.objectOutputType<{}, z.ZodTypeAny, "passthrough">, z.objectInputType<{}, z.ZodTypeAny, "passthrough">>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                message: z.ZodString;
+                code: z.ZodOptional<z.ZodString>;
+                details: z.ZodOptional<z.ZodObject<{}, "passthrough", z.ZodTypeAny, z.objectOutputType<{}, z.ZodTypeAny, "passthrough">, z.objectInputType<{}, z.ZodTypeAny, "passthrough">>>;
+            }, z.ZodTypeAny, "passthrough">>;
+        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+            success: z.ZodLiteral<false>;
+            error: z.ZodObject<{
+                message: z.ZodString;
+                code: z.ZodOptional<z.ZodString>;
+                details: z.ZodOptional<z.ZodObject<{}, "passthrough", z.ZodTypeAny, z.objectOutputType<{}, z.ZodTypeAny, "passthrough">, z.objectInputType<{}, z.ZodTypeAny, "passthrough">>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                message: z.ZodString;
+                code: z.ZodOptional<z.ZodString>;
+                details: z.ZodOptional<z.ZodObject<{}, "passthrough", z.ZodTypeAny, z.objectOutputType<{}, z.ZodTypeAny, "passthrough">, z.objectInputType<{}, z.ZodTypeAny, "passthrough">>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                message: z.ZodString;
+                code: z.ZodOptional<z.ZodString>;
+                details: z.ZodOptional<z.ZodObject<{}, "passthrough", z.ZodTypeAny, z.objectOutputType<{}, z.ZodTypeAny, "passthrough">, z.objectInputType<{}, z.ZodTypeAny, "passthrough">>>;
+            }, z.ZodTypeAny, "passthrough">>;
+        }, z.ZodTypeAny, "passthrough">>;
+    }, {
+        status: 404;
+        description: "Resource not found";
+        schema: z.ZodObject<{
+            success: z.ZodLiteral<false>;
+            error: z.ZodObject<{
+                message: z.ZodString;
+                code: z.ZodOptional<z.ZodString>;
+                details: z.ZodOptional<z.ZodObject<{}, "passthrough", z.ZodTypeAny, z.objectOutputType<{}, z.ZodTypeAny, "passthrough">, z.objectInputType<{}, z.ZodTypeAny, "passthrough">>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                message: z.ZodString;
+                code: z.ZodOptional<z.ZodString>;
+                details: z.ZodOptional<z.ZodObject<{}, "passthrough", z.ZodTypeAny, z.objectOutputType<{}, z.ZodTypeAny, "passthrough">, z.objectInputType<{}, z.ZodTypeAny, "passthrough">>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                message: z.ZodString;
+                code: z.ZodOptional<z.ZodString>;
+                details: z.ZodOptional<z.ZodObject<{}, "passthrough", z.ZodTypeAny, z.objectOutputType<{}, z.ZodTypeAny, "passthrough">, z.objectInputType<{}, z.ZodTypeAny, "passthrough">>>;
+            }, z.ZodTypeAny, "passthrough">>;
+        }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+            success: z.ZodLiteral<false>;
+            error: z.ZodObject<{
+                message: z.ZodString;
+                code: z.ZodOptional<z.ZodString>;
+                details: z.ZodOptional<z.ZodObject<{}, "passthrough", z.ZodTypeAny, z.objectOutputType<{}, z.ZodTypeAny, "passthrough">, z.objectInputType<{}, z.ZodTypeAny, "passthrough">>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                message: z.ZodString;
+                code: z.ZodOptional<z.ZodString>;
+                details: z.ZodOptional<z.ZodObject<{}, "passthrough", z.ZodTypeAny, z.objectOutputType<{}, z.ZodTypeAny, "passthrough">, z.objectInputType<{}, z.ZodTypeAny, "passthrough">>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                message: z.ZodString;
+                code: z.ZodOptional<z.ZodString>;
+                details: z.ZodOptional<z.ZodObject<{}, "passthrough", z.ZodTypeAny, z.objectOutputType<{}, z.ZodTypeAny, "passthrough">, z.objectInputType<{}, z.ZodTypeAny, "passthrough">>>;
+            }, z.ZodTypeAny, "passthrough">>;
+        }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+            success: z.ZodLiteral<false>;
+            error: z.ZodObject<{
+                message: z.ZodString;
+                code: z.ZodOptional<z.ZodString>;
+                details: z.ZodOptional<z.ZodObject<{}, "passthrough", z.ZodTypeAny, z.objectOutputType<{}, z.ZodTypeAny, "passthrough">, z.objectInputType<{}, z.ZodTypeAny, "passthrough">>>;
+            }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
+                message: z.ZodString;
+                code: z.ZodOptional<z.ZodString>;
+                details: z.ZodOptional<z.ZodObject<{}, "passthrough", z.ZodTypeAny, z.objectOutputType<{}, z.ZodTypeAny, "passthrough">, z.objectInputType<{}, z.ZodTypeAny, "passthrough">>>;
+            }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+                message: z.ZodString;
+                code: z.ZodOptional<z.ZodString>;
+                details: z.ZodOptional<z.ZodObject<{}, "passthrough", z.ZodTypeAny, z.objectOutputType<{}, z.ZodTypeAny, "passthrough">, z.objectInputType<{}, z.ZodTypeAny, "passthrough">>>;
+            }, z.ZodTypeAny, "passthrough">>;
+        }, z.ZodTypeAny, "passthrough">>;
+    }, {
+        status: 409;
+        description: "Conflict - Cannot swap Pokémon (e.g., different users, invalid positions)";
         schema: z.ZodObject<{
             success: z.ZodLiteral<false>;
             error: z.ZodObject<{

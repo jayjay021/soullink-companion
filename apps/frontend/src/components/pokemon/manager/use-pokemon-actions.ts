@@ -1,5 +1,8 @@
 import { useState } from 'react';
-import { useUpdatePokemonMutation, useListPokemonQuery } from '../../../lib/api-client/generated.api';
+import {
+  useUpdatePokemonMutation,
+  useListPokemonQuery,
+} from '../../../lib/api-client/generated.api';
 import { useAuth } from '../../../contexts/AuthContext';
 import { PokemonPositionManager } from '@repo/pokemon-utils';
 
@@ -7,7 +10,10 @@ export function usePokemonActions(sessionId: string) {
   const { user } = useAuth();
   const userId = user?.id;
   const [updatePokemon] = useUpdatePokemonMutation();
-  const { data: playerPokemon = { pokemon: [] } } = useListPokemonQuery({ sessionId, userId });
+  const { data: playerPokemon = { pokemon: [] } } = useListPokemonQuery({
+    sessionId,
+    userId,
+  });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -37,23 +43,39 @@ export function usePokemonActions(sessionId: string) {
   };
 
   const movePokemon = {
-    mutate: async ({ pokemonId, inBox }: { pokemonId: string; inBox?: boolean }) => {
+    mutate: async ({
+      pokemonId,
+      inBox,
+    }: {
+      pokemonId: string;
+      inBox?: boolean;
+    }) => {
       setIsLoading(true);
       setError(null);
       try {
         const pokemon = playerPokemon.pokemon.find((p) => p.id === pokemonId);
         if (!pokemon) throw new Error('Pokemon not found');
         // Use PokemonPositionManager for validation and position
-        const newLocation = inBox ? 'BOX' : 'TEAM';
+        const newLocation = inBox ? 'TEAM' : 'BOX';
         const newPosition = inBox
-          ? PokemonPositionManager.getNextBoxPosition(playerPokemon.pokemon, userId || '')
-          : PokemonPositionManager.getNextTeamPosition(playerPokemon.pokemon, userId || '') || 1;
-        const { valid, error: validationError } = PokemonPositionManager.validateMove(
-          playerPokemon.pokemon,
-          pokemonId,
-          newLocation,
-          newPosition
-        );
+          ? PokemonPositionManager.getNextTeamPosition(
+              playerPokemon.pokemon,
+              userId || ''
+            )
+          : PokemonPositionManager.getNextBoxPosition(
+              playerPokemon.pokemon,
+              userId || ''
+            );
+        if (newPosition === null) {
+          throw new Error('No available position for this move');
+        }
+        const { valid, error: validationError } =
+          PokemonPositionManager.validateMove(
+            playerPokemon.pokemon,
+            pokemonId,
+            newLocation,
+            newPosition
+          );
         if (!valid) throw new Error(validationError || 'Invalid move');
         await updatePokemon({
           sessionId,
@@ -79,4 +101,4 @@ export function usePokemonActions(sessionId: string) {
     isLoading,
     error,
   };
-} 
+}

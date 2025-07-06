@@ -656,6 +656,64 @@
         }
       }
     },
+    "/pokemon/{sessionId}/swap": {
+      "post": {
+        "summary": "Swap two Pokémon positions",
+        "description": "Atomically swap the position and location of two Pokémon within a session",
+        "operationId": "swapPokemon",
+        "tags": [
+          "Pokemon"
+        ],
+        "parameters": [
+          {
+            "name": "sessionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SwapPokemonRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Pokémon positions swapped successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SwapPokemonResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "description": "Conflict - Cannot swap Pokémon (e.g., different users, invalid positions)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/pokemon/{sessionId}/routes": {
       "get": {
         "summary": "Get unique routes",
@@ -1795,6 +1853,76 @@
           "offset": 0,
           "hasNext": true,
           "hasPrevious": false
+        }
+      },
+      "SwapPokemonRequest": {
+        "type": "object",
+        "required": [
+          "pokemon1Id",
+          "pokemon2Id"
+        ],
+        "properties": {
+          "pokemon1Id": {
+            "type": "string",
+            "description": "ID of the first Pokémon to swap"
+          },
+          "pokemon2Id": {
+            "type": "string",
+            "description": "ID of the second Pokémon to swap"
+          }
+        },
+        "additionalProperties": false,
+        "example": {
+          "pokemon1Id": "pokemon-1",
+          "pokemon2Id": "pokemon-2"
+        }
+      },
+      "SwapPokemonResponse": {
+        "type": "object",
+        "required": [
+          "pokemon1",
+          "pokemon2"
+        ],
+        "properties": {
+          "pokemon1": {
+            "$ref": "#/components/schemas/Pokemon"
+          },
+          "pokemon2": {
+            "$ref": "#/components/schemas/Pokemon"
+          }
+        },
+        "additionalProperties": false,
+        "example": {
+          "pokemon1": {
+            "id": "pokemon-1",
+            "user": {
+              "id": "user-1",
+              "username": "Alice"
+            },
+            "sessionId": "session-123",
+            "pokemonId": 1,
+            "name": "Bulbasaur",
+            "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png",
+            "status": "CAUGHT",
+            "routeName": "Route 1",
+            "location": "TEAM",
+            "position": 2
+          },
+          "pokemon2": {
+            "id": "pokemon-2",
+            "user": {
+              "id": "user-1",
+              "username": "Alice"
+            },
+            "sessionId": "session-123",
+            "pokemonId": 4,
+            "name": "Charmander",
+            "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png",
+            "status": "CAUGHT",
+            "routeName": "Route 1",
+            "location": "TEAM",
+            "position": 1
+          }
         }
       }
     },

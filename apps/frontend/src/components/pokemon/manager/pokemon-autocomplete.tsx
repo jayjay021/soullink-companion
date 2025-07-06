@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { useCombobox, Combobox, TextInput } from '@mantine/core';
+import {
+  useCombobox,
+  Combobox,
+  TextInput,
+  Group,
+  Avatar,
+  Text,
+} from '@mantine/core';
 import { useGetPokedexPokemonQuery } from '../../../lib/api-client/generated.api';
 import type { PokedexPokemon } from '../../../lib/api-client/generated.api';
 import { useDebouncedValue } from '@mantine/hooks';
@@ -8,14 +15,19 @@ interface PokemonAutocompleteProps {
   value: string;
   onChange: (pokemon: PokedexPokemon | null) => void;
   onNameChange?: (name: string) => void;
+  error?: string | null;
 }
 
 export function PokemonAutocomplete({
   value,
   onChange,
   onNameChange,
+  error,
 }: PokemonAutocompleteProps) {
   const [search, setSearch] = useState(value);
+  const [selectedPokemon, setSelectedPokemon] = useState<PokedexPokemon | null>(
+    null
+  );
   const combobox = useCombobox({
     onDropdownClose: () => combobox.resetSelectedOption(),
   });
@@ -24,29 +36,65 @@ export function PokemonAutocomplete({
   useEffect(() => {
     if (value !== search) {
       setSearch(value);
+      // If value is empty or doesn't match selected Pokemon, clear selection
+      if (
+        !value ||
+        (selectedPokemon && selectedPokemon.name.english !== value)
+      ) {
+        setSelectedPokemon(null);
+      }
     }
-  }, [value, search]);
+  }, [value, search, selectedPokemon]);
 
-  const { data, isLoading: loading } = useGetPokedexPokemonQuery({ name: debounced }, { skip: !debounced });
+  useEffect(() => {
+    // Clear selected Pokemon if search doesn't match
+    if (selectedPokemon && search !== selectedPokemon.name.english) {
+      setSelectedPokemon(null);
+    }
+  }, [search, selectedPokemon]);
+
+  const { data, isLoading: loading } = useGetPokedexPokemonQuery(
+    { name: debounced },
+    { skip: !debounced }
+  );
   const options: PokedexPokemon[] = data?.pokemon || [];
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const val = event.currentTarget.value;
     setSearch(val);
+    setSelectedPokemon(null);
     onChange(null);
     onNameChange?.(val);
     combobox.openDropdown();
+  };
+
+  const handleSelect = (option: PokedexPokemon) => {
+    setSearch(option.name.english);
+    setSelectedPokemon(option);
+    onChange(option);
+    onNameChange?.(option.name.english);
+    combobox.closeDropdown();
   };
 
   return (
     <Combobox store={combobox} withinPortal>
       <Combobox.Target>
         <TextInput
-          label="Pokémon Name"
+          label='Pokémon Name'
           value={search}
           onChange={handleInput}
           rightSection={loading ? <span>⏳</span> : null}
-          placeholder="Start typing..."
+          leftSection={
+            selectedPokemon ? (
+              <Avatar
+                src={selectedPokemon.image.sprite}
+                size='sm'
+                radius='xl'
+              />
+            ) : null
+          }
+          placeholder='Start typing...'
+          error={error}
         />
       </Combobox.Target>
       <Combobox.Dropdown>
@@ -57,18 +105,16 @@ export function PokemonAutocomplete({
             <Combobox.Option
               value={option.name.english}
               key={option.id}
-              onClick={() => {
-                setSearch(option.name.english);
-                onChange(option);
-                onNameChange?.(option.name.english);
-                combobox.closeDropdown();
-              }}
+              onClick={() => handleSelect(option)}
             >
-              {option.name.english}
+              <Group gap='sm'>
+                <Avatar src={option.image.sprite} size='sm' radius='xl' />
+                <Text>{option.name.english}</Text>
+              </Group>
             </Combobox.Option>
           ))
         )}
       </Combobox.Dropdown>
     </Combobox>
   );
-} 
+}

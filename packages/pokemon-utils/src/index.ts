@@ -7,8 +7,6 @@ export type PokemonStatus = z.infer<typeof schemas.PokemonStatus>;
 export type PokemonLocation = z.infer<typeof schemas.PokemonLocation>;
 export type PokemonData = z.infer<typeof schemas.PokedexPokemon>;
 
-
-
 // Position management utilities
 export class PokemonPositionManager {
   /**
@@ -107,8 +105,8 @@ export class PokemonPositionManager {
         : p
     );
 
-    // If moving to box, reorganize positions
-    if (newLocation === 'BOX') {
+    // If moving from or to box, reorganize box positions to remove gaps
+    if (targetPokemon.location === 'BOX' || newLocation === 'BOX') {
       const boxPokemon = this.reorganizeBoxPositions(updatedPokemon);
       const otherPokemon = updatedPokemon.filter((p) => p.location === 'TEAM');
       return { valid: true, adjustedPokemon: [...otherPokemon, ...boxPokemon] };
@@ -174,12 +172,12 @@ export class PokemonValidationManager {
     // Now start from the base form and follow all evolution chains forward
     const baseForm = current || species;
     const visited = new Set<number>();
-    
+
     const traverseForward = (pokemon: PokemonData) => {
       if (visited.has(pokemon.id)) return;
       visited.add(pokemon.id);
       evolutionLine.add(pokemon.id);
-      
+
       if (pokemon.evolution?.next) {
         for (const next of pokemon.evolution.next) {
           const nextId = parseInt(next[0]);
@@ -237,7 +235,10 @@ export class PokemonValidationManager {
     }
 
     // Check if position is valid for location
-    if (pokemon.location === 'TEAM' && (pokemon.position < 0 || pokemon.position > 5)) {
+    if (
+      pokemon.location === 'TEAM' &&
+      (pokemon.position < 0 || pokemon.position > 5)
+    ) {
       return false;
     }
 
@@ -271,6 +272,11 @@ export class PokemonValidationManager {
 
     if (pokemon.location === 'TEAM') {
       return { canMove: false, reason: 'Pokemon is already in team' };
+    }
+
+    // Check if Pokemon is dead
+    if (pokemon.status === 'DEAD') {
+      return { canMove: false, reason: 'Dead Pokemon cannot be moved to team' };
     }
 
     // Check if team is full
