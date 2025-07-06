@@ -159,6 +159,11 @@ const UpdatePokemonRequest = zod_1.z.object({
     location: PokemonLocation,
     position: zod_1.z.number().int(),
 });
+const SwapPokemonRequest = zod_1.z.object({
+    pokemon1Id: zod_1.z.string(),
+    pokemon2Id: zod_1.z.string(),
+});
+const SwapPokemonResponse = zod_1.z.object({ pokemon1: Pokemon, pokemon2: Pokemon });
 const RouteListResponse = zod_1.z
     .object({ routes: zod_1.z.array(zod_1.z.string()) })
     .passthrough();
@@ -200,6 +205,8 @@ exports.schemas = {
     Pokemon,
     PokemonListResponse,
     UpdatePokemonRequest,
+    SwapPokemonRequest,
+    SwapPokemonResponse,
     RouteListResponse,
     LoginRequest,
     LoginResponse,
@@ -424,6 +431,43 @@ const endpoints = (0, core_1.makeApi)([
             {
                 status: 404,
                 description: `Resource not found`,
+                schema: Error,
+            },
+        ],
+    },
+    {
+        method: "post",
+        path: "/pokemon/:sessionId/swap",
+        alias: "swapPokemon",
+        description: `Atomically swap the position and location of two Pokémon within a session`,
+        requestFormat: "json",
+        parameters: [
+            {
+                name: "body",
+                type: "Body",
+                schema: SwapPokemonRequest,
+            },
+            {
+                name: "sessionId",
+                type: "Path",
+                schema: zod_1.z.string(),
+            },
+        ],
+        response: SwapPokemonResponse,
+        errors: [
+            {
+                status: 400,
+                description: `Bad request`,
+                schema: Error,
+            },
+            {
+                status: 404,
+                description: `Resource not found`,
+                schema: Error,
+            },
+            {
+                status: 409,
+                description: `Conflict - Cannot swap Pokémon (e.g., different users, invalid positions)`,
                 schema: Error,
             },
         ],

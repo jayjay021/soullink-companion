@@ -14,8 +14,10 @@ import { ApiError } from '../../middleware/errorHandler';
 // Zod schema types for request/response
 type CreatePokemonData = z.infer<typeof schemas.CreatePokemonRequest>;
 type UpdatePokemonData = z.infer<typeof schemas.UpdatePokemonRequest>;
+type SwapPokemonData = z.infer<typeof schemas.SwapPokemonRequest>;
 type PokemonDto = z.infer<typeof schemas.Pokemon>;
 type PokemonListResponseDto = z.infer<typeof schemas.PokemonListResponse>;
+type SwapPokemonResponseDto = z.infer<typeof schemas.SwapPokemonResponse>;
 type PokemonStatus = z.infer<typeof schemas.PokemonStatus>;
 
 export class PokemonService {
@@ -436,6 +438,141 @@ export class PokemonService {
     } catch (error) {
       log('Error deleting pokemon:', error);
       throw new Error('Failed to delete pokemon');
+    }
+  }
+
+  async swapPokemon(
+    sessionId: string,
+    data: SwapPokemonData
+  ): Promise<SwapPokemonResponseDto> {
+    try {
+      // Start a transaction to ensure atomicity
+      const result = await prisma.$transaction(async (tx) => {
+        // Fetch both Pokemon with row-level locking
+        const pokemon1 = await tx.pokemon.findFirst({
+          where: { id: data.pokemon1Id, sessionId },
+          select: {
+            id: true,
+            sessionId: true,
+            pokemonId: true,
+            status: true,
+            routeName: true,
+            location: true,
+            position: true,
+            user: {
+              select: { id: true, username: true },
+            },
+          },
+        });
+
+        const pokemon2 = await tx.pokemon.findFirst({
+          where: { id: data.pokemon2Id, sessionId },
+          select: {
+            id: true,
+            sessionId: true,
+            pokemonId: true,
+            status: true,
+            routeName: true,
+            location: true,
+            position: true,
+            user: {
+              select: { id: true, username: true },
+            },
+          },
+        });
+
+        // Validate both Pokemon exist
+        if (!pokemon1) {
+          throw new ApiError('First Pokemon not found', 404);
+        }
+        if (!pokemon2) {
+          throw new ApiError('Second Pokemon not found', 404);
+        }
+
+        // Validate both Pokemon belong to the same user
+        if (pokemon1.user.id !== pokemon2.user.id) {
+          throw new ApiError('Cannot swap Pokemon from different users', 409);
+        }
+
+        // Validate not swapping same Pokemon
+        if (pokemon1.id === pokemon2.id) {
+          throw new ApiError('Cannot swap Pokemon with itself', 409);
+        }
+
+        // Swap the positions and locations
+        const temp = {
+          location: pokemon1.location,
+          position: pokemon1.position,
+        };
+
+        await tx.pokemon.update({
+          where: { id: pokemon1.id },
+          data: {
+            location: pokemon2.location,
+            position: pokemon2.position,
+          },
+        });
+
+        await tx.pokemon.update({
+          where: { id: pokemon2.id },
+          data: {
+            location: temp.location,
+            position: temp.position,
+          },
+        });
+
+        // Fetch the updated Pokemon with enriched data
+        const updatedPokemon1 = await tx.pokemon.findUnique({
+          where: { id: pokemon1.id },
+          select: {
+            id: true,
+            sessionId: true,
+            pokemonId: true,
+            status: true,
+            routeName: true,
+            location: true,
+            position: true,
+            user: {
+              select: { id: true, username: true },
+            },
+          },
+        });
+
+        const updatedPokemon2 = await tx.pokemon.findUnique({
+          where: { id: pokemon2.id },
+          select: {
+            id: true,
+            sessionId: true,
+            pokemonId: true,
+            status: true,
+            routeName: true,
+            location: true,
+            position: true,
+            user: {
+              select: { id: true, username: true },
+            },
+          },
+        });
+
+        if (!updatedPokemon1 || !updatedPokemon2) {
+          throw new ApiError('Failed to retrieve updated Pokemon', 500);
+        }
+
+        return {
+          pokemon1:
+            PokemonMapper.mapPrismaToPokemonDtoEnriched(updatedPokemon1),
+          pokemon2:
+            PokemonMapper.mapPrismaToPokemonDtoEnriched(updatedPokemon2),
+        };
+      });
+
+      return result;
+    } catch (error) {
+      if (error instanceof ApiError) {
+        throw error;
+      }
+      log('Error swapping pokemon:', error);
+      throw new Error('Failed to swap pokemon');
     }
   }
 

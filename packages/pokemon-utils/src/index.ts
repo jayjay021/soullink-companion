@@ -105,8 +105,8 @@ export class PokemonPositionManager {
         : p
     );
 
-    // If moving to box, reorganize positions
-    if (newLocation === 'BOX') {
+    // If moving from or to box, reorganize box positions to remove gaps
+    if (targetPokemon.location === 'BOX' || newLocation === 'BOX') {
       const boxPokemon = this.reorganizeBoxPositions(updatedPokemon);
       const otherPokemon = updatedPokemon.filter((p) => p.location === 'TEAM');
       return { valid: true, adjustedPokemon: [...otherPokemon, ...boxPokemon] };

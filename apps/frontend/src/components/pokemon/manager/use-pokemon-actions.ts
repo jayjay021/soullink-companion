@@ -76,13 +76,6 @@ export function usePokemonActions(sessionId: string) {
             newLocation,
             newPosition
           );
-        console.log('Moving Pokemon:', {
-          pokemonId,
-          newLocation,
-          newPosition,
-          valid,
-          validationError,
-        });
         if (!valid) throw new Error(validationError || 'Invalid move');
         await updatePokemon({
           sessionId,

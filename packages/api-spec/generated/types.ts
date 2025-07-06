@@ -208,6 +208,26 @@ export interface paths {
         patch: operations["updatePokemon"];
         trace?: never;
     };
+    "/pokemon/{sessionId}/swap": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Swap two Pokémon positions
+         * @description Atomically swap the position and location of two Pokémon within a session
+         */
+        post: operations["swapPokemon"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/pokemon/{sessionId}/routes": {
         parameters: {
             query?: never;
@@ -798,6 +818,52 @@ export interface components {
             /** @description Whether there is a previous page */
             hasPrevious: boolean;
         };
+        /** @example {
+         *       "pokemon1Id": "pokemon-1",
+         *       "pokemon2Id": "pokemon-2"
+         *     } */
+        SwapPokemonRequest: {
+            /** @description ID of the first Pokémon to swap */
+            pokemon1Id: string;
+            /** @description ID of the second Pokémon to swap */
+            pokemon2Id: string;
+        };
+        /** @example {
+         *       "pokemon1": {
+         *         "id": "pokemon-1",
+         *         "user": {
+         *           "id": "user-1",
+         *           "username": "Alice"
+         *         },
+         *         "sessionId": "session-123",
+         *         "pokemonId": 1,
+         *         "name": "Bulbasaur",
+         *         "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png",
+         *         "status": "CAUGHT",
+         *         "routeName": "Route 1",
+         *         "location": "TEAM",
+         *         "position": 2
+         *       },
+         *       "pokemon2": {
+         *         "id": "pokemon-2",
+         *         "user": {
+         *           "id": "user-1",
+         *           "username": "Alice"
+         *         },
+         *         "sessionId": "session-123",
+         *         "pokemonId": 4,
+         *         "name": "Charmander",
+         *         "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png",
+         *         "status": "CAUGHT",
+         *         "routeName": "Route 1",
+         *         "location": "TEAM",
+         *         "position": 1
+         *       }
+         *     } */
+        SwapPokemonResponse: {
+            pokemon1: components["schemas"]["Pokemon"];
+            pokemon2: components["schemas"]["Pokemon"];
+        };
     };
     responses: {
         /** @description Bad request */
@@ -1211,6 +1277,43 @@ export interface operations {
             };
             400: components["responses"]["BadRequest"];
             404: components["responses"]["NotFound"];
+        };
+    };
+    swapPokemon: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                sessionId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SwapPokemonRequest"];
+            };
+        };
+        responses: {
+            /** @description Pokémon positions swapped successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SwapPokemonResponse"];
+                };
+            };
+            400: components["responses"]["BadRequest"];
+            404: components["responses"]["NotFound"];
+            /** @description Conflict - Cannot swap Pokémon (e.g., different users, invalid positions) */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
         };
     };
     getPokemonRoutes: {

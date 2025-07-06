@@ -3,7 +3,10 @@ import { useState, useCallback } from 'react';
 import { Stack, Title, Card } from '@mantine/core';
 import { PokemonGrid } from './pokemon-grid';
 import { EnhancedPokemon } from './pokemon-utils';
-import { useUpdatePokemonMutation } from '../../../lib/api-client/generated.api';
+import {
+  useSwapPokemonMutation,
+  useUpdatePokemonMutation,
+} from '../../../lib/api-client/generated.api';
 import { PokemonPositionManager } from '@repo/pokemon-utils';
 // import { useMovePokemonMutation } from '../../../lib/api-client/generated.api'; // Uncomment and adjust as needed
 // import { movePokemonWithUtils } from 'pokemon-utils'; // Uncomment and adjust as needed
@@ -31,6 +34,7 @@ export function PlayerDashboard({
 }: PlayerDashboardProps) {
   const [isUpdating, setIsUpdating] = useState(false);
   const [updatePokemon] = useUpdatePokemonMutation();
+  const [swapPokemon] = useSwapPokemonMutation();
 
   const handleEmptySlotClick = (isTeam: boolean, position: number) => {
     if (!canAddPokemon) {
@@ -50,10 +54,31 @@ export function PlayerDashboard({
       if (isUpdating) return;
       setIsUpdating(true);
       try {
+        // check if the target position is already occupied
+        const targetPokemon = toTeam
+          ? team.find((p) => p.position === newPosition)
+          : box.find((p) => p.position === newPosition);
+
+        //if target pokemon is the same as the one being moved, do nothing otherwise use swapp endpoint
+        if (targetPokemon && targetPokemon.id === pokemonId) {
+          setIsUpdating(false);
+          return;
+        } else if (targetPokemon) {
+          // If the target position is occupied, swap the Pokémon
+          const swapPokemonId = targetPokemon.id;
+          await swapPokemon({
+            sessionId,
+            swapPokemonRequest: {
+              pokemon1Id: pokemonId,
+              pokemon2Id: swapPokemonId,
+            },
+          }).unwrap();
+          return;
+        }
+
         // Combine all Pokémon for validation
         const allPokemon = [...team, ...box];
         const newLocation = toTeam ? 'TEAM' : 'BOX';
-        console.log('newPosition', newPosition);
         const { valid, error: validationError } =
           PokemonPositionManager.validateMove(
             allPokemon,
